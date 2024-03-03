@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tinnitus_smart_alarm/screens/edit_alarm.dart';
+import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
 import 'package:tinnitus_smart_alarm/widgets/tile.dart';
 
@@ -42,7 +43,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AlarmEditScreen(alarmSettings: alarmSettings),
+        builder: (context) => AlarmRingScreen(alarmSettings: alarmSettings),
       ),
     );
     loadAlarms();
