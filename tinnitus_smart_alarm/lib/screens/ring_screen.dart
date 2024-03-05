@@ -15,7 +15,9 @@ class AlarmRingScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
-              "You alarm (${alarmSettings.id}) is ringing...",
+              // "You alarm (${alarmSettings.id}) is ringing...",
+
+              "Do you a favor and don't use the snooze button",
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const Text("🔔", style: TextStyle(fontSize: 50)),

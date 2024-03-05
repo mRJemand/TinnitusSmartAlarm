@@ -97,7 +97,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('alarm 3.0.12')),
+      appBar: AppBar(title: const Text('Tinnitus Smart Alarm')),
       body: SafeArea(
         child: alarms.isNotEmpty
             ? ListView.separated(

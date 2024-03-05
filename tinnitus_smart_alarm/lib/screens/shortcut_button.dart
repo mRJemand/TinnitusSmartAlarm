@@ -53,7 +53,7 @@ class _AlarmHomeShortcutButtonState extends State<AlarmHomeShortcutButton> {
             onPressed: () => onPressButton(0),
             backgroundColor: Colors.red,
             heroTag: null,
-            child: const Text("RING NOW", textAlign: TextAlign.center),
+            child: const Text("TEST RING", textAlign: TextAlign.center),
           ),
         ),
         if (showMenu)
