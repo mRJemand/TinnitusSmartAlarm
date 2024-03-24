@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -7,6 +8,7 @@ import 'package:tinnitus_smart_alarm/screens/edit_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
 import 'package:tinnitus_smart_alarm/widgets/tile.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class AlarmHomeScreen extends StatefulWidget {
   const AlarmHomeScreen({super.key});
@@ -30,6 +32,11 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     subscription ??= Alarm.ringStream.stream.listen(
       (alarmSettings) => navigateToRingScreen(alarmSettings),
     );
+    initialization();
+  }
+
+  void initialization() async {
+    FlutterNativeSplash.remove();
   }
 
   void loadAlarms() {

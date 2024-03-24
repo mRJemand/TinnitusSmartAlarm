@@ -1,4 +1,5 @@
 import 'package:alarm/alarm.dart';
+import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 
 class AlarmEditScreen extends StatefulWidget {
@@ -19,12 +20,15 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   late bool vibrate;
   late double? volume;
   late String assetAudio;
+  late double fadeDuration;
+  late bool fadeDurationStatus;
+  final double fadeDurationLenth = 30;
 
   @override
   void initState() {
     super.initState();
     creating = widget.alarmSettings == null;
-
+    fadeDurationStatus = true;
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
@@ -32,12 +36,14 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       vibrate = true;
       volume = null;
       assetAudio = 'assets/marimba.mp3';
+      fadeDuration = 0;
     } else {
       selectedDateTime = widget.alarmSettings!.dateTime;
       loopAudio = widget.alarmSettings!.loopAudio;
       vibrate = widget.alarmSettings!.vibrate;
       volume = widget.alarmSettings!.volume;
       assetAudio = widget.alarmSettings!.assetAudioPath;
+      fadeDuration = widget.alarmSettings!.fadeDuration;
     }
   }
 
@@ -92,6 +98,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       loopAudio: loopAudio,
       vibrate: vibrate,
       volume: volume,
+      fadeDuration: fadeDuration,
       assetAudioPath: assetAudio,
       notificationTitle: 'Alarm example',
       notificationBody: 'Your alarm ($id) is ringing',
@@ -192,6 +199,26 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
               Switch(
                 value: vibrate,
                 onChanged: (value) => setState(() => vibrate = value),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Fade in',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Switch(
+                value: fadeDurationStatus,
+                onChanged: (value) {
+                  setState(() => fadeDurationStatus = value);
+                  setState(() {
+                    fadeDurationStatus
+                        ? fadeDuration = fadeDurationLenth
+                        : fadeDuration = 0;
+                  });
+                },
               ),
             ],
           ),
