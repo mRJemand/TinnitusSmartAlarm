@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/screens/alarm_home_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/settings_screen.dart';
@@ -16,6 +17,11 @@ class _MainScreenState extends State<MainScreen> {
     const AlarmHomeScreen(),
     const SettingsScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {

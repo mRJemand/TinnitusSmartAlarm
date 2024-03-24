@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
@@ -10,6 +11,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  bool darkMode = true;
   bool loopAlarmAudio = true;
   bool vibrate = true;
   bool fadeIn = true;
@@ -25,6 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _loadSettings() async {
+    darkMode = await settingsService.getDarkModeSetting();
     loopAlarmAudio = await settingsService.getLoopAudioSetting();
     vibrate = await settingsService.getVibrateSetting();
     fadeIn = await settingsService.getFadeInSetting();
@@ -44,6 +47,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SettingsSection(
             title: const Text('General'),
             tiles: [
+              SettingsTile.switchTile(
+                title: const Text('Dark Mode'),
+                leading: const Icon(Icons.dark_mode),
+                initialValue: darkMode,
+                onToggle: (bool value) {
+                  setState(() {
+                    darkMode = value;
+                  });
+                  darkMode
+                      ? AdaptiveTheme.of(context).setDark()
+                      : AdaptiveTheme.of(context).setLight();
+                  settingsService.setDarkModeSetting(value);
+                },
+              ),
               SettingsTile(
                 title: const Text('Language'),
                 leading: const Icon(Icons.language),

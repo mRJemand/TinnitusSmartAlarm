@@ -3,6 +3,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsService {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
+  Future<bool> getDarkModeSetting() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getBool('darkMode') ?? true;
+  }
+
+  Future<void> setDarkModeSetting(bool value) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setBool('darkMode', value);
+  }
+
   Future<bool> getLoopAudioSetting() async {
     final SharedPreferences prefs = await _prefs;
     return prefs.getBool('loopAlarmAudio') ?? true;

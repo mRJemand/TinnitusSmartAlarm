@@ -1,6 +1,7 @@
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
 
 class AlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
@@ -19,17 +20,20 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   late bool loopAudio;
   late bool vibrate;
   late double? volume;
+  late bool customVolume;
   late String assetAudio;
   late double fadeDuration;
   late bool fadeDurationStatus;
-  final double fadeDurationLenth = 30;
+  final double fadeDurationLength = 30;
+  final SettingsService settingsService = SettingsService();
 
   @override
   void initState() {
     super.initState();
     creating = widget.alarmSettings == null;
-    fadeDurationStatus = true;
-    fadeDuration = fadeDurationLenth;
+    // fadeDurationStatus = true;
+    fadeDuration = fadeDurationLength;
+    _loadSettings();
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
@@ -46,6 +50,15 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       assetAudio = widget.alarmSettings!.assetAudioPath;
       fadeDuration = widget.alarmSettings!.fadeDuration;
     }
+  }
+
+  Future<void> _loadSettings() async {
+    loopAudio = await settingsService.getLoopAudioSetting() ?? true;
+    vibrate = await settingsService.getVibrateSetting();
+    fadeDurationStatus = await settingsService.getFadeInSetting() ?? true;
+    volume = await settingsService.getVolumeSetting();
+    customVolume = await settingsService.getCustomVolumeSetting() ?? true;
+    setState(() {});
   }
 
   String getDay() {
@@ -104,8 +117,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       notificationTitle: 'Alarm example',
       notificationBody: 'Your alarm ($id) is ringing',
     );
-    print('aca');
-    print(fadeDuration);
     return alarmSettings;
   }
 
@@ -218,7 +229,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                   setState(() => fadeDurationStatus = value);
                   setState(() {
                     fadeDurationStatus
-                        ? fadeDuration = fadeDurationLenth
+                        ? fadeDuration = fadeDurationLength
                         : fadeDuration = 0;
                   });
                 },
@@ -1028,15 +1039,14 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Switch(
-                value: volume != null,
-                onChanged: (value) =>
-                    setState(() => volume = value ? 0.5 : null),
+                value: customVolume,
+                onChanged: (value) => setState(() => customVolume = value),
               ),
             ],
           ),
           SizedBox(
             height: 30,
-            child: volume != null
+            child: customVolume
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
