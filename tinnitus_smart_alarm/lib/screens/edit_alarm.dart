@@ -29,6 +29,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     super.initState();
     creating = widget.alarmSettings == null;
     fadeDurationStatus = true;
+    fadeDuration = fadeDurationLenth;
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
@@ -36,7 +37,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       vibrate = true;
       volume = null;
       assetAudio = 'assets/marimba.mp3';
-      fadeDuration = 0;
+      fadeDuration = fadeDuration;
     } else {
       selectedDateTime = widget.alarmSettings!.dateTime;
       loopAudio = widget.alarmSettings!.loopAudio;
@@ -103,6 +104,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       notificationTitle: 'Alarm example',
       notificationBody: 'Your alarm ($id) is ringing',
     );
+    print('aca');
+    print(fadeDuration);
     return alarmSettings;
   }
 
