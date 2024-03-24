@@ -3,6 +3,7 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/services.dart';
 import 'package:tinnitus_smart_alarm/screens/alarm_home_screen.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:tinnitus_smart_alarm/screens/main_screen.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +15,7 @@ Future<void> main() async {
   runApp(
     MaterialApp(
       theme: ThemeData(useMaterial3: false),
-      home: const AlarmHomeScreen(),
+      home: const MainScreen(),
     ),
   );
 }
