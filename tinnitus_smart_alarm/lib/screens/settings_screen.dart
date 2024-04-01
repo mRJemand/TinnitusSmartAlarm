@@ -2,6 +2,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
+import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -19,6 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool fadeIn = true;
   double volume = 0.3;
   bool customVolume = true;
+  String sound = "";
 
   final SettingsService settingsService = SettingsService();
 
@@ -35,6 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     fadeIn = await settingsService.getFadeInSetting();
     volume = await settingsService.getVolumeSetting();
     customVolume = await settingsService.getCustomVolumeSetting();
+    sound = await settingsService.getAssetAudioSetting();
     setState(() {});
   }
 

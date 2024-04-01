@@ -29,14 +29,14 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   late bool fadeDurationStatus;
   final double fadeDurationLength = 30;
   final SettingsService settingsService = SettingsService();
+  late final Future<void> _settingsFuture;
 
   @override
   void initState() {
     super.initState();
     creating = widget.alarmSettings == null;
-    fadeDurationStatus = true;
     fadeDuration = fadeDurationLength;
-    _loadSettings();
+    _settingsFuture = _loadSettings();
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
@@ -61,6 +61,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     fadeDurationStatus = await settingsService.getFadeInSetting() ?? true;
     volume = await settingsService.getVolumeSetting() ?? 0.5;
     customVolume = await settingsService.getCustomVolumeSetting() ?? true;
+    assetAudio = await settingsService.getAssetAudioSetting() ??
+        'assets/tinnitus_stimuli/beachwaves.mp3';
     setState(() {});
   }
 
@@ -152,194 +154,205 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
+    return FutureBuilder(
+      future: _settingsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Error loading settings'));
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(
-                  AppLocalizations.of(context)!.cancel,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.blueAccent),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text(
+                      AppLocalizations.of(context)!.cancel,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(color: Colors.blueAccent),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: saveAlarm,
+                    child: loading
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            AppLocalizations.of(context)!.save,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(color: Colors.blueAccent),
+                          ),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: saveAlarm,
-                child: loading
-                    ? const CircularProgressIndicator()
-                    : Text(
-                        AppLocalizations.of(context)!.save,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: Colors.blueAccent),
-                      ),
-              ),
-            ],
-          ),
-          Text(
-            getDay(),
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium!
-                .copyWith(color: Colors.blueAccent.withOpacity(0.8)),
-          ),
-          RawMaterialButton(
-            onPressed: pickTime,
-            fillColor: Colors.grey[200],
-            child: Container(
-              margin: const EdgeInsets.all(20),
-              child: Text(
-                TimeOfDay.fromDateTime(selectedDateTime).format(context),
-                style: Theme.of(context)
-                    .textTheme
-                    .displayMedium!
-                    .copyWith(color: Colors.blueAccent),
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
               Text(
-                AppLocalizations.of(context)!.loopAlarmAudio,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Switch(
-                value: loopAudio,
-                onChanged: (value) => setState(() => loopAudio = value),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.vibrate,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Switch(
-                value: vibrate,
-                onChanged: (value) => setState(() => vibrate = value),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.fadeIn,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Switch(
-                value: fadeDurationStatus,
-                onChanged: (value) {
-                  setState(() => fadeDurationStatus = value);
-                  setState(() {
-                    fadeDurationStatus
-                        ? fadeDuration = fadeDurationLength
-                        : fadeDuration = 0;
-                  });
-                },
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.sound,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              DropdownButton(
-                value: assetAudio,
-                items: _getStimuliDropdownList(),
-                // const [
-                // DropdownMenuItem<String>(
-                //   value: 'assets/marimba.mp3',
-                //   child: Text('Marimba'),
-                // ),
-                // DropdownMenuItem<String>(
-                //   value: 'assets/nokia.mp3',
-                //   child: Text('Nokia'),
-                // ),
-                // DropdownMenuItem<String>(
-                //   value: 'assets/mozart.mp3',
-                //   child: Text('Mozart'),
-                // ),
-                // DropdownMenuItem<String>(
-                //   value: 'assets/star_wars.mp3',
-                //   child: Text('Star Wars'),
-                // ),
-                // DropdownMenuItem<String>(
-                //   value: 'assets/one_piece.mp3',
-                //   child: Text('One Piece'),
-                // ),
-
-                // ],
-                onChanged: (value) => setState(() => assetAudio = value!),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.customVolume,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Switch(
-                value: customVolume,
-                onChanged: (value) => setState(() => customVolume = value),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 30,
-            child: customVolume
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        volume! > 0.7
-                            ? Icons.volume_up_rounded
-                            : volume! > 0.1
-                                ? Icons.volume_down_rounded
-                                : Icons.volume_mute_rounded,
-                      ),
-                      Expanded(
-                        child: Slider(
-                          value: volume!,
-                          onChanged: (value) {
-                            setState(() => volume = value);
-                          },
-                        ),
-                      ),
-                    ],
-                  )
-                : const SizedBox(),
-          ),
-          if (!creating)
-            TextButton(
-              onPressed: deleteAlarm,
-              child: Text(
-                AppLocalizations.of(context)!.deleteAlarm,
+                getDay(),
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
-                    .copyWith(color: Colors.red),
+                    .copyWith(color: Colors.blueAccent.withOpacity(0.8)),
               ),
-            ),
-          const SizedBox(),
-        ],
-      ),
+              RawMaterialButton(
+                onPressed: pickTime,
+                fillColor: Colors.grey[200],
+                child: Container(
+                  margin: const EdgeInsets.all(20),
+                  child: Text(
+                    TimeOfDay.fromDateTime(selectedDateTime).format(context),
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium!
+                        .copyWith(color: Colors.blueAccent),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.loopAlarmAudio,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Switch(
+                    value: loopAudio,
+                    onChanged: (value) => setState(() => loopAudio = value),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.vibrate,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Switch(
+                    value: vibrate,
+                    onChanged: (value) => setState(() => vibrate = value),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.fadeIn,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Switch(
+                    value: fadeDurationStatus,
+                    onChanged: (value) {
+                      setState(() => fadeDurationStatus = value);
+                      setState(() {
+                        fadeDurationStatus
+                            ? fadeDuration = fadeDurationLength
+                            : fadeDuration = 0;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.sound,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  DropdownButton(
+                    value: assetAudio,
+                    items: <DropdownMenuItem<String>>[
+                      const DropdownMenuItem<String>(
+                        value: 'assets/marimba.mp3',
+                        child: Text('Marimba'),
+                      ),
+                      ..._getStimuliDropdownList(),
+                    ],
+                    // DropdownMenuItem<String>(
+                    //   value: 'assets/nokia.mp3',
+                    //   child: Text('Nokia'),
+                    // ),
+                    // DropdownMenuItem<String>(
+                    //   value: 'assets/mozart.mp3',
+                    //   child: Text('Mozart'),
+                    // ),
+                    // DropdownMenuItem<String>(
+                    //   value: 'assets/star_wars.mp3',
+                    //   child: Text('Star Wars'),
+                    // ),
+                    // DropdownMenuItem<String>(
+                    //   value: 'assets/one_piece.mp3',
+                    //   child: Text('One Piece'),
+                    // ),
+
+                    // ],
+                    onChanged: (value) => setState(() => assetAudio = value!),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.customVolume,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Switch(
+                    value: customVolume,
+                    onChanged: (value) => setState(() => customVolume = value),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+                child: customVolume
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(
+                            volume! > 0.7
+                                ? Icons.volume_up_rounded
+                                : volume! > 0.1
+                                    ? Icons.volume_down_rounded
+                                    : Icons.volume_mute_rounded,
+                          ),
+                          Expanded(
+                            child: Slider(
+                              value: volume!,
+                              onChanged: (value) {
+                                setState(() => volume = value);
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox(),
+              ),
+              if (!creating)
+                TextButton(
+                  onPressed: deleteAlarm,
+                  child: Text(
+                    AppLocalizations.of(context)!.deleteAlarm,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Colors.red),
+                  ),
+                ),
+              const SizedBox(),
+            ],
+          ),
+        );
+      },
     );
   }
 }

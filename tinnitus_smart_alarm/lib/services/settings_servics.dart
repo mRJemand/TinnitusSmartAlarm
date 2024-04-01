@@ -72,4 +72,14 @@ class SettingsService {
     final SharedPreferences prefs = await _prefs;
     prefs.setString('locale', locale);
   }
+
+  Future<String> getAssetAudioSetting() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getString('AssetAudio') ?? 'assets/marimba.mp3';
+  }
+
+  Future<void> setAssetAudioSetting(String value) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString('AssetAudio', value);
+  }
 }
