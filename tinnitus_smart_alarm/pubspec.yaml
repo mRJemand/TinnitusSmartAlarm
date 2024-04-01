@@ -109,6 +109,7 @@ flutter:
 
 
   assets:
+    - assets/files/Stimuli_Kategorisierung.json
     - assets/mozart.mp3
     - assets/nokia.mp3
     - assets/one_piece.mp3
