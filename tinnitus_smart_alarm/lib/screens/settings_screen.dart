@@ -1,7 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -36,19 +38,55 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {});
   }
 
+  void _changeLanguage() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.language),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.english),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  settingsService.setLocaleSetting('en');
+                  _reloadApp();
+                },
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.german),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  settingsService.setLocaleSetting('de');
+                  _reloadApp();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _reloadApp() {
+    Restart.restartApp();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context)!.settings),
       ),
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: const Text('General'),
+            title: Text(AppLocalizations.of(context)!.general),
             tiles: [
               SettingsTile.switchTile(
-                title: const Text('Dark Mode'),
+                title: Text(AppLocalizations.of(context)!.darkMode),
                 leading: const Icon(Icons.dark_mode),
                 initialValue: darkMode,
                 onToggle: (bool value) {
@@ -62,17 +100,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               SettingsTile(
-                title: const Text('Language'),
+                title: Text(AppLocalizations.of(context)!.language),
+                description:
+                    Text(AppLocalizations.of(context)!.selectedLanguage),
                 leading: const Icon(Icons.language),
-                onPressed: (BuildContext context) {},
+                onPressed: (BuildContext context) {
+                  _changeLanguage();
+                },
               ),
             ],
           ),
           SettingsSection(
-            title: const Text('Alarm Settings'),
+            title: Text(AppLocalizations.of(context)!.alarmSettings),
             tiles: [
               SettingsTile.switchTile(
-                title: const Text('Loop alarm audio'),
+                title: Text(AppLocalizations.of(context)!.loopAlarmAudio),
                 leading: const Icon(Icons.loop),
                 initialValue: loopAlarmAudio,
                 onToggle: (bool value) {
@@ -83,7 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               SettingsTile.switchTile(
-                title: const Text('Vibrate'),
+                title: Text(AppLocalizations.of(context)!.vibrate),
                 leading: const Icon(Icons.vibration),
                 initialValue: vibrate,
                 onToggle: (bool value) {
@@ -94,7 +136,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               SettingsTile.switchTile(
-                title: const Text('Fade in'),
+                title: Text(AppLocalizations.of(context)!.fadeIn),
                 leading: const Icon(Icons.trending_up_rounded),
                 initialValue: fadeIn,
                 onToggle: (bool value) {
@@ -105,7 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               SettingsTile.switchTile(
-                title: const Text('Custom volume'),
+                title: Text(AppLocalizations.of(context)!.customVolume),
                 leading: const Icon(Icons.volume_up),
                 initialValue: customVolume,
                 onToggle: (bool value) {

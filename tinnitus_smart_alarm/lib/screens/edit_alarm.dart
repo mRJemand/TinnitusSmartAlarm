@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
@@ -70,13 +71,13 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
 
     switch (difference) {
       case 0:
-        return 'Today';
+        return AppLocalizations.of(context)!.today;
       case 1:
-        return 'Tomorrow';
+        return AppLocalizations.of(context)!.tomorrow;
       case 2:
-        return 'After tomorrow';
+        return AppLocalizations.of(context)!.afterTomorrow;
       default:
-        return 'In $difference days';
+        return AppLocalizations.of(context)!.inXDays(difference);
     }
   }
 
@@ -116,8 +117,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       volume: volume,
       fadeDuration: fadeDuration,
       assetAudioPath: assetAudio,
-      notificationTitle: 'Alarm example',
-      notificationBody: 'Your alarm ($id) is ringing',
+      notificationTitle: AppLocalizations.of(context)!.alarm,
+      notificationBody: AppLocalizations.of(context)!.yourAlarmIsRinging,
     );
     return alarmSettings;
   }
@@ -162,7 +163,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
                 child: Text(
-                  "Cancel",
+                  AppLocalizations.of(context)!.cancel,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
@@ -174,7 +175,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                 child: loading
                     ? const CircularProgressIndicator()
                     : Text(
-                        "Save",
+                        AppLocalizations.of(context)!.save,
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
@@ -208,7 +209,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Loop alarm audio',
+                AppLocalizations.of(context)!.loopAlarmAudio,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Switch(
@@ -221,7 +222,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Vibrate',
+                AppLocalizations.of(context)!.vibrate,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Switch(
@@ -234,7 +235,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Fade in',
+                AppLocalizations.of(context)!.fadeIn,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Switch(
@@ -254,7 +255,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Sound',
+                AppLocalizations.of(context)!.sound,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               DropdownButton(
@@ -291,7 +292,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Custom volume',
+                AppLocalizations.of(context)!.customVolume,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Switch(
@@ -329,7 +330,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
             TextButton(
               onPressed: deleteAlarm,
               child: Text(
-                'Delete Alarm',
+                AppLocalizations.of(context)!.deleteAlarm,
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!

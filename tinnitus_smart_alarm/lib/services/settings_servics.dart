@@ -62,4 +62,14 @@ class SettingsService {
     final SharedPreferences prefs = await _prefs;
     prefs.setDouble('volume', value);
   }
+
+  Future<String> getLocaleSetting() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getString('locale') ?? 'en'; // Standardwert als 'en'
+  }
+
+  Future<void> setLocaleSetting(String locale) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString('locale', locale);
+  }
 }

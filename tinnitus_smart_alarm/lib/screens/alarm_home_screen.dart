@@ -9,6 +9,7 @@ import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
 import 'package:tinnitus_smart_alarm/widgets/tile.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlarmHomeScreen extends StatefulWidget {
   const AlarmHomeScreen({super.key});
@@ -126,7 +127,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
               )
             : Center(
                 child: Text(
-                  "No alarms set",
+                  AppLocalizations.of(context)!.noAlarmsSet,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
