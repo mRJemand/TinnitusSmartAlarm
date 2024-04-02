@@ -30,7 +30,7 @@ class AlarmTile extends StatelessWidget {
         ),
       ),
       onDismissed: (_) => onDismissed?.call(),
-      child: RawMaterialButton(
+      child: ElevatedButton(
         onPressed: onPressed,
         child: Container(
           height: 100,
