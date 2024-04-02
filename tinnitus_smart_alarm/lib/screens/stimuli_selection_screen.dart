@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
@@ -13,6 +14,24 @@ class StimuliSelectionScreen extends StatefulWidget {
 
 class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   List<Stimuli> stimuliList = StimuliCatalog.stimuliList;
+  final AudioPlayer audioPlayer = AudioPlayer();
+  int? playingStimuliId;
+
+  void playStimuli(int stimuliId, String filePath) async {
+    if (playingStimuliId == stimuliId) {
+      await audioPlayer.stop();
+      setState(() => playingStimuliId = null);
+    } else {
+      await audioPlayer.play(AssetSource('tinnitus_stimuli/$filePath'));
+      setState(() => playingStimuliId = stimuliId);
+    }
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +40,14 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
         title: Text(AppLocalizations.of(context)!.stimuli),
       ),
       body: ListView.builder(
-        itemCount: stimuliList.length,
+        itemCount: StimuliCatalog.stimuliList.length,
         itemBuilder: (context, index) {
-          Stimuli stimuli = stimuliList[index];
-          // Angenommen, AudioItem erwartet einen Stimuli-Parameter für die Initialisierung
-          return AudioItem(stimuli: stimuli);
+          Stimuli stimuli = StimuliCatalog.stimuliList[index];
+          return AudioItem(
+            stimuli: stimuli,
+            isPlaying: playingStimuliId == stimuli.id,
+            onPlayPressed: () => playStimuli(stimuli.id!, stimuli.filename!),
+          );
         },
       ),
     );
