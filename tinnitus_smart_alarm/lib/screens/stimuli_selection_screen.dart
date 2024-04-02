@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
@@ -15,6 +16,9 @@ class StimuliSelectionScreen extends StatefulWidget {
 
 class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   List<Stimuli> stimuliList = StimuliCatalog.stimuliList;
+  List<Stimuli> filteredList = [];
+  String? selectedCategory;
+  String? selectedFrequency;
   final AudioPlayer audioPlayer = AudioPlayer();
   int? playingStimuliId;
   final SettingsService settingsService = SettingsService();
@@ -34,7 +38,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   @override
   void initState() {
     super.initState();
-
+    filteredList = List.from(stimuliList);
     _settingsFuture = _loadSettings();
   }
 
@@ -42,6 +46,27 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   void dispose() {
     audioPlayer.dispose();
     super.dispose();
+  }
+
+  void filterList() {
+    setState(() {
+      filteredList = stimuliList.where((stimuli) {
+        final bool matchesCategory = selectedCategory == null ||
+            stimuli.categoryName == selectedCategory;
+        final bool matchesFrequency = selectedFrequency == null ||
+            stimuli.frequency == int.parse(selectedFrequency!);
+        return matchesCategory && matchesFrequency;
+      }).toList();
+    });
+  }
+
+  void resetFilters() {
+    setState(() {
+      selectedCategory = null;
+      selectedFrequency = null;
+      filteredList =
+          List.from(stimuliList); // Setzt die gefilterte Liste zurück
+    });
   }
 
   Future<void> _loadSettings() async {
@@ -59,8 +84,44 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
             Text(AppLocalizations.of(context)!.defaultAudioSaved(filename))));
   }
 
+  Widget buildDropdownMenu<T>({
+    required List<T> items,
+    T? selectedValue,
+    required String Function(T) getLabel,
+    required void Function(T?) onChanged,
+  }) {
+    return DropdownButton<T>(
+      value: selectedValue,
+      items: items
+          .map((item) => DropdownMenuItem<T>(
+                value: item,
+                child: Text(getLabel(item)),
+              ))
+          .toList(),
+      onChanged: onChanged,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<String> categories = [
+      'standard_music',
+      'natural_plus',
+      'natural_neg',
+      'unnatural_pos',
+      'unnatural_neg'
+    ];
+    List<String> frequencies = [
+      '250',
+      '500',
+      '1000',
+      '2000',
+      '3000',
+      '4000',
+      '6000',
+      '8000'
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.stimuli),
@@ -75,19 +136,53 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                 child:
                     Text(AppLocalizations.of(context)!.errorLoadingSettings));
           }
-          return ListView.builder(
-            itemCount: StimuliCatalog.stimuliList.length,
-            itemBuilder: (context, index) {
-              Stimuli stimuli = StimuliCatalog.stimuliList[index];
-              return AudioItem(
-                stimuli: stimuli,
-                isPlaying: playingStimuliId == stimuli.id,
-                onPlayPressed: () =>
-                    playStimuli(stimuli.id!, stimuli.filename!),
-                onSetDefaultAudio: () => _setAudioAsDefault(stimuli.filename!),
-                defaultAudio: defaultAudio,
-              );
-            },
+          return Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  buildDropdownMenu<String>(
+                    items: categories,
+                    selectedValue: selectedCategory,
+                    getLabel: (category) => category,
+                    onChanged: (category) {
+                      selectedCategory = category;
+                      filterList();
+                    },
+                  ),
+                  buildDropdownMenu<String>(
+                    items: frequencies,
+                    selectedValue: selectedFrequency,
+                    getLabel: (frequency) => frequency,
+                    onChanged: (frequency) {
+                      selectedFrequency = frequency;
+                      filterList();
+                    },
+                  ),
+                  IconButton(
+                    onPressed: resetFilters,
+                    icon: const Icon(Icons.filter_alt_off_outlined),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: filteredList.length,
+                  itemBuilder: (context, index) {
+                    Stimuli stimuli = filteredList[index];
+                    return AudioItem(
+                      stimuli: stimuli,
+                      isPlaying: playingStimuliId == stimuli.id,
+                      onPlayPressed: () =>
+                          playStimuli(stimuli.id!, stimuli.filename!),
+                      onSetDefaultAudio: () =>
+                          _setAudioAsDefault(stimuli.filename!),
+                      defaultAudio: defaultAudio,
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
