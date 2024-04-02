@@ -120,6 +120,7 @@ flutter:
     - assets/one_piece.mp3
     - assets/star_wars.mp3
     - assets/marimba.mp3
+    - assets/tinnitus_stimuli/marimba.mp3
     - assets/tinnitus_stimuli/applause.mp3
     - assets/tinnitus_stimuli/beachwaves.mp3
     - assets/tinnitus_stimuli/bees.mp3

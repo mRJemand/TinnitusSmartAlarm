@@ -26,5 +26,7 @@
   "alarmSettings": "Alarm Settings",
   "snooze": "snooze",
   "stop": "stop",
-  "stimuli": "Stimuli"
+  "stimuli": "Stimuli",
+  "errorLoadingSettings": "Fehler beim Laden der Einstellungen",
+  "defaultAudioSaved": "{audioName} erfolgreich als Standard gesetzt"
 }

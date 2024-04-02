@@ -43,7 +43,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       loopAudio = true;
       vibrate = true;
       volume = null;
-      assetAudio = 'assets/tinnitus_stimuli/beachwaves.mp3';
+      assetAudio = 'assets/tinnitus_stimuli/marimba.mp3';
       fadeDuration = fadeDuration;
     } else {
       selectedDateTime = widget.alarmSettings!.dateTime;
@@ -61,8 +61,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     fadeDurationStatus = await settingsService.getFadeInSetting() ?? true;
     volume = await settingsService.getVolumeSetting() ?? 0.5;
     customVolume = await settingsService.getCustomVolumeSetting() ?? true;
-    assetAudio = await settingsService.getAssetAudioSetting() ??
-        'assets/tinnitus_stimuli/beachwaves.mp3';
+    assetAudio = await settingsService.getAssetAudioSetting();
     setState(() {});
   }
 
@@ -118,7 +117,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       vibrate: vibrate,
       volume: volume,
       fadeDuration: fadeDuration,
-      assetAudioPath: assetAudio,
+      assetAudioPath: 'assets/tinnitus_stimuli/$assetAudio',
       notificationTitle: AppLocalizations.of(context)!.alarm,
       notificationBody: AppLocalizations.of(context)!.yourAlarmIsRinging,
     );
@@ -128,6 +127,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   void saveAlarm() {
     if (loading) return;
     setState(() => loading = true);
+
     Alarm.set(alarmSettings: buildAlarmSettings()).then((res) {
       if (res) Navigator.pop(context, true);
       setState(() => loading = false);
@@ -144,7 +144,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     List<DropdownMenuItem<String>> dropDownList = [];
     for (Stimuli s in StimuliCatalog.stimuliList) {
       dropDownList.add(DropdownMenuItem<String>(
-        value: 'assets/tinnitus_stimuli/${s.filename}',
+        value: '${s.filename}',
         child: Text('${s.filename}'),
       ));
     }
@@ -269,12 +269,12 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   DropdownButton(
-                    value: assetAudio,
+                    value: '$assetAudio',
                     items: <DropdownMenuItem<String>>[
-                      const DropdownMenuItem<String>(
-                        value: 'assets/marimba.mp3',
-                        child: Text('Marimba'),
-                      ),
+                      // const DropdownMenuItem<String>(
+                      //   value: 'assets/tinnitus_stimuli/marimba.mp3',
+                      //   child: Text('Marimba'),
+                      // ),
                       ..._getStimuliDropdownList(),
                     ],
                     // DropdownMenuItem<String>(

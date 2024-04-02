@@ -3,6 +3,13 @@
 class StimuliCatalog {
   static final List<Stimuli> stimuliList = [
     Stimuli(
+        id: 0,
+        filename: "marimba.mp3",
+        categoryId: 5,
+        categoryName: "standard_music",
+        hasSpecialFrequency: false,
+        frequency: null),
+    Stimuli(
         id: 1,
         filename: "applause.mp3",
         categoryId: 2,

@@ -26,5 +26,7 @@
   "alarmSettings": "Wecker Einstellungen",
   "snooze": "Schlummern",
   "stop": "Stopp",
-  "stimuli": "Stimuli"
+  "stimuli": "Stimuli",
+  "errorLoadingSettings": "Error loading settings",
+  "defaultAudioSaved": "{audioName} set as default"
 }

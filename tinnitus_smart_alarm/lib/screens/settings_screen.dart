@@ -21,7 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool fadeIn = true;
   double volume = 0.3;
   bool customVolume = true;
-  String sound = "";
+  String assetAudio = "";
 
   final SettingsService settingsService = SettingsService();
 
@@ -38,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     fadeIn = await settingsService.getFadeInSetting();
     volume = await settingsService.getVolumeSetting();
     customVolume = await settingsService.getCustomVolumeSetting();
-    sound = await settingsService.getAssetAudioSetting();
+    assetAudio = await settingsService.getAssetAudioSetting();
     setState(() {});
   }
 
@@ -80,6 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _loadSettings();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settings),
@@ -105,8 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               SettingsTile(
                 title: Text(AppLocalizations.of(context)!.language),
-                description:
-                    Text(AppLocalizations.of(context)!.selectedLanguage),
+                trailing: Text(AppLocalizations.of(context)!.selectedLanguage),
                 leading: const Icon(Icons.language),
                 onPressed: (BuildContext context) {
                   _changeLanguage();
@@ -149,6 +149,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   });
                   settingsService.setFadeInSetting(value);
                 },
+              ),
+              SettingsTile(
+                title: Text(AppLocalizations.of(context)!.sound),
+                trailing: Text(assetAudio),
               ),
               SettingsTile.switchTile(
                 title: Text(AppLocalizations.of(context)!.customVolume),
