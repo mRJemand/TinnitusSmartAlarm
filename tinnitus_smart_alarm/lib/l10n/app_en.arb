@@ -25,5 +25,6 @@
   "general": "General",
   "alarmSettings": "Alarm Settings",
   "snooze": "snooze",
-  "stop": "stop"
+  "stop": "stop",
+  "stimuli": "Stimuli"
 }

@@ -25,5 +25,6 @@
   "general": "Allgemein",
   "alarmSettings": "Wecker Einstellungen",
   "snooze": "Schlummern",
-  "stop": "Stopp"
+  "stop": "Stopp",
+  "stimuli": "Stimuli"
 }
