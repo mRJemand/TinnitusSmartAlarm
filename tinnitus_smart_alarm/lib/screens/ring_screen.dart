@@ -38,7 +38,13 @@ class AlarmRingScreen extends StatelessWidget {
                   AppLocalizations.of(context)!.yourAlarmIsRinging,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const Text("🔔", style: TextStyle(fontSize: 50)),
+                // const Text("🔔", style: TextStyle(fontSize: 50)),
+                Text('${DateTime.now().hour}:${DateTime.now().minute}',
+                    style: Theme.of(context).textTheme.titleLarge),
+                Center(
+                  child:
+                      Image.asset('assets/images/TinnitusSmartAlarmIcon.png'),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

@@ -67,7 +67,10 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
         builder: (context) {
           return FractionallySizedBox(
             heightFactor: 0.75,
-            child: AlarmEditScreen(alarmSettings: settings),
+            child: AlarmEditScreen(
+              alarmSettings: settings,
+              refreshAlarms: loadAlarms,
+            ),
           );
         });
 
@@ -135,9 +138,9 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            AlarmHomeShortcutButton(refreshAlarms: loadAlarms),
+            // AlarmHomeShortcutButton(refreshAlarms: loadAlarms),
             FloatingActionButton(
               onPressed: () => navigateToAlarmScreen(null),
               child: const Icon(Icons.alarm_add_rounded, size: 33),

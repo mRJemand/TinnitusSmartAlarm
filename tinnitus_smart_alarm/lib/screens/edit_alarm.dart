@@ -3,13 +3,17 @@ import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
+import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
 import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
+  final void Function() refreshAlarms;
 
-  const AlarmEditScreen({Key? key, this.alarmSettings}) : super(key: key);
+  const AlarmEditScreen(
+      {Key? key, this.alarmSettings, required this.refreshAlarms})
+      : super(key: key);
 
   @override
   State<AlarmEditScreen> createState() => _AlarmEditScreenState();
@@ -115,7 +119,26 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       dateTime: selectedDateTime,
       loopAudio: loopAudio,
       vibrate: vibrate,
-      volume: volume,
+      volume: customVolume ? volume : null,
+      fadeDuration: fadeDuration,
+      assetAudioPath: 'assets/tinnitus_stimuli/$assetAudio',
+      notificationTitle: AppLocalizations.of(context)!.alarm,
+      notificationBody: AppLocalizations.of(context)!.yourAlarmIsRinging,
+    );
+    return alarmSettings;
+  }
+
+  AlarmSettings buildTestAlarmSettings() {
+    final id = creating
+        ? DateTime.now().millisecondsSinceEpoch % 10000
+        : widget.alarmSettings!.id;
+
+    final alarmSettings = AlarmSettings(
+      id: id,
+      dateTime: DateTime.now(),
+      loopAudio: loopAudio,
+      vibrate: vibrate,
+      volume: customVolume ? volume : null,
       fadeDuration: fadeDuration,
       assetAudioPath: 'assets/tinnitus_stimuli/$assetAudio',
       notificationTitle: AppLocalizations.of(context)!.alarm,
@@ -179,6 +202,10 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                           .titleLarge!
                           .copyWith(color: Colors.blueAccent),
                     ),
+                  ),
+                  AlarmHomeShortcutButton(
+                    refreshAlarms: widget.refreshAlarms,
+                    alarmSettings: buildTestAlarmSettings(),
                   ),
                   TextButton(
                     onPressed: saveAlarm,

@@ -116,6 +116,8 @@ flutter:
 
 
   assets:
+    - assets/images/splash_icon.png
+    - assets/images/TinnitusSmartAlarmIcon.png
     - assets/files/Stimuli_Kategorisierung.json
     - assets/mozart.mp3
     - assets/nokia.mp3
