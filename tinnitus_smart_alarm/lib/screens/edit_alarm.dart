@@ -27,7 +27,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   late String assetAudio;
   late double fadeDuration;
   late bool fadeDurationStatus;
-  final double fadeDurationLength = 30;
+  final double fadeDurationLength = 60;
   final SettingsService settingsService = SettingsService();
   late final Future<void> _settingsFuture;
 

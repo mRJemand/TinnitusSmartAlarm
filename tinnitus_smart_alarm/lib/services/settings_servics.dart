@@ -75,11 +75,21 @@ class SettingsService {
 
   Future<String> getAssetAudioSetting() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getString('AssetAudio') ?? 'assets/marimba.mp3';
+    return prefs.getString('assetAudio') ?? 'marimba.mp3';
   }
 
   Future<void> setAssetAudioSetting(String value) async {
     final SharedPreferences prefs = await _prefs;
-    prefs.setString('AssetAudio', value);
+    prefs.setString('assetAudio', value);
+  }
+
+  Future<int> getSnoozeTimeSetting() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getInt('snoozeTime') ?? 5;
+  }
+
+  Future<void> setSnoozeTimeSetting(int value) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setInt('snoozeTime', value);
   }
 }

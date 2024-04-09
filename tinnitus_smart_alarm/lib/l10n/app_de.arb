@@ -28,5 +28,9 @@
   "stop": "Stopp",
   "stimuli": "Stimuli",
   "errorLoadingSettings": "Error loading settings",
-  "defaultAudioSaved": "{audioName} set as default"
+  "defaultAudioSaved": "{audioName} set as default",
+  "minutes": "Minuten",
+  "setSnoozeTime": "Schlummer Zeit setzen",
+  "enterSnoozeTime": "Bitte gebe die schlummer Zeit in Minuten an",
+  "ok": "ok"
 }

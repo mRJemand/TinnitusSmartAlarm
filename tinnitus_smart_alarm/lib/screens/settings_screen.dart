@@ -22,6 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   double volume = 0.3;
   bool customVolume = true;
   String assetAudio = "";
+  int snoozeTime = 1;
 
   final SettingsService settingsService = SettingsService();
 
@@ -39,6 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     volume = await settingsService.getVolumeSetting();
     customVolume = await settingsService.getCustomVolumeSetting();
     assetAudio = await settingsService.getAssetAudioSetting();
+    snoozeTime = await settingsService.getSnoozeTimeSetting();
     setState(() {});
   }
 
@@ -76,6 +78,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _reloadApp() {
     Restart.restartApp();
+  }
+
+  void _setSnoozeTime() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final TextEditingController _textFieldController =
+            TextEditingController();
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.setSnoozeTime),
+          content: TextField(
+            controller: _textFieldController,
+            decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.enterSnoozeTime),
+            keyboardType: TextInputType.number,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.ok),
+              onPressed: () {
+                int value = int.tryParse(_textFieldController.text) ??
+                    1; // Standardwert oder Validierung erforderlich
+                settingsService.setSnoozeTimeSetting(value);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -148,6 +186,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     fadeIn = value;
                   });
                   settingsService.setFadeInSetting(value);
+                },
+              ),
+              SettingsTile(
+                title: Text(AppLocalizations.of(context)!.snooze),
+                leading: const Icon(Icons.snooze),
+                trailing: Text(
+                    '${snoozeTime.toString()} ${AppLocalizations.of(context)!.minutes}'),
+                onPressed: (BuildContext context) {
+                  _setSnoozeTime();
                 },
               ),
               SettingsTile(
