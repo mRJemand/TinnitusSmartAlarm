@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -49,11 +51,16 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   }
 
   void filterList() {
+    final allCategory = AppLocalizations.of(context)!.all;
+    final allFrequency = AppLocalizations.of(context)!.all;
+
     setState(() {
       filteredList = stimuliList.where((stimuli) {
         final bool matchesCategory = selectedCategory == null ||
+            selectedCategory == allCategory ||
             stimuli.categoryName == selectedCategory;
         final bool matchesFrequency = selectedFrequency == null ||
+            selectedFrequency == allFrequency ||
             stimuli.frequency == int.parse(selectedFrequency!);
         return matchesCategory && matchesFrequency;
       }).toList();
@@ -89,8 +96,14 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     T? selectedValue,
     required String Function(T) getLabel,
     required void Function(T?) onChanged,
+    required String? hintString,
   }) {
     return DropdownButton<T>(
+      hint: hintString != null
+          ? Text(
+              hintString,
+            )
+          : null,
       value: selectedValue,
       items: items
           .map((item) => DropdownMenuItem<T>(
@@ -105,6 +118,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     List<String> categories = [
+      AppLocalizations.of(context)!.all,
       'standard_music',
       'natural_plus',
       'natural_neg',
@@ -112,6 +126,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       'unnatural_neg'
     ];
     List<String> frequencies = [
+      AppLocalizations.of(context)!.all,
       '250',
       '500',
       '1000',
@@ -142,6 +157,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   buildDropdownMenu<String>(
+                    hintString: AppLocalizations.of(context)!.category,
                     items: categories,
                     selectedValue: selectedCategory,
                     getLabel: (category) => category,
@@ -151,6 +167,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                     },
                   ),
                   buildDropdownMenu<String>(
+                    hintString: AppLocalizations.of(context)!.frequency,
                     items: frequencies,
                     selectedValue: selectedFrequency,
                     getLabel: (frequency) => frequency,

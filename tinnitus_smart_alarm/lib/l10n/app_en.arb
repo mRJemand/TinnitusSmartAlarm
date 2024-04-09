@@ -32,5 +32,8 @@
   "minutes": "minutes",
   "setSnoozeTime": "set snooze time",
   "enterSnoozeTime": "please enter snooze time in minutes",
-  "ok": "ok"
+  "ok": "ok",
+  "all": "all",
+  "frequency": "frequency",
+  "category": "category"
 }

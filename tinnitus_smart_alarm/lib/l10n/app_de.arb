@@ -32,5 +32,8 @@
   "minutes": "Minuten",
   "setSnoozeTime": "Schlummer Zeit setzen",
   "enterSnoozeTime": "Bitte gebe die schlummer Zeit in Minuten an",
-  "ok": "ok"
+  "ok": "ok",
+  "all": "Alle",
+  "frequency": "Frequenz",
+  "category": "Kategorie"
 }
