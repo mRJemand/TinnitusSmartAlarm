@@ -48,8 +48,8 @@ class AlarmRingScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.snooze),
+                    ElevatedButton(
+                      // icon: const Icon(Icons.snooze),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         padding: const EdgeInsets.symmetric(
@@ -71,7 +71,7 @@ class AlarmRingScreen extends StatelessWidget {
                           ),
                         ).then((_) => Navigator.pop(context));
                       },
-                      label: Text(
+                      child: Text(
                         AppLocalizations.of(context)!.snooze,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
