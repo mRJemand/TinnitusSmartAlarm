@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
@@ -26,6 +28,13 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   final SettingsService settingsService = SettingsService();
   late final Future<void> _settingsFuture;
   late String defaultAudio;
+
+  String? _fileName;
+  String? _saveAsFileName;
+  List<PlatformFile>? _paths;
+  String? _directoryPath;
+  bool _isLoading = false;
+  bool _userAborted = false;
 
   void playStimuli(int stimuliId, String filePath) async {
     if (playingStimuliId == stimuliId) {
@@ -113,6 +122,92 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
           .toList(),
       onChanged: onChanged,
     );
+  }
+
+  void _logException(String message) {
+    print(message);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _resetState() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      // _isLoading = true;
+      _directoryPath = null;
+      _fileName = null;
+      _paths = null;
+      _saveAsFileName = null;
+      // _userAborted = false;
+    });
+  }
+
+  // Future<void> _saveFile() async {
+  //   _resetState();
+  //   try {
+  //     String? fileName = await FilePicker.platform.saveFile(
+  //       // allowedExtensions: (_extension?.isNotEmpty ?? false)
+  //       //     ? _extension?.replaceAll(' ', '').split(',')
+  //       //     : null,
+  //       // type: _pickingType,
+  //       dialogTitle: _dialogTitleController.text,
+  //       fileName: _defaultFileNameController.text,
+  //       initialDirectory: _initialDirectoryController.text,
+  //       lockParentWindow: _lockParentWindow,
+  //     );
+  //     setState(() {
+  //       _saveAsFileName = fileName;
+  //       _userAborted = fileName == null;
+  //     });
+  //   } on PlatformException catch (e) {
+  //     _logException('Unsupported operation' + e.toString());
+  //   } catch (e) {
+  //     _logException(e.toString());
+  //   } finally {
+  //     setState(() => _isLoading = false);
+  //   }
+  // }
+
+  void _pickFiles() async {
+    _resetState();
+    try {
+      _directoryPath = null;
+      _paths = (await FilePicker.platform.pickFiles(
+        compressionQuality: 30,
+        type: FileType.audio,
+        allowMultiple: false,
+        onFileLoading: (FilePickerStatus status) => print(status),
+        // allowedExtensions: (_extension?.isNotEmpty ?? false)
+        //     ? _extension?.replaceAll(' ', '').split(',')
+        //     : null,
+        dialogTitle: '_dialogTitleController',
+        // initialDirectory: _initialDirectoryController.text,
+        // lockParentWindow: _lockParentWindow,
+      ))
+          ?.files;
+    } on PlatformException catch (e) {
+      _logException('Unsupported operation' + e.toString());
+    } catch (e) {
+      _logException(e.toString());
+    }
+    if (!mounted) return;
+    setState(() {
+      _isLoading = false;
+      _fileName =
+          _paths != null ? _paths!.map((e) => e.name).toString() : '...';
+      _userAborted = _paths == null;
+    });
   }
 
   @override
@@ -203,6 +298,14 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton.small(
+        onPressed: () {
+          _pickFiles();
+        },
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
     );
   }
 }
