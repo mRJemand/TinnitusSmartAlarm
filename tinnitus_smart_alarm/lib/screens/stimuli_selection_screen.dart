@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
@@ -29,6 +30,11 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   late final Future<void> _settingsFuture;
   late String defaultAudio;
 
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
+  Map<String, int> alphabetIndex = {};
+
   String? _fileName;
   String? _saveAsFileName;
   List<PlatformFile>? _paths;
@@ -49,14 +55,35 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   @override
   void initState() {
     super.initState();
+
     filteredList = List.from(stimuliList);
     _settingsFuture = _loadSettings();
+    createAlphabetIndex();
   }
 
   @override
   void dispose() {
     audioPlayer.dispose();
     super.dispose();
+  }
+
+  void createAlphabetIndex() {
+    alphabetIndex.clear();
+    for (int i = 0; i < filteredList.length; i++) {
+      if (filteredList[i].filename != null) {
+        String firstLetter =
+            filteredList[i].filename!.substring(0, 1).toUpperCase();
+        if (!alphabetIndex.containsKey(firstLetter)) {
+          alphabetIndex[firstLetter] = i;
+        }
+      }
+    }
+  }
+
+  void scrollToIndex(String letter) {
+    if (alphabetIndex.containsKey(letter)) {
+      itemScrollController.jumpTo(index: alphabetIndex[letter]!, alignment: 0);
+    }
   }
 
   void filterList() {
@@ -73,6 +100,8 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
             stimuli.frequency == int.parse(selectedFrequency!);
         return matchesCategory && matchesFrequency;
       }).toList();
+
+      createAlphabetIndex();
     });
   }
 
@@ -279,20 +308,52 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                 ],
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: filteredList.length,
-                  itemBuilder: (context, index) {
-                    Stimuli stimuli = filteredList[index];
-                    return AudioItem(
-                      stimuli: stimuli,
-                      isPlaying: playingStimuliId == stimuli.id,
-                      onPlayPressed: () =>
-                          playStimuli(stimuli.id!, stimuli.filename!),
-                      onSetDefaultAudio: () =>
-                          _setAudioAsDefault(stimuli.filename!),
-                      defaultAudio: defaultAudio,
-                    );
-                  },
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ScrollablePositionedList.builder(
+                        itemCount: filteredList.length,
+                        itemBuilder: (context, index) {
+                          Stimuli stimuli = filteredList[index];
+                          return AudioItem(
+                            stimuli: stimuli,
+                            isPlaying: playingStimuliId == stimuli.id,
+                            onPlayPressed: () =>
+                                playStimuli(stimuli.id!, stimuli.filename!),
+                            onSetDefaultAudio: () =>
+                                _setAudioAsDefault(stimuli.filename!),
+                            defaultAudio: defaultAudio,
+                          );
+                        },
+                        itemScrollController: itemScrollController,
+                        itemPositionsListener: itemPositionsListener,
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: List.generate(
+                        26,
+                        (index) {
+                          String letter = String.fromCharCode(65 + index);
+                          bool isActive = alphabetIndex.containsKey(letter);
+                          return GestureDetector(
+                            onTap:
+                                isActive ? () => scrollToIndex(letter) : null,
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                letter,
+                                style: TextStyle(
+                                  color: isActive ? Colors.black : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
