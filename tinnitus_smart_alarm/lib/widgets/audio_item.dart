@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
-import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
+import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 
 class AudioItem extends StatefulWidget {
   final Stimuli stimuli;

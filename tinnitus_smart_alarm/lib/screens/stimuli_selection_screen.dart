@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
-import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
+import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/audio_item.dart';
 
 class StimuliSelectionScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   String? selectedFrequency;
   final AudioPlayer audioPlayer = AudioPlayer();
   int? playingStimuliId;
-  final SettingsService settingsService = SettingsService();
+  final SettingsManager settingsManager = SettingsManager();
   late final Future<void> _settingsFuture;
   late String defaultAudio;
 
@@ -86,12 +86,12 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   }
 
   Future<void> _loadSettings() async {
-    defaultAudio = await settingsService.getAssetAudioSetting() ?? '';
+    defaultAudio = await settingsManager.getAssetAudioSetting() ?? '';
     setState(() {});
   }
 
   _setAudioAsDefault(String filename) {
-    settingsService.setAssetAudioSetting(filename);
+    settingsManager.setAssetAudioSetting(filename);
     setState(() {
       defaultAudio = filename;
     });
@@ -184,14 +184,14 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     try {
       _directoryPath = null;
       _paths = (await FilePicker.platform.pickFiles(
-        compressionQuality: 30,
+        // compressionQuality: 30,
         type: FileType.audio,
         allowMultiple: false,
         onFileLoading: (FilePickerStatus status) => print(status),
         // allowedExtensions: (_extension?.isNotEmpty ?? false)
         //     ? _extension?.replaceAll(' ', '').split(',')
         //     : null,
-        dialogTitle: '_dialogTitleController',
+        // dialogTitle: '_dialogTitleController',
         // initialDirectory: _initialDirectoryController.text,
         // lockParentWindow: _lockParentWindow,
       ))
@@ -207,6 +207,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       _fileName =
           _paths != null ? _paths!.map((e) => e.name).toString() : '...';
       _userAborted = _paths == null;
+      _logException('Uploaded File: $_fileName');
     });
   }
 

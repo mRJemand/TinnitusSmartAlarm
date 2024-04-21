@@ -2,7 +2,7 @@ import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
+import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 
 class AlarmRingScreen extends StatelessWidget {
   final AlarmSettings alarmSettings;
@@ -12,12 +12,12 @@ class AlarmRingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SettingsService settingsService = SettingsService();
+    final SettingsManager settingsManager = SettingsManager();
 
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder<int>(
-          future: settingsService.getSnoozeTimeSetting(),
+          future: settingsManager.getSnoozeTimeSetting(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Ladezustand

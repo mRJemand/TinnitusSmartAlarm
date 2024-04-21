@@ -4,7 +4,7 @@ import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
-import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
+import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String assetAudio = "";
   int snoozeTime = 1;
 
-  final SettingsService settingsService = SettingsService();
+  final SettingsManager settingsManager = SettingsManager();
 
   @override
   void initState() {
@@ -33,14 +33,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _loadSettings() async {
-    darkMode = await settingsService.getDarkModeSetting();
-    loopAlarmAudio = await settingsService.getLoopAudioSetting();
-    vibrate = await settingsService.getVibrateSetting();
-    fadeIn = await settingsService.getFadeInSetting();
-    volume = await settingsService.getVolumeSetting();
-    customVolume = await settingsService.getCustomVolumeSetting();
-    assetAudio = await settingsService.getAssetAudioSetting();
-    snoozeTime = await settingsService.getSnoozeTimeSetting();
+    darkMode = await settingsManager.getDarkModeSetting();
+    loopAlarmAudio = await settingsManager.getLoopAudioSetting();
+    vibrate = await settingsManager.getVibrateSetting();
+    fadeIn = await settingsManager.getFadeInSetting();
+    volume = await settingsManager.getVolumeSetting();
+    customVolume = await settingsManager.getCustomVolumeSetting();
+    assetAudio = await settingsManager.getAssetAudioSetting();
+    snoozeTime = await settingsManager.getSnoozeTimeSetting();
     setState(() {});
   }
 
@@ -57,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: Text(AppLocalizations.of(context)!.english),
                 onTap: () {
                   Navigator.of(context).pop();
-                  settingsService.setLocaleSetting('en');
+                  settingsManager.setLocaleSetting('en');
                   _reloadApp();
                 },
               ),
@@ -65,7 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: Text(AppLocalizations.of(context)!.german),
                 onTap: () {
                   Navigator.of(context).pop();
-                  settingsService.setLocaleSetting('de');
+                  settingsManager.setLocaleSetting('de');
                   _reloadApp();
                 },
               ),
@@ -106,7 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onPressed: () {
                 int value = int.tryParse(_textFieldController.text) ??
                     1; // Standardwert oder Validierung erforderlich
-                settingsService.setSnoozeTimeSetting(value);
+                settingsManager.setSnoozeTimeSetting(value);
                 Navigator.of(context).pop();
               },
             ),
@@ -139,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   darkMode
                       ? AdaptiveTheme.of(context).setDark()
                       : AdaptiveTheme.of(context).setLight();
-                  settingsService.setDarkModeSetting(value);
+                  settingsManager.setDarkModeSetting(value);
                 },
               ),
               SettingsTile(
@@ -163,7 +163,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   setState(() {
                     loopAlarmAudio = value;
                   });
-                  settingsService.setLoopAudioSetting(value);
+                  settingsManager.setLoopAudioSetting(value);
                 },
               ),
               SettingsTile.switchTile(
@@ -174,7 +174,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   setState(() {
                     vibrate = value;
                   });
-                  settingsService.setVibrateSetting(value);
+                  settingsManager.setVibrateSetting(value);
                 },
               ),
               SettingsTile.switchTile(
@@ -185,7 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   setState(() {
                     fadeIn = value;
                   });
-                  settingsService.setFadeInSetting(value);
+                  settingsManager.setFadeInSetting(value);
                 },
               ),
               SettingsTile(
@@ -209,7 +209,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   setState(() {
                     customVolume = value;
                   });
-                  settingsService.setCustomVolumeSetting(value);
+                  settingsManager.setCustomVolumeSetting(value);
                 },
                 description: Slider(
                   value: volume,
@@ -219,7 +219,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onChanged: customVolume
                       ? (value) {
                           setState(() => volume = value);
-                          settingsService.setVolumeSetting(value);
+                          settingsManager.setVolumeSetting(value);
                         }
                       : null,
                 ),

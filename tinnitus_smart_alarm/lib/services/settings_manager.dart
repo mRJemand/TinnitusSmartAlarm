@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsService {
+class SettingsManager {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<bool> getDarkModeSetting() async {
@@ -55,7 +55,7 @@ class SettingsService {
 
   Future<double> getVolumeSetting() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getDouble('volume') ?? 1.0;
+    return prefs.getDouble('volume') ?? 0.5;
   }
 
   Future<void> setVolumeSetting(double value) async {

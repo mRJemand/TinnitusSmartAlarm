@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
-import 'package:tinnitus_smart_alarm/services/settings_servics.dart';
+import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlarmEditScreen extends StatefulWidget {
@@ -32,7 +32,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   late double fadeDuration;
   late bool fadeDurationStatus;
   final double fadeDurationLength = 60;
-  final SettingsService settingsService = SettingsService();
+  final SettingsManager settingsManager = SettingsManager();
   late final Future<void> _settingsFuture;
 
   @override
@@ -60,12 +60,12 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   }
 
   Future<void> _loadSettings() async {
-    loopAudio = await settingsService.getLoopAudioSetting() ?? true;
-    vibrate = await settingsService.getVibrateSetting();
-    fadeDurationStatus = await settingsService.getFadeInSetting() ?? true;
-    volume = await settingsService.getVolumeSetting() ?? 0.5;
-    customVolume = await settingsService.getCustomVolumeSetting() ?? true;
-    assetAudio = await settingsService.getAssetAudioSetting();
+    loopAudio = await settingsManager.getLoopAudioSetting() ?? true;
+    vibrate = await settingsManager.getVibrateSetting();
+    fadeDurationStatus = await settingsManager.getFadeInSetting() ?? true;
+    volume = await settingsManager.getVolumeSetting() ?? 0.5;
+    customVolume = await settingsManager.getCustomVolumeSetting() ?? true;
+    assetAudio = await settingsManager.getAssetAudioSetting();
     setState(() {});
   }
 
