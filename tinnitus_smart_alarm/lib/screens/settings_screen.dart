@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
@@ -228,6 +229,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
           )
         ],
       ),
+      floatingActionButton: Row(
+        children: [
+          FloatingActionButton(
+            onPressed: () => printSharedPreferences(),
+          ),
+          FloatingActionButton(
+            onPressed: () => clearSharedPreferences(),
+            backgroundColor: Colors.red,
+          ),
+        ],
+      ),
     );
+  }
+
+  Future<void> printSharedPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Druckt alle Schlüssel-Werte-Paare
+    print('Shared Preferences:');
+    prefs.getKeys().forEach((key) {
+      print('$key: ${prefs.get(key)}');
+    });
+  }
+
+  Future<void> clearSharedPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Druckt alle Schlüssel-Werte-Paare
+    print('Shared Preferences:');
+    prefs.getKeys().forEach((key) {
+      // print('$key: ${prefs.get(key)}');
+      prefs.remove(key);
+    });
   }
 }

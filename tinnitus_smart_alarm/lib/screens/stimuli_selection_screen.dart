@@ -10,7 +10,9 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
+import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/audio_item.dart';
+import 'package:tinnitus_smart_alarm/widgets/upload_individual_stimuli.dart';
 
 class StimuliSelectionScreen extends StatefulWidget {
   const StimuliSelectionScreen({super.key});
@@ -25,8 +27,9 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   String? selectedCategory;
   String? selectedFrequency;
   final AudioPlayer audioPlayer = AudioPlayer();
-  int? playingStimuliId;
+  String? playingStimuliId;
   final SettingsManager settingsManager = SettingsManager();
+  final StimuliManager stimuliManager = StimuliManager();
   late final Future<void> _settingsFuture;
   late String defaultAudio;
 
@@ -35,14 +38,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       ItemPositionsListener.create();
   Map<String, int> alphabetIndex = {};
 
-  String? _fileName;
-  String? _saveAsFileName;
-  List<PlatformFile>? _paths;
-  String? _directoryPath;
-  bool _isLoading = false;
-  bool _userAborted = false;
-
-  void playStimuli(int stimuliId, String filePath) async {
+  void playStimuli(String stimuliId, String filePath) async {
     if (playingStimuliId == stimuliId) {
       await audioPlayer.stop();
       setState(() => playingStimuliId = null);
@@ -97,7 +93,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
             stimuli.categoryName == selectedCategory;
         final bool matchesFrequency = selectedFrequency == null ||
             selectedFrequency == allFrequency ||
-            stimuli.frequency == int.parse(selectedFrequency!);
+            stimuli.frequency == selectedFrequency!;
         return matchesCategory && matchesFrequency;
       }).toList();
 
@@ -168,78 +164,6 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     );
   }
 
-  void _resetState() {
-    if (!mounted) {
-      return;
-    }
-    setState(() {
-      // _isLoading = true;
-      _directoryPath = null;
-      _fileName = null;
-      _paths = null;
-      _saveAsFileName = null;
-      // _userAborted = false;
-    });
-  }
-
-  // Future<void> _saveFile() async {
-  //   _resetState();
-  //   try {
-  //     String? fileName = await FilePicker.platform.saveFile(
-  //       // allowedExtensions: (_extension?.isNotEmpty ?? false)
-  //       //     ? _extension?.replaceAll(' ', '').split(',')
-  //       //     : null,
-  //       // type: _pickingType,
-  //       dialogTitle: _dialogTitleController.text,
-  //       fileName: _defaultFileNameController.text,
-  //       initialDirectory: _initialDirectoryController.text,
-  //       lockParentWindow: _lockParentWindow,
-  //     );
-  //     setState(() {
-  //       _saveAsFileName = fileName;
-  //       _userAborted = fileName == null;
-  //     });
-  //   } on PlatformException catch (e) {
-  //     _logException('Unsupported operation' + e.toString());
-  //   } catch (e) {
-  //     _logException(e.toString());
-  //   } finally {
-  //     setState(() => _isLoading = false);
-  //   }
-  // }
-
-  void _pickFiles() async {
-    _resetState();
-    try {
-      _directoryPath = null;
-      _paths = (await FilePicker.platform.pickFiles(
-        // compressionQuality: 30,
-        type: FileType.audio,
-        allowMultiple: false,
-        onFileLoading: (FilePickerStatus status) => print(status),
-        // allowedExtensions: (_extension?.isNotEmpty ?? false)
-        //     ? _extension?.replaceAll(' ', '').split(',')
-        //     : null,
-        // dialogTitle: '_dialogTitleController',
-        // initialDirectory: _initialDirectoryController.text,
-        // lockParentWindow: _lockParentWindow,
-      ))
-          ?.files;
-    } on PlatformException catch (e) {
-      _logException('Unsupported operation' + e.toString());
-    } catch (e) {
-      _logException(e.toString());
-    }
-    if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-      _fileName =
-          _paths != null ? _paths!.map((e) => e.name).toString() : '...';
-      _userAborted = _paths == null;
-      _logException('Uploaded File: $_fileName');
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     List<String> categories = [
@@ -248,18 +172,18 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       'natural_plus',
       'natural_neg',
       'unnatural_pos',
-      'unnatural_neg'
+      'unnatural_neg',
+      'individual'
     ];
-    List<String> frequencies = [
-      AppLocalizations.of(context)!.all,
-      '250',
-      '500',
-      '1000',
-      '2000',
-      '3000',
-      '4000',
-      '6000',
-      '8000'
+    final List<String> frequencies = [
+      '250 Hz',
+      '500 Hz',
+      '1000 Hz',
+      '2000 Hz',
+      '3000 Hz',
+      '4000 Hz',
+      '6000 Hz',
+      '8000 Hz'
     ];
 
     return Scaffold(
@@ -361,13 +285,31 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton.small(
-        onPressed: () {
-          _pickFiles();
-        },
+        onPressed: () => _showUploadSheet(),
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
     );
+  }
+
+  Future<void> _showUploadSheet() async {
+    final res = await showModalBottomSheet<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: const UploadIndividualStimuli(),
+        );
+      },
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    );
+    if (res != null && res) {
+      await stimuliManager.loadAllStimuli();
+      setState(() {});
+    }
   }
 }

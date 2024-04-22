@@ -35,5 +35,15 @@
   "ok": "ok",
   "all": "Alle",
   "frequency": "Frequenz",
-  "category": "Kategorie"
+  "category": "Kategorie",
+  "pleaseEnterSomeText": "Bitte geben Sie einen Text ein",
+  "displayname": "Anzeigename",
+  "frequencySpecific": "Frequenz spezifisch",
+  "selectFrequency": "Frequenz wählen",
+  "chooseFile": "Datei auswählen",
+  "chooseDifferentFile": "Andere Datei auswählen",
+  "selectedFile": "Ausgewählte Datei",
+  "error": "Fehler"
+
+
 }

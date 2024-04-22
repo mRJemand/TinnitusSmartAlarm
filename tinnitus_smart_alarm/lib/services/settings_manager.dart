@@ -65,7 +65,7 @@ class SettingsManager {
 
   Future<String> getLocaleSetting() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getString('locale') ?? 'en'; // Standardwert als 'en'
+    return prefs.getString('locale') ?? 'en';
   }
 
   Future<void> setLocaleSetting(String locale) async {
