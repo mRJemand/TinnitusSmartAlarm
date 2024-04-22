@@ -8,6 +8,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/screens/main_screen.dart';
 import 'package:tinnitus_smart_alarm/l10n/l10n.dart';
+import 'package:tinnitus_smart_alarm/theme/color_schemes.g.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -64,10 +65,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
-      light: ThemeData.light(
-        useMaterial3: true,
-      ),
-      dark: ThemeData.dark(useMaterial3: true),
+      light: ThemeData.from(colorScheme: lightColorScheme, useMaterial3: true),
+      dark: ThemeData.from(colorScheme: darkColorScheme, useMaterial3: true),
       initial: initialThemeMode,
       builder: (theme, darkTheme) => MaterialApp(
         theme: theme,
