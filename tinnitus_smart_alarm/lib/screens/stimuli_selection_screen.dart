@@ -38,13 +38,18 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       ItemPositionsListener.create();
   Map<String, int> alphabetIndex = {};
 
-  void playStimuli(String stimuliId, String filePath) async {
-    if (playingStimuliId == stimuliId) {
+  void playStimuli(Stimuli stimuli) async {
+    if (playingStimuliId == stimuli.id) {
       await audioPlayer.stop();
       setState(() => playingStimuliId = null);
     } else {
-      await audioPlayer.play(AssetSource('tinnitus_stimuli/$filePath'));
-      setState(() => playingStimuliId = stimuliId);
+      if (stimuli.isIndividual ?? false) {
+        await audioPlayer.play(DeviceFileSource(stimuli.filepath!));
+      } else {
+        log('Try to play: ${stimuli.filename}');
+        await audioPlayer.play(AssetSource('${stimuli.filepath}'));
+      }
+      setState(() => playingStimuliId = stimuli.id);
     }
   }
 
@@ -168,12 +173,12 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   Widget build(BuildContext context) {
     List<String> categories = [
       AppLocalizations.of(context)!.all,
-      'standard_music',
-      'natural_plus',
-      'natural_neg',
-      'unnatural_pos',
-      'unnatural_neg',
-      'individual'
+      stimuliManager.getCategoryLocalizedName(context, 'standard_music'),
+      stimuliManager.getCategoryLocalizedName(context, 'natural_plus'),
+      stimuliManager.getCategoryLocalizedName(context, 'natural_neg'),
+      stimuliManager.getCategoryLocalizedName(context, 'unnatural_pos'),
+      stimuliManager.getCategoryLocalizedName(context, 'unnatural_neg'),
+      stimuliManager.getCategoryLocalizedName(context, 'individual')
     ];
     final List<String> frequencies = [
       '250 Hz',
@@ -242,8 +247,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                           return AudioItem(
                             stimuli: stimuli,
                             isPlaying: playingStimuliId == stimuli.id,
-                            onPlayPressed: () =>
-                                playStimuli(stimuli.id!, stimuli.filename!),
+                            onPlayPressed: () => playStimuli(stimuli),
                             onSetDefaultAudio: () =>
                                 _setAudioAsDefault(stimuli.filename!),
                             defaultAudio: defaultAudio,

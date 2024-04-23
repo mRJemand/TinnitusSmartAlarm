@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
@@ -44,5 +46,25 @@ class StimuliManager {
     List<String> encodedData =
         stimuliList.map((s) => jsonEncode(s.toJson())).toList();
     await prefs.setStringList('personalizedStimuli', encodedData);
+  }
+
+  String getCategoryLocalizedName(BuildContext context, String key) {
+    final loc = AppLocalizations.of(context);
+    switch (key) {
+      case 'standard_music':
+        return loc!.standardMusic;
+      case 'natural_neg':
+        return loc!.naturalNeg;
+      case 'natural_plus':
+        return loc!.naturalPlus;
+      case 'unnatural_neg':
+        return loc!.unnaturalNeg;
+      case 'unnatural_pos':
+        return loc!.unnaturalPos;
+      case 'individual':
+        return loc!.individual;
+      default:
+        return 'Unbekannte Kategorie'; // Sicherstellen, dass Sie auch diese Übersetzung in Ihrer Lokalisierung haben
+    }
   }
 }

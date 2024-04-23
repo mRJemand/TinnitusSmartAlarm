@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 
 class AudioItem extends StatefulWidget {
   final Stimuli stimuli;
@@ -23,13 +27,20 @@ class AudioItem extends StatefulWidget {
 }
 
 class _AudioItemState extends State<AudioItem> {
+  StimuliManager stimuliManager = StimuliManager();
+
   @override
   Widget build(BuildContext context) {
+    String category = widget.stimuli.categoryName ?? '';
+    log('Ale');
+    log(category);
+    log(AppLocalizations.of(context)!.category);
     return Card(
       margin: const EdgeInsets.all(8.0),
       child: ListTile(
-        title: Text(widget.stimuli.filename ?? ''),
-        subtitle: Text(widget.stimuli.categoryName ?? ''),
+        title: Text(widget.stimuli.displayName ?? ''),
+        subtitle: Text(stimuliManager.getCategoryLocalizedName(
+            context, widget.stimuli.categoryName ?? '')),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

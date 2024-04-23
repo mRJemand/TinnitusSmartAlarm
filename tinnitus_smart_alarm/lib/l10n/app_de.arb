@@ -43,7 +43,13 @@
   "chooseFile": "Datei auswählen",
   "chooseDifferentFile": "Andere Datei auswählen",
   "selectedFile": "Ausgewählte Datei",
-  "error": "Fehler"
-
+  "error": "Fehler",
+  "standardMusic": "Musik",
+  "naturalNeg": "Natürlich unspezifisch",
+  "naturalPlus": "Natürlich spezifisch",
+  "unnaturalNeg": "Digital unspezifisch",
+  "unnaturalPos": "Digital spezifisch",
+  "individual": "Eigene Musik",
+  "unknownCategory": "Unbekannte Kategorie"
 
 }
