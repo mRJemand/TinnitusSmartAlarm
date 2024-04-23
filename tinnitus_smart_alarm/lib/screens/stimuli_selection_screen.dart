@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
+import 'package:tinnitus_smart_alarm/services/dialogs.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/audio_item.dart';
@@ -45,14 +46,16 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       setState(() => playingStimuliId = null);
     } else {
       if (stimuli.isIndividual ?? false) {
-        log('Try to play: ${stimuli.filepath}');
         try {
-          await audioPlayer.play(DeviceFileSource(stimuli.filepath!));
-        } catch (e) {
-          log('ERROR: $e');
+          try {
+            await audioPlayer.play(DeviceFileSource(stimuli.filepath!));
+          } on Exception catch (e) {
+            Dialogs.showErrorDialog(context, e.toString());
+          }
+        } on Exception catch (e) {
+          Dialogs.showErrorDialog(context, e.toString());
         }
       } else {
-        log('Try to play: ${stimuli.filename}');
         await audioPlayer.play(AssetSource('${stimuli.filepath}'));
       }
       setState(() => playingStimuliId = stimuli.id);
@@ -101,12 +104,15 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   void filterList() {
     final allCategory = AppLocalizations.of(context)!.all;
     final allFrequency = AppLocalizations.of(context)!.all;
-
+    // todo
+    log(selectedCategory ?? 'keine kategorie');
     setState(() {
       filteredList = stimuliList.where((stimuli) {
         final bool matchesCategory = selectedCategory == null ||
             selectedCategory == allCategory ||
-            stimuli.categoryName == selectedCategory;
+            stimuli.categoryName ==
+                stimuliManager.getCategoryKeyByLocalizedName(
+                    context, selectedCategory!);
         final bool matchesFrequency = selectedFrequency == null ||
             selectedFrequency == allFrequency ||
             stimuli.frequency == selectedFrequency!;
@@ -165,21 +171,6 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     );
   }
 
-  void _logException(String message) {
-    print(message);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     List<String> categories = [
@@ -228,6 +219,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                     getLabel: (category) => category,
                     onChanged: (category) {
                       selectedCategory = category;
+                      log(selectedCategory!);
                       filterList();
                     },
                   ),
@@ -313,8 +305,12 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: const EdgeInsets.all(20),
-          child: const UploadIndividualStimuli(),
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: const UploadIndividualStimuli(),
+          ),
         );
       },
       isScrollControlled: true,

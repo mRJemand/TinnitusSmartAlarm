@@ -80,4 +80,24 @@ class StimuliManager {
         return 'Unbekannte Kategorie'; // Sicherstellen, dass Sie auch diese Übersetzung in Ihrer Lokalisierung haben
     }
   }
+
+  String getCategoryKeyByLocalizedName(
+      BuildContext context, String localizedName) {
+    final loc = AppLocalizations.of(context);
+    if (localizedName == loc!.standardMusic) {
+      return 'standard_music';
+    } else if (localizedName == loc.naturalNeg) {
+      return 'natural_neg';
+    } else if (localizedName == loc.naturalPlus) {
+      return 'natural_plus';
+    } else if (localizedName == loc.unnaturalNeg) {
+      return 'unnatural_neg';
+    } else if (localizedName == loc.unnaturalPos) {
+      return 'unnatural_pos';
+    } else if (localizedName == loc.individual) {
+      return 'individual';
+    } else {
+      return 'unknown'; // Eine generische Rückgabe für unbekannte Kategorien
+    }
+  }
 }
