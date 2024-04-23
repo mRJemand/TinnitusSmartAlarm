@@ -31,10 +31,6 @@ class _AudioItemState extends State<AudioItem> {
 
   @override
   Widget build(BuildContext context) {
-    String category = widget.stimuli.categoryName ?? '';
-    log('Ale');
-    log(category);
-    log(AppLocalizations.of(context)!.category);
     return Card(
       margin: const EdgeInsets.all(8.0),
       child: ListTile(

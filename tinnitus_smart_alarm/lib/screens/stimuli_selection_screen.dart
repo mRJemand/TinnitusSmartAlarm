@@ -22,15 +22,16 @@ class StimuliSelectionScreen extends StatefulWidget {
 }
 
 class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
-  List<Stimuli> stimuliList = StimuliCatalog.stimuliList;
+  final SettingsManager settingsManager = SettingsManager();
+  final StimuliManager stimuliManager = StimuliManager();
+  List<Stimuli> stimuliList = [];
   List<Stimuli> filteredList = [];
   String? selectedCategory;
   String? selectedFrequency;
   final AudioPlayer audioPlayer = AudioPlayer();
   String? playingStimuliId;
-  final SettingsManager settingsManager = SettingsManager();
-  final StimuliManager stimuliManager = StimuliManager();
   late final Future<void> _settingsFuture;
+  late final Future<void> _stimuliFuture;
   late String defaultAudio;
 
   final ItemScrollController itemScrollController = ItemScrollController();
@@ -56,10 +57,17 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   @override
   void initState() {
     super.initState();
-
-    filteredList = List.from(stimuliList);
     _settingsFuture = _loadSettings();
+    _stimuliFuture = _loadStimuliList();
     createAlphabetIndex();
+  }
+
+  Future<void> _loadStimuliList() async {
+    stimuliList = await stimuliManager.loadAllStimuli();
+    filteredList = List.from(stimuliList);
+    setState(() {});
+    log("MYLIST;");
+    log(stimuliList.length.toString());
   }
 
   @override
@@ -196,7 +204,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
         title: Text(AppLocalizations.of(context)!.stimuli),
       ),
       body: FutureBuilder(
-        future: _settingsFuture,
+        future: Future.wait([_settingsFuture, _stimuliFuture]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -312,7 +320,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       ),
     );
     if (res != null && res) {
-      await stimuliManager.loadAllStimuli();
+      await _loadStimuliList();
       setState(() {});
     }
   }

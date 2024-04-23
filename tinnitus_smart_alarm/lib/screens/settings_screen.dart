@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
@@ -246,9 +248,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> printSharedPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // Druckt alle Schlüssel-Werte-Paare
-    print('Shared Preferences:');
+    log('Shared Preferences:');
     prefs.getKeys().forEach((key) {
-      print('$key: ${prefs.get(key)}');
+      log('$key: ${prefs.get(key)}');
     });
   }
 
