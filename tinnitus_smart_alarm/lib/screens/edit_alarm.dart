@@ -1,11 +1,11 @@
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 
 class AlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
@@ -34,6 +34,9 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   final double fadeDurationLength = 60;
   final SettingsManager settingsManager = SettingsManager();
   late final Future<void> _settingsFuture;
+  late final Future<void> _stimuliFuture;
+  List<Stimuli> stimuliList = [];
+  StimuliManager stimuliManager = StimuliManager();
 
   @override
   void initState() {
@@ -41,13 +44,14 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     creating = widget.alarmSettings == null;
     fadeDuration = fadeDurationLength;
     _settingsFuture = _loadSettings();
+    _stimuliFuture = _loadStimuliList();
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
       loopAudio = true;
       vibrate = true;
       volume = null;
-      assetAudio = 'assets/tinnitus_stimuli/marimba.mp3';
+      assetAudio = 'tinnitus_stimuli/marimba.mp3';
       fadeDuration = fadeDuration;
     } else {
       selectedDateTime = widget.alarmSettings!.dateTime;
@@ -57,6 +61,11 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       assetAudio = widget.alarmSettings!.assetAudioPath;
       fadeDuration = widget.alarmSettings!.fadeDuration;
     }
+  }
+
+  Future<void> _loadStimuliList() async {
+    stimuliList = await stimuliManager.loadAllStimuli();
+    setState(() {});
   }
 
   Future<void> _loadSettings() async {
@@ -109,38 +118,21 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     }
   }
 
-  AlarmSettings buildAlarmSettings() {
+  AlarmSettings buildAlarmSettings({
+    required bool isTestAlarm,
+  }) {
     final id = creating
         ? DateTime.now().millisecondsSinceEpoch % 10000
         : widget.alarmSettings!.id;
 
     final alarmSettings = AlarmSettings(
       id: id,
-      dateTime: selectedDateTime,
+      dateTime: isTestAlarm ? DateTime.now() : selectedDateTime,
       loopAudio: loopAudio,
       vibrate: vibrate,
       volume: customVolume ? volume : null,
       fadeDuration: fadeDuration,
-      assetAudioPath: 'assets/tinnitus_stimuli/$assetAudio',
-      notificationTitle: AppLocalizations.of(context)!.alarm,
-      notificationBody: AppLocalizations.of(context)!.yourAlarmIsRinging,
-    );
-    return alarmSettings;
-  }
-
-  AlarmSettings buildTestAlarmSettings() {
-    final id = creating
-        ? DateTime.now().millisecondsSinceEpoch % 10000
-        : widget.alarmSettings!.id;
-
-    final alarmSettings = AlarmSettings(
-      id: id,
-      dateTime: DateTime.now(),
-      loopAudio: loopAudio,
-      vibrate: vibrate,
-      volume: customVolume ? volume : null,
-      fadeDuration: fadeDuration,
-      assetAudioPath: 'assets/tinnitus_stimuli/$assetAudio',
+      assetAudioPath: assetAudio,
       notificationTitle: AppLocalizations.of(context)!.alarm,
       notificationBody: AppLocalizations.of(context)!.yourAlarmIsRinging,
     );
@@ -151,7 +143,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     if (loading) return;
     setState(() => loading = true);
 
-    Alarm.set(alarmSettings: buildAlarmSettings()).then((res) {
+    Alarm.set(alarmSettings: buildAlarmSettings(isTestAlarm: false))
+        .then((res) {
       if (res) Navigator.pop(context, true);
       setState(() => loading = false);
     });
@@ -163,12 +156,12 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     });
   }
 
-  List<DropdownMenuItem<String>> _getStimuliDropdownList() {
-    List<DropdownMenuItem<String>> dropDownList = [];
-    for (Stimuli s in StimuliCatalog.stimuliList) {
-      dropDownList.add(DropdownMenuItem<String>(
-        value: '${s.filename}',
-        child: Text('${s.filename}'),
+  List<DropdownMenuItem<Stimuli>> _getStimuliDropdownList() {
+    List<DropdownMenuItem<Stimuli>> dropDownList = [];
+    for (Stimuli s in stimuliList) {
+      dropDownList.add(DropdownMenuItem<Stimuli>(
+        value: s,
+        child: Text('${s.displayName}'),
       ));
     }
     print(dropDownList.first);
@@ -178,7 +171,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _settingsFuture,
+      future: Future.wait([_settingsFuture, _stimuliFuture]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -205,7 +198,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                   ),
                   AlarmHomeShortcutButton(
                     refreshAlarms: widget.refreshAlarms,
-                    alarmSettings: buildTestAlarmSettings(),
+                    alarmSettings: buildAlarmSettings(isTestAlarm: true),
                   ),
                   TextButton(
                     onPressed: saveAlarm,
@@ -295,35 +288,21 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                     AppLocalizations.of(context)!.sound,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  DropdownButton(
-                    value: '$assetAudio',
-                    items: <DropdownMenuItem<String>>[
-                      // const DropdownMenuItem<String>(
-                      //   value: 'assets/tinnitus_stimuli/marimba.mp3',
-                      //   child: Text('Marimba'),
-                      // ),
-                      ..._getStimuliDropdownList(),
-                    ],
-                    // DropdownMenuItem<String>(
-                    //   value: 'assets/nokia.mp3',
-                    //   child: Text('Nokia'),
-                    // ),
-                    // DropdownMenuItem<String>(
-                    //   value: 'assets/mozart.mp3',
-                    //   child: Text('Mozart'),
-                    // ),
-                    // DropdownMenuItem<String>(
-                    //   value: 'assets/star_wars.mp3',
-                    //   child: Text('Star Wars'),
-                    // ),
-                    // DropdownMenuItem<String>(
-                    //   value: 'assets/one_piece.mp3',
-                    //   child: Text('One Piece'),
-                    // ),
-
-                    // ],
-                    onChanged: (value) => setState(() => assetAudio = value!),
-                  ),
+                  DropdownButton<Stimuli>(
+                    value: stimuliList.firstWhere(
+                        (s) => s.filepath == assetAudio,
+                        orElse: () => stimuliList.first),
+                    items: _getStimuliDropdownList(),
+                    onChanged: (Stimuli? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          newValue.isIndividual ?? true
+                              ? assetAudio = newValue.filename!
+                              : assetAudio = 'assets/${newValue.filepath!}';
+                        });
+                      }
+                    },
+                  )
                 ],
               ),
               Row(

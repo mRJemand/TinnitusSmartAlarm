@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/dialogs.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
 
 class UploadIndividualStimuli extends StatefulWidget {
@@ -100,7 +103,7 @@ class _UploadIndividualStimuliState extends State<UploadIndividualStimuli> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                    "${AppLocalizations.of(context)!.selectedFile}: ${basename(filepath!)}"),
+                    "${AppLocalizations.of(context)!.selectedFile}: ${p.basename(filepath!)}"),
               ),
             ElevatedButton.icon(
               onPressed: () => _pickFile(),
@@ -139,16 +142,21 @@ class _UploadIndividualStimuliState extends State<UploadIndividualStimuli> {
   }
 
   Future<void> _saveForm(BuildContext context) async {
-    StimuliManager stimuliManager = StimuliManager();
+    Directory appDir = await getApplicationDocumentsDirectory();
+    String newFilePath = p.join(appDir.path, p.basename(filepath!));
 
+    File originalFile = File(filepath!);
+    await originalFile.copy(newFilePath);
+
+    StimuliManager stimuliManager = StimuliManager();
     var uuid = Uuid();
     Stimuli newStimuli = Stimuli(
       id: uuid.v1(),
       categoryId: 5,
       categoryName: 'individual',
       displayName: displaynameController.text,
-      filename: basename(filepath!),
-      filepath: filepath,
+      filename: p.basename(newFilePath),
+      filepath: newFilePath,
       frequency: hasSpecialFrequency ? selectedFrequency : null,
       hasSpecialFrequency: hasSpecialFrequency,
       isIndividual: true,

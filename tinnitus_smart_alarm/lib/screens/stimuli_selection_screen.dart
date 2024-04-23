@@ -45,7 +45,12 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       setState(() => playingStimuliId = null);
     } else {
       if (stimuli.isIndividual ?? false) {
-        await audioPlayer.play(DeviceFileSource(stimuli.filepath!));
+        log('Try to play: ${stimuli.filepath}');
+        try {
+          await audioPlayer.play(DeviceFileSource(stimuli.filepath!));
+        } catch (e) {
+          log('ERROR: $e');
+        }
       } else {
         log('Try to play: ${stimuli.filename}');
         await audioPlayer.play(AssetSource('${stimuli.filepath}'));
@@ -66,8 +71,6 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     stimuliList = await stimuliManager.loadAllStimuli();
     filteredList = List.from(stimuliList);
     setState(() {});
-    log("MYLIST;");
-    log(stimuliList.length.toString());
   }
 
   @override

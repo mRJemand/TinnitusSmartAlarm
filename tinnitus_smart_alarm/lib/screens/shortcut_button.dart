@@ -40,8 +40,6 @@ class _AlarmHomeShortcutButtonState extends State<AlarmHomeShortcutButton> {
     //       'Shortcut button alarm with delay of $delayInHours hours',
     // );
 
-    log('alarm volume: ${widget.alarmSettings!.toString()}');
-
     await Alarm.set(alarmSettings: widget.alarmSettings);
 
     widget.refreshAlarms();
