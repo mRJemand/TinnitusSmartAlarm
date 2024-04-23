@@ -58,5 +58,7 @@
 		<false/>
 		<key>NSAppleMusicUsageDescription</key>
 		<string>Upload a custom audio file for the alarm ringtone.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Upload a custom audio file for the alarm ringtone.</string>
 	</dict>
 </plist>
