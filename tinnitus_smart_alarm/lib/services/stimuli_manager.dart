@@ -37,6 +37,12 @@ class StimuliManager {
     return stimuliList.firstWhereOrNull((stimuli) => stimuli.id == id);
   }
 
+  Future<Stimuli?> loadStimuliByFileName(String fileName) async {
+    final List<Stimuli> stimuliList = await loadAllStimuli();
+    return stimuliList
+        .firstWhereOrNull((stimuli) => stimuli.filename == fileName);
+  }
+
   Future<void> addStimuli(Stimuli stimuli) async {
     final SharedPreferences prefs = await _prefs;
     List<Stimuli> stimuliList = await loadAllStimuli();

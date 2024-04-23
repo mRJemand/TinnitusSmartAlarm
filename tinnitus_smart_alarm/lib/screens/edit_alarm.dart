@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   late final Future<void> _stimuliFuture;
   List<Stimuli> stimuliList = [];
   StimuliManager stimuliManager = StimuliManager();
+  late Stimuli selectedStimuli;
 
   @override
   void initState() {
@@ -75,6 +78,18 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     volume = await settingsManager.getVolumeSetting() ?? 0.5;
     customVolume = await settingsManager.getCustomVolumeSetting() ?? true;
     assetAudio = await settingsManager.getAssetAudioSetting();
+    Stimuli? selectedAssetAudio =
+        await stimuliManager.loadStimuliByFileName(assetAudio);
+
+    if (selectedAssetAudio == null) {
+      assetAudio = await settingsManager.getAssetAudioSetting();
+      selectedAssetAudio = stimuliList.first;
+    } else {
+      selectedAssetAudio.isIndividual ?? false
+          ? assetAudio = selectedAssetAudio.filename!
+          : assetAudio = 'assets/${selectedAssetAudio.filepath!}';
+    }
+    selectedStimuli = selectedAssetAudio;
     setState(() {});
   }
 
@@ -165,6 +180,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       ));
     }
     print(dropDownList.first);
+    dropDownList.toSet().toList();
     return dropDownList;
   }
 
@@ -290,12 +306,13 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                   ),
                   DropdownButton<Stimuli>(
                     value: stimuliList.firstWhere(
-                        (s) => s.filepath == assetAudio,
+                        (s) => s.id == selectedStimuli.id,
                         orElse: () => stimuliList.first),
                     items: _getStimuliDropdownList(),
                     onChanged: (Stimuli? newValue) {
                       if (newValue != null) {
                         setState(() {
+                          selectedStimuli = newValue;
                           newValue.isIndividual ?? true
                               ? assetAudio = newValue.filename!
                               : assetAudio = 'assets/${newValue.filepath!}';

@@ -307,9 +307,9 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
         return Container(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: const UploadIndividualStimuli(),
+          child: const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: UploadIndividualStimuli(),
           ),
         );
       },
