@@ -92,4 +92,14 @@ class SettingsManager {
     final SharedPreferences prefs = await _prefs;
     prefs.setInt('snoozeTime', value);
   }
+
+  Future<bool> getAllowDataCollectionSetting() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getBool('AllowDataCollection') ?? false;
+  }
+
+  Future<void> setAllowDataCollectionSetting(bool value) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setBool('AllowDataCollection', value);
+  }
 }

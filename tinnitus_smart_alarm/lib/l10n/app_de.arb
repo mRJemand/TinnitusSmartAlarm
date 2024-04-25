@@ -52,6 +52,8 @@
   "individual": "Eigene Musik",
   "unknownCategory": "Unbekannte Kategorie",
   "personal": "Persönlich",
-  "deleteData": "Daten löschen"
-
+  "deleteData": "Daten löschen",
+  "allowDataCollecting": "Datensammlung erlauben",
+  "dataProtextionNotice": "Datenschutzhinweis für die Wecker-App",
+  "dataPrivacyText": "Liebe Nutzerin, lieber Nutzer,\nIhre Privatsphäre ist uns wichtig. Wir möchten Sie darüber informieren, wie wir die Daten in unserer Wecker-App verwenden, die darauf abzielt, Personen mit Tinnitus zu helfen.\nAnonyme Datenspeicherung: Alle Daten, die wir sammeln, werden anonym gespeichert. Das bedeutet, dass keine personenbezogenen Daten erfasst werden, die direkt auf Sie als Person zurückgeführt werden können.\nWeckerton-Auswahl: Wir speichern Informationen darüber, welchen Weckerton Sie verwenden. Diese Daten helfen uns zu verstehen, welche Töne am effektivsten sind, um das Wohlbefinden von Personen mit Tinnitus zu verbessern.\nEntwicklung des Tinnitus-Empfindens: Um den Fortschritt zu verfolgen, speichern wir auch, wie sich Ihr Empfinden von Tinnitus, insbesondere die wahrgenommene Lautstärke, über die Zeit entwickelt.\nForschungszwecke und KI-Unterstützung: Die gesammelten Daten werden ausschließlich zu Forschungszwecken verwendet. Unser Ziel ist es, die Lebensqualität von Menschen mit Tinnitus zu verbessern. Zudem nutzen wir die Daten, um unsere Künstliche Intelligenz (KI) zu trainieren, die auf Basis von Nutzerdaten personalisierte Empfehlungen für andere Nutzer generieren kann.\nWir versichern Ihnen, dass die Daten mit größter Sorgfalt behandelt und nicht für andere Zwecke verwendet werden. Ihre Teilnahme an dieser Forschung ist freiwillig, und Sie können Ihre Einwilligung jederzeit widerrufen.\nVielen Dank für Ihr Vertrauen und Ihre Unterstützung bei dieser wichtigen Forschungsarbeit."
 }

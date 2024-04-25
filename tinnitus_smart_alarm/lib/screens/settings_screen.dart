@@ -10,6 +10,7 @@ import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -27,6 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool customVolume = true;
   String assetAudio = "";
   int snoozeTime = 1;
+  bool allowDataCollecting = false;
 
   final SettingsManager settingsManager = SettingsManager();
 
@@ -45,6 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     customVolume = await settingsManager.getCustomVolumeSetting();
     assetAudio = await settingsManager.getAssetAudioSetting();
     snoozeTime = await settingsManager.getSnoozeTimeSetting();
+    allowDataCollecting = await settingsManager.getAllowDataCollectionSetting();
     setState(() {});
   }
 
@@ -233,20 +236,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SettingsSection(
             title: Text(AppLocalizations.of(context)!.personal),
             tiles: [
+              SettingsTile.switchTile(
+                title: Text(AppLocalizations.of(context)!.allowDataCollecting),
+                leading: const Icon(Icons.analytics_outlined),
+                trailing: IconButton(
+                    onPressed: () {
+                      _showDataCollectInfo();
+                    },
+                    icon: const Icon(Icons.info_outline)),
+                initialValue: allowDataCollecting,
+                onToggle: (bool value) {
+                  setState(() {
+                    allowDataCollecting = value;
+                  });
+                  settingsManager.setAllowDataCollectionSetting(value);
+                },
+              ),
               SettingsTile(
                 title: Text(AppLocalizations.of(context)!.deleteData),
                 leading: const Icon(Icons.delete_outlined),
                 onPressed: (context) {
                   AuthManager authManager = AuthManager();
                   authManager.signOutAndDeleteAccount();
-                },
-              ),
-              SettingsTile(
-                title: Text(AppLocalizations.of(context)!.language),
-                trailing: Text(AppLocalizations.of(context)!.selectedLanguage),
-                leading: const Icon(Icons.language),
-                onPressed: (BuildContext context) {
-                  _changeLanguage();
                 },
               ),
             ],
@@ -284,5 +295,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
       // print('$key: ${prefs.get(key)}');
       prefs.remove(key);
     });
+  }
+
+  Future<void> _showDataCollectInfo() async {
+    final double maxHeight = MediaQuery.of(context).size.height * 0.8;
+    await showModalBottomSheet<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: maxHeight,
+          ),
+          child: Container(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.dataProtextionNotice,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(AppLocalizations.of(context)!.dataPrivacyText),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    );
   }
 }

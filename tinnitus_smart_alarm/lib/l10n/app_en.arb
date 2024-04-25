@@ -52,7 +52,8 @@
   "individual": "Own music",
   "unknownCategory": "Unknown category",
   "personal": "Personal",
-  "deleteData": "Delete Data"
-
-
+  "deleteData": "Delete Data",
+  "allowDataCollecting": "Datensammlung erlauben",
+  "dataProtextionNotice": "Data protection notice for the alarm clock app",
+  "dataPrivacyText": "Dear user,\nYour privacy is important to us. We would like to inform you about how we use the data in our alarm clock app, which aims to help people with tinnitus.\nAnonymous data storage: All data that we collect is stored anonymously. This means that no personal data is collected that can be directly traced back to you as an individual.\nAlarm clock sound selection: We store information about which alarm clock tone you use. This data helps us to understand which tones are most effective in improving the wellbeing of people with tinnitus.\nEvolution of tinnitus perception: To track progress, we also store how your perception of tinnitus, in particular the perceived loudness, evolves over time.\nResearch purposes and AI support: The data collected is used exclusively for research purposes. Our aim is to improve the quality of life of people with tinnitus. We also use the data to train our artificial intelligence (AI), which can generate personalized recommendations for other users based on user data.\nWe assure you that the data will be treated with the utmost care and will not be used for any other purpose. Your participation in this research is voluntary and you can withdraw your consent at any time.\nThank you for your trust and support in this important research work."
 }
