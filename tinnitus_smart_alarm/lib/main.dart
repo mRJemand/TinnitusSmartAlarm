@@ -8,7 +8,10 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/screens/main_screen.dart';
 import 'package:tinnitus_smart_alarm/l10n/l10n.dart';
+import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
 import 'package:tinnitus_smart_alarm/theme/color_schemes.g.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +19,9 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await Alarm.init(showDebugLogs: true);
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? localeString = prefs.getString('locale');
   Locale locale;
@@ -37,6 +42,9 @@ Future<void> main() async {
 
   final savedThemeMode = await getDarkModeSetting();
   final initialThemeMode = savedThemeMode ?? AdaptiveThemeMode.system;
+
+  AuthManager authService = AuthManager();
+  await authService.checkAndSignInAnonymously();
 
   runApp(MyApp(locale: locale, initialThemeMode: initialThemeMode));
 }

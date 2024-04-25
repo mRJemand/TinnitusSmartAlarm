@@ -7,6 +7,7 @@ import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
+import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -228,7 +229,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ],
-          )
+          ),
+          SettingsSection(
+            title: Text(AppLocalizations.of(context)!.personal),
+            tiles: [
+              SettingsTile(
+                title: Text(AppLocalizations.of(context)!.deleteData),
+                leading: const Icon(Icons.delete_outlined),
+                onPressed: (context) {
+                  AuthManager authManager = AuthManager();
+                  authManager.signOutAndDeleteAccount();
+                },
+              ),
+              SettingsTile(
+                title: Text(AppLocalizations.of(context)!.language),
+                trailing: Text(AppLocalizations.of(context)!.selectedLanguage),
+                leading: const Icon(Icons.language),
+                onPressed: (BuildContext context) {
+                  _changeLanguage();
+                },
+              ),
+            ],
+          ),
         ],
       ),
       floatingActionButton: Row(

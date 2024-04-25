@@ -50,7 +50,9 @@
   "unnaturalNeg": "Digital unspecific",
   "unnaturalPos": "Digital specific",
   "individual": "Own music",
-  "unknownCategory": "Unknown category"
+  "unknownCategory": "Unknown category",
+  "personal": "Personal",
+  "deleteData": "Delete Data"
 
 
 }
