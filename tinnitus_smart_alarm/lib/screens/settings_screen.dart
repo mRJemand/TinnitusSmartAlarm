@@ -8,9 +8,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
+import 'package:tinnitus_smart_alarm/services/firestore_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tinnitus_smart_alarm/widgets/tinnitus_survey.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -255,9 +257,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile(
                 title: Text(AppLocalizations.of(context)!.deleteData),
                 leading: const Icon(Icons.delete_outlined),
-                onPressed: (context) {
+                onPressed: (context) async {
+                  FirestoreManager firestoreManager = FirestoreManager();
                   AuthManager authManager = AuthManager();
-                  authManager.signOutAndDeleteAccount();
+
+                  await firestoreManager.deleteCurrentUserEntries();
+                  await authManager.signOutAndDeleteAccount();
                 },
               ),
             ],
@@ -272,6 +277,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           FloatingActionButton(
             onPressed: () => clearSharedPreferences(),
             backgroundColor: Colors.red,
+          ),
+          FloatingActionButton(
+            onPressed: () => _showSurvey(),
+            backgroundColor: Colors.blue,
           ),
         ],
       ),
@@ -297,9 +306,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  Future<void> _showSurvey() async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: TinnitusSurvey(),
+        );
+      },
+    );
+  }
+
   Future<void> _showDataCollectInfo() async {
     final double maxHeight = MediaQuery.of(context).size.height * 0.8;
-    await showModalBottomSheet<bool>(
+    await showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
         return ConstrainedBox(
