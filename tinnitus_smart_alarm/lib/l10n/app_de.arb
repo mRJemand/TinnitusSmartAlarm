@@ -62,5 +62,7 @@
   "unnaturalNeg": "Digital unspezifisch",
   "unnaturalPos": "Digital spezifisch",
   "vibrate": "Vibrieren",
-  "yourAlarmIsRinging": "Ihr Wecker klingelt"
+  "yourAlarmIsRinging": "Ihr Wecker klingelt",
+  "history": "Verlauf",
+  "addRecord": "Datensatz hinzufügen"
 }

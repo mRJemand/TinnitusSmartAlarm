@@ -56,7 +56,7 @@ class _AlarmHomeShortcutButtonState extends State<AlarmHomeShortcutButton> {
           child: FloatingActionButton(
             onPressed: () => onPressButton(0),
             backgroundColor: Colors.redAccent,
-            heroTag: null,
+            heroTag: UniqueKey(),
             child: const Text("TEST RING", textAlign: TextAlign.center),
           ),
         ),

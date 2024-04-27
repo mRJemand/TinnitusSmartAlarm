@@ -142,6 +142,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
           children: [
             // AlarmHomeShortcutButton(refreshAlarms: loadAlarms),
             FloatingActionButton(
+              heroTag: UniqueKey(),
               onPressed: () => navigateToAlarmScreen(null),
               child: const Icon(Icons.alarm_add_rounded, size: 33),
             ),

@@ -292,6 +292,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton.small(
+        heroTag: UniqueKey(),
         onPressed: () => _showUploadSheet(),
         child: const Icon(Icons.add),
       ),

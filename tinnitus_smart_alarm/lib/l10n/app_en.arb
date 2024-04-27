@@ -62,5 +62,7 @@
   "unnaturalNeg": "Digital unspecific",
   "unnaturalPos": "Digital specific",
   "vibrate": "Vibrate",
-  "yourAlarmIsRinging": "Your alarm is ringing"
+  "yourAlarmIsRinging": "Your alarm is ringing",
+  "history": "History",
+  "addRecord": "Add record"
 }

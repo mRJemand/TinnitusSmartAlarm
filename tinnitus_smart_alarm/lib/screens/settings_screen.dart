@@ -7,11 +7,12 @@ import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
+import 'package:tinnitus_smart_alarm/screens/chart_screen.dart';
 import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
 import 'package:tinnitus_smart_alarm/services/firestore_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tinnitus_smart_alarm/widgets/survey_data_chart.dart';
 import 'package:tinnitus_smart_alarm/widgets/tinnitus_survey.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -238,6 +239,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SettingsSection(
             title: Text(AppLocalizations.of(context)!.personal),
             tiles: [
+              SettingsTile(
+                title: Text(AppLocalizations.of(context)!.addRecord),
+                leading: const Icon(Icons.add_chart_outlined),
+                onPressed: (context) => _showSurvey(),
+              ),
+              SettingsTile.navigation(
+                title: Text(AppLocalizations.of(context)!.history),
+                leading: const Icon(Icons.ssid_chart_outlined),
+                onPressed: (context) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ChartScreen(),
+                    ),
+                  );
+                },
+              ),
               SettingsTile.switchTile(
                 title: Text(AppLocalizations.of(context)!.allowDataCollecting),
                 leading: const Icon(Icons.analytics_outlined),
@@ -272,15 +289,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       floatingActionButton: Row(
         children: [
           FloatingActionButton(
+            heroTag: "a",
             onPressed: () => printSharedPreferences(),
           ),
           FloatingActionButton(
+            heroTag: "b",
             onPressed: () => clearSharedPreferences(),
             backgroundColor: Colors.red,
-          ),
-          FloatingActionButton(
-            onPressed: () => _showSurvey(),
-            backgroundColor: Colors.blue,
           ),
         ],
       ),
