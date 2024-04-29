@@ -18,6 +18,7 @@ class Tip {
   final String tip;
   final String explanation;
   final String language;
+  bool? isFavorite;
 
   Tip({
     required this.id,
@@ -27,6 +28,7 @@ class Tip {
     required this.tip,
     required this.explanation,
     required this.language,
+    isFavorite = false,
   });
 
   factory Tip.fromJson(Map<String, dynamic> json) => Tip(
