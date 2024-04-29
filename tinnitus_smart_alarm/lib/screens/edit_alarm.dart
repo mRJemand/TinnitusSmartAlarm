@@ -8,7 +8,7 @@ import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
-import 'package:tinnitus_smart_alarm/widgets/volume_control.dart';
+import 'package:tinnitus_smart_alarm/widgets/volume_slider.dart';
 
 class AlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
@@ -351,10 +351,13 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                                     : Icons.volume_mute_rounded,
                           ),
                           Expanded(
-                            child: VolumeControl(
-                              initialVolume: volume!,
-                              onVolumeChanged: (newVolume) =>
-                                  volume = newVolume,
+                            child: VolumeSlider(
+                              initialVolume: volume ?? 0.5,
+                              onChanged: (newVolume) {
+                                if (volume != newVolume) {
+                                  volume = newVolume;
+                                }
+                              },
                             ),
                           ),
                         ],

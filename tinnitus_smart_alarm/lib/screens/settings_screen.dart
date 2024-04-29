@@ -14,6 +14,7 @@ import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/widgets/survey_data_chart.dart';
 import 'package:tinnitus_smart_alarm/widgets/tinnitus_survey.dart';
+import 'package:tinnitus_smart_alarm/widgets/volume_slider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -221,17 +222,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   });
                   settingsManager.setCustomVolumeSetting(value);
                 },
-                description: Slider(
-                  value: volume,
-                  min: 0.0,
-                  max: 1.0,
-                  divisions: 100,
-                  onChanged: customVolume
-                      ? (value) {
-                          setState(() => volume = value);
-                          settingsManager.setVolumeSetting(value);
-                        }
-                      : null,
+                description: VolumeSlider(
+                  initialVolume: volume ?? 0.5,
+                  onChanged: (newVolume) {
+                    if (volume != newVolume) {
+                      setState(() => volume = newVolume);
+                      settingsManager.setVolumeSetting(newVolume);
+                    }
+                  },
                 ),
               ),
             ],
