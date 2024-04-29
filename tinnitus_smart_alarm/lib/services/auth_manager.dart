@@ -30,5 +30,6 @@ class AuthManager {
     } else {
       log("No logged in user found or the user is not anonymous.");
     }
+    await checkAndSignInAnonymously();
   }
 }
