@@ -55,6 +55,7 @@ dependencies:
   firebase_auth: ^4.19.4
   cloud_firestore: ^4.17.2
   fl_chart: ^0.67.0
+  searchable_listview: ^2.11.2
 
 dev_dependencies:
   flutter_test:

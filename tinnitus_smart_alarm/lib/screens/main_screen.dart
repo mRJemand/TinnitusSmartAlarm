@@ -4,6 +4,7 @@ import 'package:tinnitus_smart_alarm/screens/alarm_home_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/settings_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/screens/stimuli_selection_screen.dart';
+import 'package:tinnitus_smart_alarm/screens/tips_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const AlarmHomeScreen(),
     const StimuliSelectionScreen(),
+    const TipsScreen(),
     const SettingsScreen(),
   ];
 
@@ -40,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
         children: _screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: const Icon(Icons.alarm),
@@ -48,6 +51,10 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: const Icon(Icons.play_circle_outline),
             label: AppLocalizations.of(context)!.stimuli,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.tips_and_updates_outlined),
+            label: AppLocalizations.of(context)!.tips,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),
