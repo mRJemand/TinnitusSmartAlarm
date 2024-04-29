@@ -85,8 +85,6 @@ class _TipItemState extends State<TipItem> {
                     widget.tip.isFavorite = false;
                     persistFavorites(widget.tip.id, false);
                   }
-
-                  //todo save favorites
                 },
               ),
               const SizedBox(

@@ -27,7 +27,7 @@ class _TipsScreenState extends State<TipsScreen> {
   void initState() {
     super.initState();
     tipsList = TipsCatalag.tipsList;
-    _loadSettings;
+    _loadSettings();
   }
 
   Future<void> _loadSettings() async {
@@ -37,7 +37,6 @@ class _TipsScreenState extends State<TipsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _loadSettings();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.tips),
@@ -61,6 +60,7 @@ class _TipsScreenState extends State<TipsScreen> {
   Widget renderSimpleSearchableList() {
     return SearchableList<Tip>(
       displayClearIcon: true,
+      searchTextController: searchTextController,
       builder: (list, index, item) {
         return TipItem(tip: item);
       },
