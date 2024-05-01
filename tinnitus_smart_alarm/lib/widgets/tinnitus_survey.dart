@@ -102,12 +102,14 @@ class _TinnitusSurveyState extends State<TinnitusSurvey> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
+                    // todo adjust stimuliName and frequency
                     FirestoreManager firestoreManager = FirestoreManager();
                     firestoreManager.sendAnswersToFirestore(
                         easyToIgnore: _ignorierbarkeit,
                         uncomfortable: _unangenehmheit,
                         volume: _lautstaerke,
-                        stimuliName: 'Noch Kein Stimuli');
+                        stimuliName: 'Noch Kein Stimuli',
+                        frequency: 'no frequency');
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.save_outlined),

@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:tinnitus_smart_alarm/models/survey_result.dart';
+import 'package:tinnitus_smart_alarm/services/firestore_manager.dart';
 
 class SurveyDataChart extends StatefulWidget {
   @override
@@ -9,44 +9,19 @@ class SurveyDataChart extends StatefulWidget {
 }
 
 class _SurveyDataChartState extends State<SurveyDataChart> {
-  List<double> intenseResults = [];
-  List<double> uncomfortableResults = [];
-  List<double> ignorableResults = [];
+  List<SurveyResult> surveyResults = [];
+  FirestoreManager firestoreManager = FirestoreManager();
 
   @override
   void initState() {
     super.initState();
-    fetchDataFromFirestore();
+    _loadData();
   }
 
-  void fetchDataFromFirestore() {
-    List<double> newIntenseResults = [];
-    List<double> newUncomfortableResults = [];
-    List<double> newIgnorableResults = [];
-    User? currentUser = FirebaseAuth.instance.currentUser;
-
-    FirebaseFirestore.instance
-        .collection('survey_answers')
-        .where('user_id', isEqualTo: currentUser!.uid)
-        .orderBy('time')
-        .snapshots()
-        .listen((data) {
-      data.docs.forEach((doc) {
-        if (doc.data().containsKey('intense_result') &&
-            doc.data().containsKey('uncomfortable') &&
-            doc.data().containsKey('ignorable') &&
-            doc.data().containsKey('ignorable')) {
-          newIntenseResults.add(doc['intense_result'].toDouble());
-          newUncomfortableResults.add(doc['uncomfortable'].toDouble());
-          newIgnorableResults.add(doc['ignorable'].toDouble());
-        }
-      });
-
-      setState(() {
-        intenseResults.addAll(newIntenseResults);
-        uncomfortableResults.addAll(newUncomfortableResults);
-        ignorableResults.addAll(newIgnorableResults);
-      });
+  Future<void> _loadData() async {
+    var results = await firestoreManager.fetchDataFromFirestore();
+    setState(() {
+      surveyResults = results;
     });
   }
 
@@ -91,10 +66,9 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
             ),
             borderData: FlBorderData(show: true),
             lineBarsData: [
-              lineChartBarData(intenseResults, Colors.red, "Intensität"),
-              lineChartBarData(uncomfortableResults, Colors.green, "Unbehagen"),
-              lineChartBarData(
-                  ignorableResults, Colors.blue, "Ignorierbarkeit"),
+              lineChartBarData('Intensität', Colors.red),
+              lineChartBarData('Unbehagen', Colors.green),
+              lineChartBarData('Ignorierbarkeit', Colors.blue),
             ],
             lineTouchData: const LineTouchData(enabled: true),
           ),
@@ -103,14 +77,25 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
     );
   }
 
-  LineChartBarData lineChartBarData(
-      List<double> results, Color color, String label) {
+  LineChartBarData lineChartBarData(String label, Color color) {
+    List<double> results = surveyResults.map((e) {
+      switch (label) {
+        case 'Intensität':
+          return e.intenseResult;
+        case 'Unbehagen':
+          return e.uncomfortable;
+        case 'Ignorierbarkeit':
+          return e.ignorable;
+        default:
+          return 0.0; // Should not happen
+      }
+    }).toList();
+
     return LineChartBarData(
       spots: [
         for (int i = 0; i < results.length; i++)
           FlSpot(i.toDouble(), results[i]),
       ],
-      // isCurved: true,
       color: color,
       barWidth: 2,
       isStrokeCapRound: true,
