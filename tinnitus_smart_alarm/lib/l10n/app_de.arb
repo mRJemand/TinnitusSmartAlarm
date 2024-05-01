@@ -1,5 +1,10 @@
 {
   "@@locale": "de",
+  "myData": "Meine Daten",
+  "ignorable": "Ignorierbar",
+  "intense": "Intensiv",
+  "time": "Zeit",
+  "uncomfortable": "Unangenehm",
   "addRecord": "Datensatz hinzufügen",
   "afterTomorrow": "Übermorgen",
   "alarm": "Wecker",

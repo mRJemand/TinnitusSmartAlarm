@@ -40,11 +40,9 @@ class _ChartScreenState extends State<ChartScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Text(
-              'Meine Daten',
-            ),
+            Text(AppLocalizations.of(context)!.myData),
             SizedBox(
-              height: 400,
+              height: 800,
               child: SurveyDataChart(
                 surveyResults: surveyResults,
               ),

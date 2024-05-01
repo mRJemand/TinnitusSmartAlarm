@@ -1,5 +1,10 @@
 {
   "@@locale": "en",
+  "myData": "My data",
+  "ignorable": "Ignorable",
+  "intense": "Intense",
+  "time": "Time",
+  "uncomfortable": "Uncomfortable",
   "addRecord": "Add record",
   "afterTomorrow": "After tomorrow",
   "alarm": "Alarm",
