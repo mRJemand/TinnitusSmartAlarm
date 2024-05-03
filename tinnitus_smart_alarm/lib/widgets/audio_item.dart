@@ -32,20 +32,25 @@ class _AudioItemState extends State<AudioItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: ListTile(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.star,
+          ),
+          color: widget.defaultAudio == widget.stimuli.filename
+              ? Colors.yellow[700]
+              : null,
+          onPressed: widget.onSetDefaultAudio,
+        ),
         title: Text(widget.stimuli.displayName ?? ''),
         subtitle: Text(stimuliManager.getCategoryLocalizedName(
             context, widget.stimuli.categoryName ?? '')),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(
-              icon: Icon(widget.defaultAudio == widget.stimuli.filename
-                  ? Icons.star
-                  : Icons.star_border),
-              onPressed: widget.onSetDefaultAudio,
-            ),
             IconButton(
               icon: Icon(widget.isPlaying ? Icons.stop : Icons.play_arrow),
               onPressed: widget.onPlayPressed,

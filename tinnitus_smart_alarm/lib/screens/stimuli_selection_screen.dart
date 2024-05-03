@@ -207,87 +207,91 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                 child:
                     Text(AppLocalizations.of(context)!.errorLoadingSettings));
           }
-          return Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  buildDropdownMenu<String>(
-                    hintString: AppLocalizations.of(context)!.category,
-                    items: categories,
-                    selectedValue: selectedCategory,
-                    getLabel: (category) => category,
-                    onChanged: (category) {
-                      selectedCategory = category;
-                      log(selectedCategory!);
-                      filterList();
-                    },
-                  ),
-                  buildDropdownMenu<String>(
-                    hintString: AppLocalizations.of(context)!.frequency,
-                    items: frequencies,
-                    selectedValue: selectedFrequency,
-                    getLabel: (frequency) => frequency,
-                    onChanged: (frequency) {
-                      selectedFrequency = frequency;
-                      filterList();
-                    },
-                  ),
-                  IconButton(
-                    onPressed: resetFilters,
-                    icon: const Icon(Icons.filter_alt_off_outlined),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: ScrollablePositionedList.builder(
-                        itemCount: filteredList.length,
-                        itemBuilder: (context, index) {
-                          Stimuli stimuli = filteredList[index];
-                          return AudioItem(
-                            stimuli: stimuli,
-                            isPlaying: playingStimuliId == stimuli.id,
-                            onPlayPressed: () => playStimuli(stimuli),
-                            onSetDefaultAudio: () =>
-                                _setAudioAsDefault(stimuli.filename!),
-                            defaultAudio: defaultAudio,
-                          );
-                        },
-                        itemScrollController: itemScrollController,
-                        itemPositionsListener: itemPositionsListener,
-                      ),
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildDropdownMenu<String>(
+                      hintString: AppLocalizations.of(context)!.category,
+                      items: categories,
+                      selectedValue: selectedCategory,
+                      getLabel: (category) => category,
+                      onChanged: (category) {
+                        selectedCategory = category;
+                        log(selectedCategory!);
+                        filterList();
+                      },
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(
-                        26,
-                        (index) {
-                          String letter = String.fromCharCode(65 + index);
-                          bool isActive = alphabetIndex.containsKey(letter);
-                          return GestureDetector(
-                            onTap:
-                                isActive ? () => scrollToIndex(letter) : null,
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Text(
-                                letter,
-                                style: TextStyle(
-                                  color: isActive ? Colors.black : Colors.grey,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                    buildDropdownMenu<String>(
+                      hintString: AppLocalizations.of(context)!.frequency,
+                      items: frequencies,
+                      selectedValue: selectedFrequency,
+                      getLabel: (frequency) => frequency,
+                      onChanged: (frequency) {
+                        selectedFrequency = frequency;
+                        filterList();
+                      },
+                    ),
+                    IconButton(
+                      onPressed: resetFilters,
+                      icon: const Icon(Icons.filter_alt_off_outlined),
                     ),
                   ],
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: ScrollablePositionedList.builder(
+                          itemCount: filteredList.length,
+                          itemBuilder: (context, index) {
+                            Stimuli stimuli = filteredList[index];
+                            return AudioItem(
+                              stimuli: stimuli,
+                              isPlaying: playingStimuliId == stimuli.id,
+                              onPlayPressed: () => playStimuli(stimuli),
+                              onSetDefaultAudio: () =>
+                                  _setAudioAsDefault(stimuli.filename!),
+                              defaultAudio: defaultAudio,
+                            );
+                          },
+                          itemScrollController: itemScrollController,
+                          itemPositionsListener: itemPositionsListener,
+                        ),
+                      ),
+                      // Column(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: List.generate(
+                      //     26,
+                      //     (index) {
+                      //       String letter = String.fromCharCode(65 + index);
+                      //       bool isActive = alphabetIndex.containsKey(letter);
+                      //       return GestureDetector(
+                      //         onTap:
+                      //             isActive ? () => scrollToIndex(letter) : null,
+                      //         child: Container(
+                      //           padding:
+                      //               const EdgeInsets.symmetric(horizontal: 8),
+                      //           child: Text(
+                      //             letter,
+                      //             style: TextStyle(
+                      //               color:
+                      //                   isActive ? Colors.black : Colors.grey,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),

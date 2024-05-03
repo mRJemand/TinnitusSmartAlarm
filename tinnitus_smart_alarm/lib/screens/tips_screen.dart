@@ -47,7 +47,7 @@ class _TipsScreenState extends State<TipsScreen> {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(18.0),
+                padding: const EdgeInsets.all(8.0),
                 child: renderSimpleSearchableList(),
               ),
             ),

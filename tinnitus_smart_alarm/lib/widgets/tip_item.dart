@@ -62,54 +62,34 @@ class _TipItemState extends State<TipItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        child: IntrinsicHeight(
-          child: Row(
-            children: [
-              IconButton(
-                icon: Icon(
-                  Icons.star,
-                ),
-                color:
-                    widget.tip.isFavorite == true ? Colors.yellow[700] : null,
-                onPressed: () async {
-                  // TipsManager tipsManager = TipsManager();
-                  List<int> tipFavorites = await TipsManager.loadFavoriteTips();
-                  if (widget.tip.isFavorite == null ||
-                      widget.tip.isFavorite == false) {
-                    widget.tip.isFavorite = true;
-                    persistFavorites(widget.tip.id, true);
-                  } else {
-                    widget.tip.isFavorite = false;
-                    persistFavorites(widget.tip.id, false);
-                  }
-                },
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          widget.tip.title,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          overflow: TextOverflow.visible,
-                        ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          widget.tip.objective,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.visible,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+        child: ListTile(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.star,
+            ),
+            color: widget.tip.isFavorite == true ? Colors.yellow[700] : null,
+            onPressed: () async {
+              // TipsManager tipsManager = TipsManager();
+              List<int> tipFavorites = await TipsManager.loadFavoriteTips();
+              if (widget.tip.isFavorite == null ||
+                  widget.tip.isFavorite == false) {
+                widget.tip.isFavorite = true;
+                persistFavorites(widget.tip.id, true);
+              } else {
+                widget.tip.isFavorite = false;
+                persistFavorites(widget.tip.id, false);
+              }
+            },
+          ),
+          title: Text(
+            widget.tip.title,
+            style: Theme.of(context).textTheme.titleMedium,
+            overflow: TextOverflow.visible,
+          ),
+          subtitle: Text(
+            widget.tip.objective,
+            style: Theme.of(context).textTheme.bodyMedium,
+            overflow: TextOverflow.visible,
           ),
         ),
       ),
