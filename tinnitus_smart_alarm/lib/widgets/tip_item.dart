@@ -65,9 +65,6 @@ class _TipItemState extends State<TipItem> {
         child: IntrinsicHeight(
           child: Row(
             children: [
-              const SizedBox(
-                width: 10,
-              ),
               IconButton(
                 icon: Icon(
                   Icons.star,
@@ -87,29 +84,29 @@ class _TipItemState extends State<TipItem> {
                   }
                 },
               ),
-              const SizedBox(
-                width: 10,
-              ),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        widget.tip.title,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        overflow: TextOverflow.visible,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          widget.tip.title,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          overflow: TextOverflow.visible,
+                        ),
                       ),
-                    ),
-                    Flexible(
-                      child: Text(
-                        widget.tip.objective,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        overflow: TextOverflow.visible,
+                      Flexible(
+                        child: Text(
+                          widget.tip.objective,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          overflow: TextOverflow.visible,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

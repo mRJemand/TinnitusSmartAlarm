@@ -21,11 +21,87 @@ class _TipDetailScreenState extends State<TipDetailScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            _buildPanel(
-                AppLocalizations.of(context)!.objective, widget.tip.objective),
-            _buildPanel(AppLocalizations.of(context)!.tip, widget.tip.tip),
-            _buildPanel(AppLocalizations.of(context)!.explanation,
-                widget.tip.explanation),
+            ExpansionTile(
+              expandedAlignment: FractionalOffset.topLeft,
+              title: Row(
+                children: [
+                  const Icon(Icons.track_changes),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.objective,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+              initiallyExpanded: true,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    widget.tip.objective,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              expandedAlignment: FractionalOffset.topLeft,
+              title: Row(
+                children: [
+                  const Icon(Icons.tips_and_updates_outlined),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.tip,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+              initiallyExpanded: true,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    widget.tip.tip,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
+            ),
+            ExpansionTile(
+              expandedAlignment: FractionalOffset.topLeft,
+              title: Row(
+                children: [
+                  const Icon(Icons.description_outlined),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.explanation,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+              initiallyExpanded: true,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    widget.tip.explanation,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -34,9 +110,16 @@ class _TipDetailScreenState extends State<TipDetailScreen> {
 
   Widget _buildPanel(String title, String content) {
     return ExpansionTile(
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.titleMedium,
+      expandedAlignment: FractionalOffset.topLeft,
+      title: Row(
+        children: [
+          Icon(Icons.access_alarm_sharp),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.left,
+          ),
+        ],
       ),
       initiallyExpanded: true,
       children: <Widget>[
@@ -45,6 +128,7 @@ class _TipDetailScreenState extends State<TipDetailScreen> {
           child: Text(
             content,
             style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.left,
           ),
         ),
       ],
