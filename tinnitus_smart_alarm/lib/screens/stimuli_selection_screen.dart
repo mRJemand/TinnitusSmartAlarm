@@ -30,44 +30,16 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   String? selectedCategory;
   String? selectedFrequency;
   final AudioPlayer audioPlayer = AudioPlayer();
-  String? playingStimuliId;
   late final Future<void> _settingsFuture;
   late final Future<void> _stimuliFuture;
-  late String defaultAudio;
-
-  final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
-  Map<String, int> alphabetIndex = {};
-
-  void playStimuli(Stimuli stimuli) async {
-    if (playingStimuliId == stimuli.id) {
-      await audioPlayer.stop();
-      setState(() => playingStimuliId = null);
-    } else {
-      if (stimuli.isIndividual ?? false) {
-        try {
-          try {
-            await audioPlayer.play(DeviceFileSource(stimuli.filepath!));
-          } on Exception catch (e) {
-            Dialogs.showErrorDialog(context, e.toString());
-          }
-        } on Exception catch (e) {
-          Dialogs.showErrorDialog(context, e.toString());
-        }
-      } else {
-        await audioPlayer.play(AssetSource('${stimuli.filepath}'));
-      }
-      setState(() => playingStimuliId = stimuli.id);
-    }
-  }
+  ValueNotifier<String?> defaultAudioNotifier = ValueNotifier<String?>(null);
+  ValueNotifier<String?> playingStimuliNotifier = ValueNotifier<String?>(null);
 
   @override
   void initState() {
     super.initState();
     _settingsFuture = _loadSettings();
     _stimuliFuture = _loadStimuliList();
-    createAlphabetIndex();
   }
 
   Future<void> _loadStimuliList() async {
@@ -82,26 +54,37 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     super.dispose();
   }
 
-  void createAlphabetIndex() {
-    alphabetIndex.clear();
-    for (int i = 0; i < filteredList.length; i++) {
-      if (filteredList[i].filename != null) {
-        String firstLetter =
-            filteredList[i].filename!.substring(0, 1).toUpperCase();
-        if (!alphabetIndex.containsKey(firstLetter)) {
-          alphabetIndex[firstLetter] = i;
-        }
+  void playStimuli(Stimuli stimuli) async {
+    int index = filteredList.indexOf(stimuli);
+    if (playingStimuliNotifier.value == stimuli.id) {
+      await audioPlayer.stop();
+      playingStimuliNotifier.value = null;
+    } else {
+      try {
+        await audioPlayer.play(stimuli.isIndividual!
+            ? DeviceFileSource(stimuli.filepath!)
+            : AssetSource(stimuli.filepath!));
+        playingStimuliNotifier.value = stimuli.id;
+      } on Exception catch (e) {
+        Dialogs.showErrorDialog(context, e.toString());
       }
     }
   }
 
-  void scrollToIndex(String letter) {
-    if (alphabetIndex.containsKey(letter)) {
-      itemScrollController.jumpTo(index: alphabetIndex[letter]!, alignment: 0);
-    }
+  void setDefaultAudio(String filename) {
+    settingsManager.setAssetAudioSetting(filename).then((_) {
+      defaultAudioNotifier.value = filename;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(AppLocalizations.of(context)!.defaultAudioSaved(filename))));
+    }).catchError((error) {
+      // todo Handle errors here, maybe log them or show a different snackbar
+      log(error);
+    });
   }
 
   void filterList() {
+    log('filter list');
     final allCategory = AppLocalizations.of(context)!.all;
     final allFrequency = AppLocalizations.of(context)!.all;
     // todo
@@ -118,8 +101,6 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
             stimuli.frequency == selectedFrequency!;
         return matchesCategory && matchesFrequency;
       }).toList();
-
-      createAlphabetIndex();
     });
   }
 
@@ -133,18 +114,9 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   }
 
   Future<void> _loadSettings() async {
-    defaultAudio = await settingsManager.getAssetAudioSetting() ?? '';
+    defaultAudioNotifier.value =
+        await settingsManager.getAssetAudioSetting() ?? '';
     setState(() {});
-  }
-
-  _setAudioAsDefault(String filename) {
-    settingsManager.setAssetAudioSetting(filename);
-    setState(() {
-      defaultAudio = filename;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text(AppLocalizations.of(context)!.defaultAudioSaved(filename))));
   }
 
   Widget buildDropdownMenu<T>({
@@ -251,42 +223,17 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                             Stimuli stimuli = filteredList[index];
                             return AudioItem(
                               stimuli: stimuli,
-                              isPlaying: playingStimuliId == stimuli.id,
                               onPlayPressed: () => playStimuli(stimuli),
                               onSetDefaultAudio: () =>
-                                  _setAudioAsDefault(stimuli.filename!),
-                              defaultAudio: defaultAudio,
+                                  setDefaultAudio(stimuli.filename!),
+                              defaultAudioNotifier: defaultAudioNotifier,
+                              playingStimuliNotifier: playingStimuliNotifier,
                             );
                           },
-                          itemScrollController: itemScrollController,
-                          itemPositionsListener: itemPositionsListener,
+                          // itemScrollController: itemScrollController,
+                          // itemPositionsListener: itemPositionsListener,
                         ),
                       ),
-                      // Column(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //   children: List.generate(
-                      //     26,
-                      //     (index) {
-                      //       String letter = String.fromCharCode(65 + index);
-                      //       bool isActive = alphabetIndex.containsKey(letter);
-                      //       return GestureDetector(
-                      //         onTap:
-                      //             isActive ? () => scrollToIndex(letter) : null,
-                      //         child: Container(
-                      //           padding:
-                      //               const EdgeInsets.symmetric(horizontal: 8),
-                      //           child: Text(
-                      //             letter,
-                      //             style: TextStyle(
-                      //               color:
-                      //                   isActive ? Colors.black : Colors.grey,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

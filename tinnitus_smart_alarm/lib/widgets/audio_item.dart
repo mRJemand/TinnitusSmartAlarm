@@ -6,27 +6,22 @@ import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 
-class AudioItem extends StatefulWidget {
+class AudioItem extends StatelessWidget {
   final Stimuli stimuli;
-  final bool isPlaying;
   final VoidCallback onPlayPressed;
   final VoidCallback onSetDefaultAudio;
-  final String defaultAudio;
+  final ValueNotifier<String?> defaultAudioNotifier;
+  final ValueNotifier<String?> playingStimuliNotifier;
 
-  const AudioItem({
-    Key? key,
+  AudioItem({
+    super.key,
     required this.stimuli,
-    required this.isPlaying,
     required this.onPlayPressed,
     required this.onSetDefaultAudio,
-    required this.defaultAudio,
-  }) : super(key: key);
+    required this.defaultAudioNotifier,
+    required this.playingStimuliNotifier,
+  });
 
-  @override
-  State<AudioItem> createState() => _AudioItemState();
-}
-
-class _AudioItemState extends State<AudioItem> {
   StimuliManager stimuliManager = StimuliManager();
 
   @override
@@ -36,27 +31,33 @@ class _AudioItemState extends State<AudioItem> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.star,
-          ),
-          color: widget.defaultAudio == widget.stimuli.filename
-              ? Colors.yellow[700]
-              : null,
-          onPressed: widget.onSetDefaultAudio,
-        ),
-        title: Text(widget.stimuli.displayName ?? ''),
+        leading: ValueListenableBuilder<String?>(
+            valueListenable: defaultAudioNotifier,
+            builder: (context, value, child) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.star,
+                ),
+                color: defaultAudioNotifier.value == stimuli.filename
+                    ? Colors.yellow[700]
+                    : null,
+                onPressed: () {
+                  defaultAudioNotifier.value = stimuli.filename;
+                },
+              );
+            }),
+        title: Text(stimuli.displayName ?? ''),
         subtitle: Text(stimuliManager.getCategoryLocalizedName(
-            context, widget.stimuli.categoryName ?? '')),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(widget.isPlaying ? Icons.stop : Icons.play_arrow),
-              onPressed: widget.onPlayPressed,
-            ),
-          ],
-        ),
+            context, stimuli.categoryName ?? '')),
+        trailing: ValueListenableBuilder<String?>(
+            valueListenable: playingStimuliNotifier,
+            builder: (context, playingId, child) {
+              return IconButton(
+                icon: Icon(
+                    playingId == stimuli.id ? Icons.stop : Icons.play_arrow),
+                onPressed: onPlayPressed,
+              );
+            }),
       ),
     );
   }
