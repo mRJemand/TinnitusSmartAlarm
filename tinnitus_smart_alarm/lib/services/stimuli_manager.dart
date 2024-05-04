@@ -58,12 +58,13 @@ class StimuliManager {
     }
   }
 
-  Future<void> deleteStimuli(int id) async {
+  Future<void> deleteStimuli(String id) async {
     final SharedPreferences prefs = await _prefs;
-    List<Stimuli> stimuliList = await loadAllStimuli();
-    stimuliList.removeWhere((stimuli) => stimuli.id == id);
+    List<Stimuli> individualStimuliList = await loadIndividualStimuli();
+
+    individualStimuliList.removeWhere((stimuli) => stimuli.id == id);
     List<String> encodedData =
-        stimuliList.map((s) => jsonEncode(s.toJson())).toList();
+        individualStimuliList.map((s) => jsonEncode(s.toJson())).toList();
     await prefs.setStringList('personalizedStimuli', encodedData);
   }
 

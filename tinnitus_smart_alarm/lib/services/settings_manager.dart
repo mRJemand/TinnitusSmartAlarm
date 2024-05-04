@@ -75,7 +75,8 @@ class SettingsManager {
 
   Future<String> getAssetAudioSetting() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getString('assetAudio') ?? 'tinnitus_stimuli/marimba.mp3';
+    return prefs.getString('assetAudio') ??
+        'assets/tinnitus_stimuli/marimba.mp3';
   }
 
   Future<void> setAssetAudioSetting(String value) async {

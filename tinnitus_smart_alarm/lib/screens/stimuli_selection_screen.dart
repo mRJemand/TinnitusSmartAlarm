@@ -43,6 +43,8 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   }
 
   Future<void> _loadStimuliList() async {
+    stimuliList = [];
+    filteredList = [];
     stimuliList = await stimuliManager.loadAllStimuli();
     filteredList = List.from(stimuliList);
     setState(() {});
@@ -55,17 +57,20 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   }
 
   void playStimuli(Stimuli stimuli) async {
-    int index = filteredList.indexOf(stimuli);
+    // int index = filteredList.indexOf(stimuli);
     if (playingStimuliNotifier.value == stimuli.id) {
       await audioPlayer.stop();
       playingStimuliNotifier.value = null;
     } else {
       try {
+        log(stimuli.filepath!);
+        log(stimuli.filename!);
         await audioPlayer.play(stimuli.isIndividual!
             ? DeviceFileSource(stimuli.filepath!)
             : AssetSource(stimuli.filepath!));
         playingStimuliNotifier.value = stimuli.id;
       } on Exception catch (e) {
+        log(e.toString());
         Dialogs.showErrorDialog(context, e.toString());
       }
     }
@@ -226,12 +231,11 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                               onPlayPressed: () => playStimuli(stimuli),
                               onSetDefaultAudio: () =>
                                   setDefaultAudio(stimuli.filename!),
+                              onDeleteStimuli: () => deleteStimuli(stimuli.id!),
                               defaultAudioNotifier: defaultAudioNotifier,
                               playingStimuliNotifier: playingStimuliNotifier,
                             );
                           },
-                          // itemScrollController: itemScrollController,
-                          // itemPositionsListener: itemPositionsListener,
                         ),
                       ),
                     ],
@@ -250,6 +254,11 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
     );
+  }
+
+  void deleteStimuli(String id) async {
+    await stimuliManager.deleteStimuli(id!);
+    await _loadStimuliList();
   }
 
   Future<void> _showUploadSheet() async {

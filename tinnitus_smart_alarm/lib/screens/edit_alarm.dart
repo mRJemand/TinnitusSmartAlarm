@@ -55,7 +55,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       loopAudio = true;
       vibrate = true;
       volume = null;
-      assetAudio = 'tinnitus_stimuli/marimba.mp3';
+      assetAudio = 'assets/tinnitus_stimuli/marimba.mp3';
       fadeDuration = fadeDuration;
     } else {
       selectedDateTime = widget.alarmSettings!.dateTime;
@@ -88,7 +88,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     } else {
       selectedAssetAudio.isIndividual ?? false
           ? assetAudio = selectedAssetAudio.filename!
-          : assetAudio = 'assets/${selectedAssetAudio.filepath!}';
+          : assetAudio =
+              'assets/tinnitus_stimuli/${selectedAssetAudio.filename!}';
     }
     selectedStimuli = selectedAssetAudio;
     setState(() {});
@@ -317,7 +318,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                           selectedStimuli = newValue;
                           newValue.isIndividual ?? true
                               ? assetAudio = newValue.filename!
-                              : assetAudio = 'assets/${newValue.filepath!}';
+                              : assetAudio =
+                                  'assets/tinnitus_stimuli/${newValue.filename!}';
                         });
                       }
                     },
