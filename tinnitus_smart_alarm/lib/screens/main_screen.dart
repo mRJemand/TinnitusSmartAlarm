@@ -13,6 +13,7 @@ import 'package:tinnitus_smart_alarm/screens/tips_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -38,6 +39,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _loadPreferences();
+    _requestNotificationsPermissions();
   }
 
   void _onItemTapped(int index) {
@@ -56,6 +58,27 @@ class _MainScreenState extends State<MainScreen> {
 
   void _removeSplashScreen() {
     FlutterNativeSplash.remove();
+  }
+
+  Future<void> _requestNotificationsPermissions() async {
+    bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+    if (!isAllowed) {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  }
+
+  void _scheduleNotification() {
+    Future.delayed(const Duration(seconds: 4), () {
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: 10,
+          channelKey: 'basic_channel',
+          title: 'Alarm Notification',
+          body: 'This is a notification from the Floating Action Button',
+          notificationLayout: NotificationLayout.Default,
+        ),
+      );
+    });
   }
 
   Widget _buildApp(Widget homeScreen) {
@@ -124,6 +147,10 @@ class _MainScreenState extends State<MainScreen> {
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _scheduleNotification,
+          child: const Icon(Icons.notifications),
         ),
       );
     }

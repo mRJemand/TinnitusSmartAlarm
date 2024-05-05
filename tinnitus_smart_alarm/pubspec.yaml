@@ -57,6 +57,7 @@ dependencies:
   fl_chart: ^0.67.0
   searchable_listview: ^2.11.2
   auto_start_flutter: ^0.1.1
+  awesome_notifications: ^0.8.2
 
 dev_dependencies:
   flutter_test:
