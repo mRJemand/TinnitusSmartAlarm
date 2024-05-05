@@ -51,7 +51,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     customVolume = await settingsManager.getCustomVolumeSetting();
     assetAudio = await settingsManager.getAssetAudioSetting();
     snoozeTime = await settingsManager.getSnoozeTimeSetting();
-    allowDataCollecting = await settingsManager.getAllowDataCollectionSetting();
+    allowDataCollecting =
+        await settingsManager.getAllowDataCollectionSetting() ?? false;
     setState(() {});
   }
 

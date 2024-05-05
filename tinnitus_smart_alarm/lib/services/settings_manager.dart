@@ -94,13 +94,23 @@ class SettingsManager {
     prefs.setInt('snoozeTime', value);
   }
 
-  Future<bool> getAllowDataCollectionSetting() async {
+  Future<bool?> getAllowDataCollectionSetting() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getBool('AllowDataCollection') ?? false;
+    return prefs.getBool('allowDataCollection');
   }
 
   Future<void> setAllowDataCollectionSetting(bool value) async {
     final SharedPreferences prefs = await _prefs;
-    prefs.setBool('AllowDataCollection', value);
+    prefs.setBool('allowDataCollection', value);
+  }
+
+  Future<bool?> getHasSeenOnboardingSetting() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getBool('hasSeenOnboarding');
+  }
+
+  Future<void> setHasSeenOnboardingSetting(bool value) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setBool('hasSeenOnboarding', value);
   }
 }
