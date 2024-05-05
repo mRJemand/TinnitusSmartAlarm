@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +33,7 @@ Future<void> main() async {
         channelKey: 'basic_channel',
         channelName: 'Basic notifications',
         channelDescription: 'Notification channel for basic tests',
-        defaultColor: Color(0xFF9D50DD),
+        defaultColor: const Color(0xFF9D50DD),
         ledColor: Colors.white,
         importance: NotificationImportance.High,
       ),
@@ -107,7 +106,13 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         home: const MainScreen(),
+        navigatorKey: GlobalNavigator.navigatorKey,
       ),
     );
   }
+}
+
+class GlobalNavigator {
+  static final navigatorKey = GlobalKey<NavigatorState>();
+  static NavigatorState? get currentState => navigatorKey.currentState;
 }

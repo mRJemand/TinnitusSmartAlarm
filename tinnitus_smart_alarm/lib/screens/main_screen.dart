@@ -1,6 +1,6 @@
 import 'dart:developer';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tinnitus_smart_alarm/screens/alarm_home_screen.dart';
@@ -13,7 +13,8 @@ import 'package:tinnitus_smart_alarm/screens/tips_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:tinnitus_smart_alarm/widgets/tinnitus_survey.dart';
+import 'package:tinnitus_smart_alarm/main.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -40,6 +41,11 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _loadPreferences();
     _requestNotificationsPermissions();
+
+    // Benachrichtigungsaktionen registrieren
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: _onActionReceived,
+    );
   }
 
   void _onItemTapped(int index) {
@@ -76,9 +82,34 @@ class _MainScreenState extends State<MainScreen> {
           title: 'Alarm Notification',
           body: 'This is a notification from the Floating Action Button',
           notificationLayout: NotificationLayout.Default,
+          payload: {'uuid': 'uuid-test'},
         ),
+        actionButtons: [
+          NotificationActionButton(
+            key: 'OPEN_SURVEY',
+            label: 'Open Survey',
+          ),
+        ],
       );
     });
+  }
+
+  Future<void> _showSurvey(Map<String, String?>? payload) async {
+    log('Notification Payload: $payload');
+    await showDialog<void>(
+      context: GlobalNavigator.navigatorKey.currentState!.context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: TinnitusSurvey(),
+        );
+      },
+    );
+  }
+
+  Future<void> _onActionReceived(ReceivedAction receivedAction) async {
+    // if (receivedAction.buttonKeyPressed == 'OPEN_SURVEY') {
+    await _showSurvey(receivedAction.payload);
+    // }
   }
 
   Widget _buildApp(Widget homeScreen) {
