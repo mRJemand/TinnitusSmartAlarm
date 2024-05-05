@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/screens/main_screen.dart';
 import 'package:tinnitus_smart_alarm/l10n/l10n.dart';
 import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
+import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:tinnitus_smart_alarm/theme/color_schemes.g.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -22,19 +25,22 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? localeString = prefs.getString('locale');
+
+  SettingsManager settingsManager = SettingsManager();
+  String? localeString = await settingsManager.getLocaleSetting();
   Locale locale;
 
   if (localeString != null) {
     locale = Locale(localeString);
   } else {
     Locale systemLocale = WidgetsBinding.instance.window.locale;
-    if (L10n.all.contains(systemLocale)) {
+    log(systemLocale.languageCode);
+    if (L10n.contains(systemLocale)) {
       locale = systemLocale;
-      await prefs.setString('locale', systemLocale.languageCode);
+      await settingsManager.setLocaleSetting(systemLocale.languageCode);
     } else {
       locale = const Locale('en');
+      await settingsManager.setLocaleSetting('en');
     }
   }
 

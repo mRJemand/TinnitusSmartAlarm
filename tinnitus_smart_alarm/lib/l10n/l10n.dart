@@ -5,4 +5,8 @@ class L10n {
     const Locale('en'),
     const Locale('de'),
   ];
+
+  static bool contains(Locale locale) {
+    return all.any((element) => element.languageCode == locale.languageCode);
+  }
 }

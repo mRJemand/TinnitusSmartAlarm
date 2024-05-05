@@ -63,9 +63,9 @@ class SettingsManager {
     prefs.setDouble('volume', value);
   }
 
-  Future<String> getLocaleSetting() async {
+  Future<String?> getLocaleSetting() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getString('locale') ?? 'en';
+    return prefs.getString('locale');
   }
 
   Future<void> setLocaleSetting(String locale) async {

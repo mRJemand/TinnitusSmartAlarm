@@ -28,7 +28,7 @@ class _TipsScreenState extends State<TipsScreen> {
   }
 
   Future<void> _loadSettings() async {
-    language = await settingsManager.getLocaleSetting();
+    language = await settingsManager.getLocaleSetting() ?? 'en';
     setState(() {});
   }
 
