@@ -61,6 +61,7 @@
   "question2Scala": "Please rate on a scale from 0 (not uncomfortable at all) to 10 (extremely uncomfortable).",
   "question3": "How easy is it for you to ignore your tinnitus right now?",
   "question3Scala": "Please rate on a scale from 0 (very easy to ignore) to 10 (impossible to ignore).",
+  "recordYourTinnitus": "Record your tinnitus now!",
   "save": "Save",
   "searchTip": "Search Tip",
   "selectFrequency": "Select frequency",

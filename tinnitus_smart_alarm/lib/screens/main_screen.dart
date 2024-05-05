@@ -183,10 +183,10 @@ class _MainScreenState extends State<MainScreen> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _scheduleNotification,
-          child: const Icon(Icons.notifications),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: _scheduleNotification,
+        //   child: const Icon(Icons.notifications),
+        // ),
       );
     }
   }

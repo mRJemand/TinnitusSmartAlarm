@@ -61,6 +61,7 @@
   "question2Scala": "Bitte bewerten Sie auf einer Skala von 0 (überhaupt nicht unangenehm) bis 10 (extrem unangenehm).",
   "question3": "Wie leicht gelingt es Ihnen momentan, Ihren Tinnitus zu ignorieren?",
   "question3Scala": "Bitte bewerten Sie auf einer Skala von 0 (sehr leicht zu ignorieren) bis 10 (unmöglich zu ignorieren).",
+  "recordYourTinnitus": "Erfassen Sie ihren Tinnitus jetzt!",
   "save": "Speichern",
   "searchTip": "Tipp suchen",
   "selectFrequency": "Frequenz wählen",

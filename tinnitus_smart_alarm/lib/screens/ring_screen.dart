@@ -1,14 +1,59 @@
+import 'dart:developer';
+
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
+import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 
 class AlarmRingScreen extends StatelessWidget {
   final AlarmSettings alarmSettings;
 
   const AlarmRingScreen({Key? key, required this.alarmSettings})
       : super(key: key);
+
+  String getLastSegment(String path) {
+    int index = path.lastIndexOf('/');
+    return index == -1 ? path : path.substring(index + 1);
+  }
+
+  void _scheduleNotification(
+      String notificationTitle, String notificationBody) {
+    // todo change duration to 90 min
+    Future.delayed(const Duration(minutes: 20), () async {
+      StimuliManager stimuliManager = StimuliManager();
+      Stimuli? stimuli = await stimuliManager
+          .loadStimuliByFileName(getLastSegment(alarmSettings.assetAudioPath));
+      if (stimuli == null) {
+        log('no Stimuli found by name');
+        log(alarmSettings.assetAudioPath);
+      } else {
+        log(stimuli.toString());
+      }
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: 10,
+          channelKey: 'basic_channel',
+          title: notificationTitle,
+          body: notificationBody,
+          notificationLayout: NotificationLayout.Default,
+          payload: {
+            'stimuli': stimuli?.filename ?? '',
+            'frequency': stimuli?.frequency ?? '',
+          },
+        ),
+        actionButtons: [
+          NotificationActionButton(
+            key: 'OPEN_SURVEY',
+            label: 'Open Survey',
+          ),
+        ],
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +122,16 @@ class AlarmRingScreen extends StatelessWidget {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        SettingsManager settingsManager = SettingsManager();
+                        bool allowDataCollecting = await settingsManager
+                                .getAllowDataCollectionSetting() ??
+                            false;
+                        if (allowDataCollecting) {
+                          _scheduleNotification(
+                              AppLocalizations.of(context)!.survey,
+                              AppLocalizations.of(context)!.recordYourTinnitus);
+                        }
                         Alarm.stop(alarmSettings.id)
                             .then((_) => Navigator.pop(context));
                       },

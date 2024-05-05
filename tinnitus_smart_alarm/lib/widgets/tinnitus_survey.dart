@@ -99,30 +99,39 @@ class _TinnitusSurveyState extends State<TinnitusSurvey> {
                 });
               },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.cancel_outlined),
-                  label: Text(AppLocalizations.of(context)!.cancel),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.cancel_outlined),
+                    label: Text(AppLocalizations.of(context)!.cancel),
+                  ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // todo adjust stimuliName and frequency
-                    FirestoreManager firestoreManager = FirestoreManager();
-                    firestoreManager.sendAnswersToFirestore(
-                        easyToIgnore: _ignorierbarkeit,
-                        uncomfortable: _unangenehmheit,
-                        volume: _lautstaerke,
-                        stimuliName: widget.stimuliName ?? '',
-                        frequency: widget.frequency ?? '');
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.save_outlined),
-                  label: Text(AppLocalizations.of(context)!.save),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      FirestoreManager firestoreManager = FirestoreManager();
+                      firestoreManager.sendAnswersToFirestore(
+                          easyToIgnore: _ignorierbarkeit,
+                          uncomfortable: _unangenehmheit,
+                          volume: _lautstaerke,
+                          stimuliName: widget.stimuliName ?? '',
+                          frequency: widget.frequency ?? '');
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.save_outlined),
+                    label: Text(AppLocalizations.of(context)!.save),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             )
