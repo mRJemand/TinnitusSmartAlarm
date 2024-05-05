@@ -1,9 +1,10 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/edit_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
@@ -20,7 +21,7 @@ class AlarmHomeScreen extends StatefulWidget {
 }
 
 class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
-  late List<ExtendedAlarm> alarms;
+  late List<ExtendedAlarm> alarms = [];
   late AlarmManager alarmManager;
 
   static StreamSubscription<AlarmSettings>? subscription;
@@ -43,12 +44,24 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     FlutterNativeSplash.remove();
   }
 
-  void loadAlarms() {
-    setState(() {
-      alarms = alarmManager.loadAlarms();
-      alarms.sort((a, b) =>
-          a.alarmSettings.dateTime.isBefore(b.alarmSettings.dateTime) ? 0 : 1);
-    });
+  void loadAlarms() async {
+    await alarmManager.loadAlarms();
+    final prefs = await SharedPreferences.getInstance();
+    final String? alarmsJson = prefs.getString('alarms');
+    if (alarmsJson != null) {
+      final List<dynamic> alarmsList = jsonDecode(alarmsJson);
+      alarms = alarmsList
+          .map((alarmJson) => ExtendedAlarm.fromJson(alarmJson))
+          .toList();
+    }
+    if (alarms != null) {
+      setState(() {
+        alarms!.sort((a, b) =>
+            a.alarmSettings.dateTime.isBefore(b.alarmSettings.dateTime)
+                ? 0
+                : 1);
+      });
+    }
   }
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {

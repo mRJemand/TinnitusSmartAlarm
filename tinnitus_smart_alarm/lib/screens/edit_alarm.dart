@@ -40,7 +40,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   late double fadeDuration;
   late bool fadeDurationStatus;
   late bool isActive;
-  bool isRepeated = false;
+  late bool isRepeated;
   late String alarmName;
   late List<bool> repeatDays;
   final TextEditingController _nameController = TextEditingController();
@@ -69,6 +69,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       fadeDuration = fadeDuration;
       alarmName = "Neuer Alarm";
       isActive = true;
+      isRepeated = false;
       repeatDays = List.filled(7, false);
     } else {
       final alarmSettings = widget.extendedAlarm!.alarmSettings;
@@ -80,6 +81,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       fadeDuration = alarmSettings.fadeDuration;
       alarmName = widget.extendedAlarm!.name;
       isActive = widget.extendedAlarm!.isActive;
+      isRepeated = widget.extendedAlarm!.isRepeated;
       repeatDays = List.from(widget.extendedAlarm!.repeatDays);
     }
     _nameController.text = alarmName;
@@ -168,12 +170,15 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       assetAudioPath: assetAudio,
       notificationTitle: AppLocalizations.of(context)!.alarm,
       notificationBody: AppLocalizations.of(context)!.yourAlarmIsRinging,
+      androidFullScreenIntent: true,
+      enableNotificationOnKill: true,
     );
 
     return ExtendedAlarm(
       alarmSettings: alarmSettings,
       name: alarmName,
       isActive: isActive,
+      isRepeated: isRepeated,
       repeatDays: repeatDays,
     );
   }
@@ -241,9 +246,13 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     setState(() => loading = true);
 
     final extendedAlarm = buildExtendedAlarm();
-    widget.alarmManager.saveAlarm(extendedAlarm);
-    Alarm.set(alarmSettings: extendedAlarm.alarmSettings).then((res) {
-      if (res) Navigator.pop(context, true);
+    widget.alarmManager.saveAlarm(extendedAlarm).then((_) async {
+      if (isActive) {
+        await Alarm.set(alarmSettings: extendedAlarm.alarmSettings);
+      }
+      if (mounted) {
+        Navigator.pop(context, true);
+      }
       setState(() => loading = false);
     });
   }

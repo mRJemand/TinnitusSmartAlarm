@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
+import 'package:alarm/alarm.dart';
 
-class AlarmTile extends StatelessWidget {
+class AlarmTile extends StatefulWidget {
   final ExtendedAlarm alarm;
   final void Function() onPressed;
   final void Function()? onDismissed;
@@ -13,11 +14,24 @@ class AlarmTile extends StatelessWidget {
     this.onDismissed,
   }) : super(key: key);
 
+  @override
+  State<AlarmTile> createState() => _AlarmTileState();
+}
+
+class _AlarmTileState extends State<AlarmTile> {
+  late bool isActive;
+
+  @override
+  void initState() {
+    super.initState();
+    isActive = widget.alarm.isActive;
+  }
+
   String getRepeatDaysString() {
     const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
     final selectedDays = List<String>.generate(
       7,
-      (index) => alarm.repeatDays[index] ? days[index] : '',
+      (index) => widget.alarm.repeatDays[index] ? days[index] : '',
     ).where((day) => day.isNotEmpty).toList();
 
     return selectedDays.isEmpty
@@ -25,11 +39,27 @@ class AlarmTile extends StatelessWidget {
         : selectedDays.join(', ');
   }
 
+  Future<void> toggleAlarm(bool value) async {
+    setState(() {
+      isActive = value;
+    });
+
+    final AlarmManager alarmManager = AlarmManager();
+    final updatedAlarm = widget.alarm.copyWith(isActive: isActive);
+
+    if (isActive) {
+      await alarmManager.saveAlarm(updatedAlarm);
+    } else {
+      await Alarm.stop(updatedAlarm.alarmSettings.id);
+      await alarmManager.saveAlarm(updatedAlarm);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(alarm.alarmSettings.id.toString()),
-      direction: onDismissed != null
+      key: Key(widget.alarm.alarmSettings.id.toString()),
+      direction: widget.onDismissed != null
           ? DismissDirection.endToStart
           : DismissDirection.none,
       background: Container(
@@ -42,7 +72,7 @@ class AlarmTile extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      onDismissed: (_) => onDismissed?.call(),
+      onDismissed: (_) => widget.onDismissed?.call(),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.blueAccent,
@@ -50,7 +80,7 @@ class AlarmTile extends StatelessWidget {
           padding: EdgeInsets.zero,
           elevation: 0,
         ),
-        onPressed: onPressed,
+        onPressed: widget.onPressed,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
@@ -72,8 +102,8 @@ class AlarmTile extends StatelessWidget {
                   children: [
                     Text(
                       TimeOfDay(
-                        hour: alarm.alarmSettings.dateTime.hour,
-                        minute: alarm.alarmSettings.dateTime.minute,
+                        hour: widget.alarm.alarmSettings.dateTime.hour,
+                        minute: widget.alarm.alarmSettings.dateTime.minute,
                       ).format(context),
                       style: const TextStyle(
                         fontSize: 24,
@@ -83,7 +113,7 @@ class AlarmTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      alarm.name,
+                      widget.alarm.name,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -106,8 +136,8 @@ class AlarmTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Switch(
-                    value: alarm.isActive,
-                    onChanged: (value) => onPressed(),
+                    value: isActive,
+                    onChanged: toggleAlarm,
                     activeColor: Colors.blueAccent,
                   ),
                   const Icon(
