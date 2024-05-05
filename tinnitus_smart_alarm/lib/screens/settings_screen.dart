@@ -28,7 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool loopAlarmAudio = true;
   bool vibrate = true;
   bool fadeIn = true;
-  double volume = 0.3;
+  double? volume;
   bool customVolume = true;
   String assetAudio = "";
   int snoozeTime = 1;

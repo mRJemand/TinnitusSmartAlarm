@@ -46,15 +46,6 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  void _setMyDataOK(bool value) async {
-    await settingsManager.setAllowDataCollectionSetting(value);
-    setState(() {
-      _hasConsented = true;
-      log('_hasConsented: $value');
-    });
-    _removeSplashScreen();
-  }
-
   Future<void> _loadPreferences() async {
     _hasSeenOnboarding =
         await settingsManager.getHasSeenOnboardingSetting() ?? false;
@@ -96,8 +87,12 @@ class _MainScreenState extends State<MainScreen> {
     } else if (_hasConsented == null) {
       return _buildApp(
         PrivacyConsentScreen(
-          onConsent: (bool consented) {
-            _setMyDataOK(consented);
+          onConsent: (bool consented) async {
+            await settingsManager.setAllowDataCollectionSetting(consented);
+            setState(() {
+              _hasConsented = true;
+              log('_hasConsented: $consented');
+            });
           },
         ),
       );
