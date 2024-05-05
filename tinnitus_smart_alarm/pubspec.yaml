@@ -128,6 +128,10 @@ flutter:
 
 
   assets:
+    - assets/images/natuerlich_spezifisch.png
+    - assets/images/natuerlich_nicht_spezifisch.png
+    - assets/images/digital_spezifisch.png
+    - assets/images/digital_nicht_spezifisch.png
     - assets/images/splash_icon.png
     - assets/images/TinnitusSmartAlarmIcon.png
     - assets/files/Stimuli_Kategorisierung.json

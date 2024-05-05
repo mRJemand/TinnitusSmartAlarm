@@ -13,6 +13,7 @@ import 'package:tinnitus_smart_alarm/services/dialogs.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/audio_item.dart';
+import 'package:tinnitus_smart_alarm/widgets/stimuli_description.dart';
 import 'package:tinnitus_smart_alarm/widgets/upload_individual_stimuli.dart';
 
 class StimuliSelectionScreen extends StatefulWidget {
@@ -173,6 +174,11 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.stimuli),
+        actions: [
+          IconButton(
+              onPressed: () => _showInfoSheet(),
+              icon: const Icon(Icons.help_outline))
+        ],
       ),
       body: FutureBuilder(
         future: Future.wait([_settingsFuture, _stimuliFuture]),
@@ -259,6 +265,20 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   void deleteStimuli(String id) async {
     await stimuliManager.deleteStimuli(id!);
     await _loadStimuliList();
+  }
+
+  Future<void> _showInfoSheet() async {
+    final res = await showModalBottomSheet<bool>(
+      useSafeArea: true,
+      context: context,
+      builder: (BuildContext context) {
+        return StimuliDescriptionWidget();
+      },
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    );
   }
 
   Future<void> _showUploadSheet() async {
