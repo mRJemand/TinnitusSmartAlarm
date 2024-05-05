@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 import 'package:tinnitus_smart_alarm/data/tips_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/tip.dart';
@@ -35,19 +34,12 @@ class _TipsScreenState extends State<TipsScreen> {
 
   void _toggleFavorites() {
     setState(() {
-      if (!showFavoritesOnly) {
-        showFavoritesOnly = !showFavoritesOnly;
-        tipsList =
-            tipsList.where((element) => element.isFavorite == true).toList();
-      } else {
-        showFavoritesOnly = !showFavoritesOnly;
-        tipsList = TipsCatalag.tipsList;
-      }
+      showFavoritesOnly = !showFavoritesOnly;
     });
   }
 
   List<Tip> _getFilteredTips(String searchText) {
-    return tipsList.where((tip) {
+    return TipsCatalag.tipsList.where((tip) {
       final matchesLanguage = tip.language == language;
       final matchesText =
           tip.objective.toLowerCase().contains(searchText.toLowerCase()) ||
@@ -81,6 +73,7 @@ class _TipsScreenState extends State<TipsScreen> {
         return TipItem(tip: item);
       },
       inputDecoration: InputDecoration(
+        labelText: AppLocalizations.of(context)!.searchTip,
         prefixIcon: IconButton(
           icon: Icon(
             showFavoritesOnly ? Icons.favorite : Icons.favorite_border,
@@ -88,7 +81,7 @@ class _TipsScreenState extends State<TipsScreen> {
           ),
           onPressed: () {
             _toggleFavorites();
-            searchTextController.text = searchTextController.text;
+            setState(() {});
           },
         ),
       ),
@@ -105,7 +98,7 @@ class _TipsScreenState extends State<TipsScreen> {
           Text(AppLocalizations.of(context)!.errorWhileFetchingTips),
         ],
       ),
-      initialList: _getFilteredTips(''),
+      initialList: _getFilteredTips(searchTextController.text),
       filter: _getFilteredTips,
       emptyWidget: Column(
         mainAxisAlignment: MainAxisAlignment.center,
