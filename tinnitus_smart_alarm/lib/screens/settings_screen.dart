@@ -339,7 +339,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          child: TinnitusSurvey(),
+          child: TinnitusSurvey(
+            frequency: null,
+            stimuliName: null,
+          ),
         );
       },
     );

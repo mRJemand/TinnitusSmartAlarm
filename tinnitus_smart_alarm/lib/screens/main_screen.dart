@@ -42,9 +42,13 @@ class _MainScreenState extends State<MainScreen> {
     _loadPreferences();
     _requestNotificationsPermissions();
 
-    // Benachrichtigungsaktionen registrieren
+    // // Benachrichtigungsaktionen registrieren
+    // AwesomeNotifications().setListeners(
+    //   onActionReceivedMethod: _onActionReceived,
+    // );
+
     AwesomeNotifications().setListeners(
-      onActionReceivedMethod: _onActionReceived,
+      onActionReceivedMethod: NotificationHandler.onNotificationReceived,
     );
   }
 
@@ -82,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
           title: 'Alarm Notification',
           body: 'This is a notification from the Floating Action Button',
           notificationLayout: NotificationLayout.Default,
-          payload: {'uuid': 'uuid-test'},
+          payload: {'stimuli': 'marimba.mp3', 'frequency': '250 Hz'},
         ),
         actionButtons: [
           NotificationActionButton(
@@ -94,23 +98,23 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  Future<void> _showSurvey(Map<String, String?>? payload) async {
-    log('Notification Payload: $payload');
-    await showDialog<void>(
-      context: GlobalNavigator.navigatorKey.currentState!.context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: TinnitusSurvey(),
-        );
-      },
-    );
-  }
+  // Future<void> _showSurvey(Map<String, String?>? payload) async {
+  //   log('Notification Payload: $payload');
+  //   await showDialog<void>(
+  //     context: GlobalNavigator.navigatorKey.currentState!.context,
+  //     builder: (BuildContext context) {
+  //       return Dialog(
+  //         child: TinnitusSurvey(),
+  //       );
+  //     },
+  //   );
+  // }
 
-  Future<void> _onActionReceived(ReceivedAction receivedAction) async {
-    // if (receivedAction.buttonKeyPressed == 'OPEN_SURVEY') {
-    await _showSurvey(receivedAction.payload);
-    // }
-  }
+  // Future<void> _onActionReceived(ReceivedAction receivedAction) async {
+  //   // if (receivedAction.buttonKeyPressed == 'OPEN_SURVEY') {
+  //   await _showSurvey(receivedAction.payload);
+  //   // }
+  // }
 
   Widget _buildApp(Widget homeScreen) {
     return MaterialApp(
@@ -185,5 +189,31 @@ class _MainScreenState extends State<MainScreen> {
         ),
       );
     }
+  }
+}
+
+class NotificationHandler {
+  static Future<void> onNotificationReceived(
+      ReceivedAction receivedAction) async {
+    log('Notification Payload: ${receivedAction.payload}');
+    await _showSurvey(receivedAction.payload);
+    // GlobalNavigator.navigatorKey.currentState?.push(
+    //   MaterialPageRoute(builder: (context) => TinnitusSurvey()),
+    // );
+  }
+
+  static Future<void> _showSurvey(Map<String, String?>? payload) async {
+    log('Notification Payload: $payload');
+    await showDialog<void>(
+      context: GlobalNavigator.navigatorKey.currentState!.context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: TinnitusSurvey(
+            frequency: payload?['frequency'],
+            stimuliName: payload?['stimuli'],
+          ),
+        );
+      },
+    );
   }
 }

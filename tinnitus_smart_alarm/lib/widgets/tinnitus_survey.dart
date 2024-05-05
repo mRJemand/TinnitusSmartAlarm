@@ -5,6 +5,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/services/firestore_manager.dart';
 
 class TinnitusSurvey extends StatefulWidget {
+  final String? stimuliName;
+  final String? frequency;
+
+  const TinnitusSurvey({
+    super.key,
+    required this.frequency,
+    required this.stimuliName,
+  });
+
   @override
   _TinnitusSurveyState createState() => _TinnitusSurveyState();
 }
@@ -108,8 +117,8 @@ class _TinnitusSurveyState extends State<TinnitusSurvey> {
                         easyToIgnore: _ignorierbarkeit,
                         uncomfortable: _unangenehmheit,
                         volume: _lautstaerke,
-                        stimuliName: 'Noch Kein Stimuli',
-                        frequency: 'no frequency');
+                        stimuliName: widget.stimuliName ?? '',
+                        frequency: widget.frequency ?? '');
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.save_outlined),
