@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:searchable_listview/searchable_listview.dart';
-import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/data/tips_catalog.dart';
-import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/models/tip.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/tip_item.dart';
@@ -20,7 +18,7 @@ class _TipsScreenState extends State<TipsScreen> {
   List<Tip> tipsList = [];
   final TextEditingController searchTextController = TextEditingController();
   final SettingsManager settingsManager = SettingsManager();
-
+  bool showFavoritesOnly = false;
   String language = '';
 
   @override
@@ -35,24 +33,35 @@ class _TipsScreenState extends State<TipsScreen> {
     setState(() {});
   }
 
+  void _toggleFavorites() {
+    setState(() {
+      showFavoritesOnly = !showFavoritesOnly;
+    });
+  }
+
+  List<Tip> _getFilteredTips(String searchText) {
+    return tipsList.where((tip) {
+      final matchesLanguage = tip.language == language;
+      final matchesText =
+          tip.objective.toLowerCase().contains(searchText.toLowerCase()) ||
+              tip.title.toLowerCase().contains(searchText.toLowerCase()) ||
+              tip.explanation.toLowerCase().contains(searchText.toLowerCase());
+      final matchesFavorites = !showFavoritesOnly ||
+          (tip.isFavorite == null ? false : tip.isFavorite!);
+
+      return matchesLanguage && matchesText && matchesFavorites;
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.tips),
       ),
-      body: SizedBox(
-        width: double.infinity,
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: renderSimpleSearchableList(),
-              ),
-            ),
-          ],
-        ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: renderSimpleSearchableList(),
       ),
     );
   }
@@ -64,6 +73,18 @@ class _TipsScreenState extends State<TipsScreen> {
       builder: (list, index, item) {
         return TipItem(tip: item);
       },
+      inputDecoration: InputDecoration(
+        prefixIcon: IconButton(
+          icon: Icon(
+            showFavoritesOnly ? Icons.favorite : Icons.favorite_border,
+            color: showFavoritesOnly ? Colors.red : null,
+          ),
+          onPressed: () {
+            _toggleFavorites();
+            searchTextController.text = searchTextController.text;
+          },
+        ),
+      ),
       errorWidget: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -74,16 +95,11 @@ class _TipsScreenState extends State<TipsScreen> {
           const SizedBox(
             height: 20,
           ),
-          Text(AppLocalizations.of(context)!.errorWhileFetchingTips)
+          Text(AppLocalizations.of(context)!.errorWhileFetchingTips),
         ],
       ),
-      initialList:
-          tipsList.where((element) => element.language == language).toList(),
-      filter: (p0) {
-        return tipsList.where((element) {
-          return element.objective.contains(p0) && element.language == language;
-        }).toList();
-      },
+      initialList: _getFilteredTips(''),
+      filter: _getFilteredTips,
       emptyWidget: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -96,17 +112,6 @@ class _TipsScreenState extends State<TipsScreen> {
       ),
       onRefresh: () async {},
       onItemSelected: (Tip item) {},
-      inputDecoration: InputDecoration(
-        labelText: AppLocalizations.of(context)!.searchTip,
-        fillColor: Colors.white,
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.blue,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
       closeKeyboardWhenScrolling: true,
     );
   }

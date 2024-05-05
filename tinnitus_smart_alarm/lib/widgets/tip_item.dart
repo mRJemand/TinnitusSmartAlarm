@@ -65,7 +65,7 @@ class _TipItemState extends State<TipItem> {
         child: ListTile(
           leading: IconButton(
             icon: const Icon(
-              Icons.star,
+              Icons.favorite,
             ),
             color: widget.tip.isFavorite == true ? Colors.yellow[700] : null,
             onPressed: () async {

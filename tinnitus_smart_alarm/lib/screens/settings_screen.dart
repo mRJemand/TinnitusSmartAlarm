@@ -210,7 +210,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               SettingsTile(
                 title: Text(AppLocalizations.of(context)!.sound),
-                trailing: Text(assetAudio),
+                leading: const Icon(Icons.music_note_outlined),
+                trailing: SizedBox(
+                  width: 150,
+                  child: Text(
+                    assetAudio,
+                    textAlign: TextAlign.end,
+                    overflow: TextOverflow.clip,
+                    maxLines: 4,
+                  ),
+                ),
               ),
               SettingsTile.switchTile(
                 title: Text(AppLocalizations.of(context)!.customVolume),
@@ -238,11 +247,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(AppLocalizations.of(context)!.personal),
             tiles: [
               SettingsTile(
+                enabled: allowDataCollecting ?? false,
                 title: Text(AppLocalizations.of(context)!.addRecord),
                 leading: const Icon(Icons.add_chart_outlined),
                 onPressed: (context) => _showSurvey(),
               ),
               SettingsTile.navigation(
+                enabled: allowDataCollecting ?? false,
                 title: Text(AppLocalizations.of(context)!.history),
                 leading: const Icon(Icons.ssid_chart_outlined),
                 onPressed: (context) {
@@ -263,40 +274,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     icon: const Icon(Icons.info_outline)),
                 initialValue: allowDataCollecting,
                 onToggle: (bool value) {
-                  setState(() {
-                    allowDataCollecting = value;
-                  });
-                  settingsManager.setAllowDataCollectionSetting(value);
+                  if (value == false) {
+                    _showConfirmationDialog(context, value);
+                  } else {
+                    setState(() {
+                      allowDataCollecting = value;
+                    });
+                    settingsManager.setAllowDataCollectionSetting(value);
+                  }
                 },
               ),
               SettingsTile(
                 title: Text(AppLocalizations.of(context)!.deleteData),
                 leading: const Icon(Icons.delete_outlined),
                 onPressed: (context) async {
-                  FirestoreManager firestoreManager = FirestoreManager();
-                  AuthManager authManager = AuthManager();
+                  _showDataDeletionConfirmationDialog(context);
+                  // FirestoreManager firestoreManager = FirestoreManager();
+                  // AuthManager authManager = AuthManager();
 
-                  await firestoreManager.deleteCurrentUserEntries();
-                  await authManager.signOutAndDeleteAccount();
+                  // await firestoreManager.deleteCurrentUserEntries();
+                  // await authManager.signOutAndDeleteAccount();
                 },
               ),
             ],
           ),
         ],
       ),
-      floatingActionButton: Row(
-        children: [
-          FloatingActionButton(
-            heroTag: "a",
-            onPressed: () => printSharedPreferences(),
-          ),
-          FloatingActionButton(
-            heroTag: "b",
-            onPressed: () => clearSharedPreferences(),
-            backgroundColor: Colors.red,
-          ),
-        ],
-      ),
+      // floatingActionButton: Row(
+      //   children: [
+      //     FloatingActionButton(
+      //       heroTag: "a",
+      //       onPressed: () => printSharedPreferences(),
+      //     ),
+      //     FloatingActionButton(
+      //       heroTag: "b",
+      //       onPressed: () => clearSharedPreferences(),
+      //       backgroundColor: Colors.red,
+      //     ),
+      //   ],
+      // ),
     );
   }
 
@@ -311,10 +327,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> clearSharedPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // Druckt alle Schlüssel-Werte-Paare
     print('Shared Preferences:');
     prefs.getKeys().forEach((key) {
-      // print('$key: ${prefs.get(key)}');
       prefs.remove(key);
     });
   }
@@ -365,6 +379,68 @@ class _SettingsScreenState extends State<SettingsScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context, bool newValue) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.confirmationRequired),
+          content: Text(AppLocalizations.of(context)!.confirmationText),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  allowDataCollecting = newValue;
+                });
+                settingsManager.setAllowDataCollectionSetting(newValue);
+                Navigator.of(context).pop();
+              },
+              child: Text(AppLocalizations.of(context)!.confirm),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDataDeletionConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.confirmationRequired),
+          content:
+              Text(AppLocalizations.of(context)!.confirmationDeleteDataText),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            TextButton(
+              onPressed: () async {
+                FirestoreManager firestoreManager = FirestoreManager();
+                AuthManager authManager = AuthManager();
+
+                await firestoreManager.deleteCurrentUserEntries();
+                await authManager.signOutAndDeleteAccount();
+                Navigator.of(context).pop();
+              },
+              child: Text(AppLocalizations.of(context)!.confirm),
+            ),
+          ],
+        );
+      },
     );
   }
 }
