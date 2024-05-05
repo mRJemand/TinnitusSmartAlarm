@@ -364,7 +364,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.dataProtextionNotice,
+                      AppLocalizations.of(context)!.dataProtectionNotice,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8.0),

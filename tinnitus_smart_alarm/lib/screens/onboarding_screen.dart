@@ -21,16 +21,7 @@ class OnboardingScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppLocalizations.of(context)!.welcomeText1,
-                  style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 8),
-              Text(AppLocalizations.of(context)!.welcomeText2,
-                  style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 8),
-              Text(AppLocalizations.of(context)!.welcomeText3,
-                  style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 8),
-              Text(AppLocalizations.of(context)!.welcomeText4,
+              Text(AppLocalizations.of(context)!.welcomeText,
                   style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 8),
               const Divider(),
@@ -38,6 +29,10 @@ class OnboardingScreen extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
                   onPressed: onComplete,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
                   child: Text(AppLocalizations.of(context)!.next),
                 ),
               ),
