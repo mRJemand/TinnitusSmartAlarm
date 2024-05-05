@@ -44,6 +44,7 @@
   "myData": "My data",
   "naturalNeg": "Natural non-specific",
   "naturalPlus": "Natural specific",
+  "next": "Next",
   "noAlarmsSet": "No alarms set",
   "noTipsFound": "no tips is found",
   "objective": "Objective",
@@ -80,5 +81,10 @@
   "unnaturalNeg": "Digital unspecific",
   "unnaturalPos": "Digital specific",
   "vibrate": "Vibrate",
+  "welcome": "Welcome",
+  "welcomeText1": "Welcome to the Tinnitus Smart Alarm App, specially developed for people with chronic tinnitus. Although this app is primarily intended for this target group, it can also be used as a conventional alarm clock app by people without tinnitus.",
+  "welcomeText2": "Our aim is to improve your quality of life by supporting you in your daily management of tinnitus. Please note, however, that the app is not a substitute for professional medical diagnosis or treatment. It is important to always seek medical advice if you have persistent symptoms or questions.",
+  "welcomeText3": "The methods and information provided in this app are based on current scientific knowledge in the field of tinnitus and on the results of the dissertation \"Individualized Auditory Stimulation for Tinnitus: The App 'Shades of Noise'\" by Lisa Führlein. We do not conduct fundamental research on the cause or treatment of tinnitus ourselves. Our work focuses on applying existing research to provide practical solutions and support for sufferers. ",
+  "welcomeText4": "We hope that our app will provide you with valuable help and make your everyday life with tinnitus easier.",
   "yourAlarmIsRinging": "Your alarm is ringing"
 }

@@ -44,6 +44,7 @@
   "myData": "Meine Daten",
   "naturalNeg": "Natürlich unspezifisch",
   "naturalPlus": "Natürlich spezifisch",
+  "next": "Weiter",
   "noAlarmsSet": "Keine Wecker eingestellt",
   "noTipsFound": "es werden keine Tipps gefunden",
   "objective": "Ziel",
@@ -80,5 +81,10 @@
   "unnaturalNeg": "Digital unspezifisch",
   "unnaturalPos": "Digital spezifisch",
   "vibrate": "Vibrieren",
+  "welcome": "Willkommen",
+  "welcomeText1": "Herzlich willkommen bei der Tinnitus Smart Alarm App, speziell entwickelt für Menschen mit chronischem Tinnitus. Obwohl diese App in erster Linie für diese Zielgruppe gedacht ist, kann sie auch von Personen ohne Tinnitus als herkömmliche Wecker-App verwendet werden.",
+  "welcomeText2": "Unser Ziel ist es, Ihre Lebensqualität durch Unterstützung im täglichen Umgang mit Tinnitus zu verbessern. Bitte beachten Sie jedoch, dass die App kein Ersatz für eine professionelle medizinische Diagnose oder Behandlung ist. Es ist wichtig, bei anhaltenden Beschwerden oder Fragen stets ärztlichen Rat einzuholen.",
+  "welcomeText3": "Die in dieser App bereitgestellten Methoden und Informationen basieren auf den aktuellen wissenschaftlichen Erkenntnissen im Bereich Tinnitus und auf den Ergebnissen der Dissertation \"Individualisierte Auditorische Stimulation bei Tinnitus: Die App 'Shades of Noise'\" von Lisa Führlein. Wir führen selbst keine grundlegende Forschung zur Ursache oder Behandlung von Tinnitus durch. Unsere Arbeit konzentriert sich auf die Anwendung bestehender Forschungsergebnisse, um praxisnahe Lösungen und Unterstützung für Betroffene zu bieten. ",
+  "welcomeText4": "Wir hoffen, dass unsere App Ihnen wertvolle Hilfe bietet und Ihren Alltag mit Tinnitus erleichtert.",
   "yourAlarmIsRinging": "Ihr Wecker klingelt"
 }

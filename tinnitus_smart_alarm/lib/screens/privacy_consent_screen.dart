@@ -25,9 +25,9 @@ class PrivacyConsentScreen extends StatelessWidget {
               'Wir sammeln Daten, um die App zu verbessern. \n\nBitte stimmen Sie der Datensammlung zu oder lehnen Sie sie ab.',
               style: TextStyle(fontSize: 16),
             ),
-            Spacer(),
+            const Divider(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
                   onPressed: () => onConsent(false),

@@ -301,19 +301,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-      // floatingActionButton: Row(
-      //   children: [
-      //     FloatingActionButton(
-      //       heroTag: "a",
-      //       onPressed: () => printSharedPreferences(),
-      //     ),
-      //     FloatingActionButton(
-      //       heroTag: "b",
-      //       onPressed: () => clearSharedPreferences(),
-      //       backgroundColor: Colors.red,
-      //     ),
-      //   ],
-      // ),
+      floatingActionButton: Row(
+        children: [
+          FloatingActionButton(
+            heroTag: "a",
+            onPressed: () => printSharedPreferences(),
+          ),
+          FloatingActionButton(
+            heroTag: "b",
+            onPressed: () => clearSharedPreferences(),
+            backgroundColor: Colors.red,
+          ),
+        ],
+      ),
     );
   }
 

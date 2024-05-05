@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tinnitus_smart_alarm/screens/alarm_home_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/onboarding_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/privacy_consent_screen.dart';
@@ -9,6 +12,7 @@ import 'package:tinnitus_smart_alarm/screens/stimuli_selection_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/tips_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -20,7 +24,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   bool _hasSeenOnboarding = false;
-  bool _hasConsented = false;
+  bool? _hasConsented = null;
   SettingsManager settingsManager = SettingsManager();
 
   final List<Widget> _screens = [
@@ -43,36 +47,55 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _setMyDataOK(bool value) async {
-    settingsManager.setAllowDataCollectionSetting(value);
+    await settingsManager.setAllowDataCollectionSetting(value);
     setState(() {
-      _hasConsented = value;
+      _hasConsented = true;
+      log('_hasConsented: $value');
     });
+    _removeSplashScreen();
   }
 
   Future<void> _loadPreferences() async {
     _hasSeenOnboarding =
         await settingsManager.getHasSeenOnboardingSetting() ?? false;
-    _hasConsented =
-        await settingsManager.getAllowDataCollectionSetting() ?? false;
+    _hasConsented = await settingsManager.getAllowDataCollectionSetting();
     setState(() {});
+    _removeSplashScreen();
+  }
+
+  void _removeSplashScreen() {
+    FlutterNativeSplash.remove();
+  }
+
+  Widget _buildApp(Widget homeScreen) {
+    return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: homeScreen,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     if (!_hasSeenOnboarding) {
-      return MaterialApp(
-        home: OnboardingScreen(
+      return _buildApp(
+        OnboardingScreen(
           onComplete: () async {
-            settingsManager.setHasSeenOnboardingSetting(true);
+            await settingsManager.setHasSeenOnboardingSetting(true);
             setState(() {
               _hasSeenOnboarding = true;
             });
           },
         ),
       );
-    } else if (!_hasConsented) {
-      return MaterialApp(
-        home: PrivacyConsentScreen(
+    } else if (_hasConsented == null) {
+      return _buildApp(
+        PrivacyConsentScreen(
           onConsent: (bool consented) {
             _setMyDataOK(consented);
           },

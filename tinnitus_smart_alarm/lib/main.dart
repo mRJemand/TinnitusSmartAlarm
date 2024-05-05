@@ -29,14 +29,12 @@ Future<void> main() async {
   if (localeString != null) {
     locale = Locale(localeString);
   } else {
-    // Fallback auf Systemsprache, falls keine Einstellung vorhanden ist
     Locale systemLocale = WidgetsBinding.instance.window.locale;
     if (L10n.all.contains(systemLocale)) {
-      locale = systemLocale; // Verwendung der Systemsprache, wenn unterstützt
-      await prefs.setString(
-          'locale', systemLocale.languageCode); // Speichern der Systemsprache
+      locale = systemLocale;
+      await prefs.setString('locale', systemLocale.languageCode);
     } else {
-      locale = Locale('en'); // Fallback auf Englisch
+      locale = const Locale('en');
     }
   }
 
