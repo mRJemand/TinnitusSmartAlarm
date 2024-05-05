@@ -4,6 +4,7 @@ import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/edit_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
@@ -19,7 +20,8 @@ class AlarmHomeScreen extends StatefulWidget {
 }
 
 class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
-  late List<AlarmSettings> alarms;
+  late List<ExtendedAlarm> alarms;
+  late AlarmManager alarmManager;
 
   static StreamSubscription<AlarmSettings>? subscription;
 
@@ -29,6 +31,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     if (Alarm.android) {
       checkAndroidNotificationPermission();
     }
+    alarmManager = AlarmManager();
     loadAlarms();
     subscription ??= Alarm.ringStream.stream.listen(
       (alarmSettings) => navigateToRingScreen(alarmSettings),
@@ -42,8 +45,9 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
 
   void loadAlarms() {
     setState(() {
-      alarms = Alarm.getAlarms();
-      alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
+      alarms = alarmManager.loadAlarms();
+      alarms.sort((a, b) =>
+          a.alarmSettings.dateTime.isBefore(b.alarmSettings.dateTime) ? 0 : 1);
     });
   }
 
@@ -57,7 +61,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     loadAlarms();
   }
 
-  Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
+  Future<void> navigateToAlarmScreen(ExtendedAlarm? extendedAlarm) async {
     final res = await showModalBottomSheet<bool?>(
         context: context,
         isScrollControlled: true,
@@ -68,8 +72,9 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
           return FractionallySizedBox(
             heightFactor: 0.75,
             child: AlarmEditScreen(
-              alarmSettings: settings,
+              extendedAlarm: extendedAlarm,
               refreshAlarms: loadAlarms,
+              alarmManager: alarmManager,
             ),
           );
         });
@@ -84,17 +89,6 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
       final res = await Permission.notification.request();
       alarmPrint(
         'Notification permission ${res.isGranted ? '' : 'not '}granted.',
-      );
-    }
-  }
-
-  Future<void> checkAndroidExternalStoragePermission() async {
-    final status = await Permission.storage.status;
-    if (status.isDenied) {
-      alarmPrint('Requesting external storage permission...');
-      final res = await Permission.storage.request();
-      alarmPrint(
-        'External storage permission ${res.isGranted ? '' : 'not'} granted.',
       );
     }
   }
@@ -116,14 +110,14 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
                 separatorBuilder: (context, index) => const Divider(height: 1),
                 itemBuilder: (context, index) {
                   return AlarmTile(
-                    key: Key(alarms[index].id.toString()),
-                    title: TimeOfDay(
-                      hour: alarms[index].dateTime.hour,
-                      minute: alarms[index].dateTime.minute,
-                    ).format(context),
+                    alarm: alarms[index],
                     onPressed: () => navigateToAlarmScreen(alarms[index]),
                     onDismissed: () {
-                      Alarm.stop(alarms[index].id).then((_) => loadAlarms());
+                      Alarm.stop(alarms[index].alarmSettings.id).then((_) {
+                        alarmManager
+                            .deleteAlarm(alarms[index].alarmSettings.id);
+                        loadAlarms();
+                      });
                     },
                   );
                 },
@@ -140,7 +134,6 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // AlarmHomeShortcutButton(refreshAlarms: loadAlarms),
             FloatingActionButton(
               heroTag: UniqueKey(),
               onPressed: () => navigateToAlarmScreen(null),
