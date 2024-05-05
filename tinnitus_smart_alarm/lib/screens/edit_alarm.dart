@@ -67,7 +67,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       volume = null;
       assetAudio = 'assets/tinnitus_stimuli/marimba.mp3';
       fadeDuration = fadeDuration;
-      alarmName = "Neuer Alarm";
+      alarmName = 'Alarm';
       isActive = true;
       isRepeated = false;
       repeatDays = List.filled(7, false);

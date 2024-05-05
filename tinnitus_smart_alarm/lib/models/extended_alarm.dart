@@ -114,12 +114,44 @@ class AlarmManager {
     } else {
       alarms.add(alarm);
     }
+
+    // Wenn die Alarmzeit in der Vergangenheit liegt, aktualisiere auf die nächste mögliche Zeit.
     if (alarm.isActive) {
+      final now = DateTime.now();
+      var alarmTime = alarm.alarmSettings.dateTime;
+      if (alarmTime.isBefore(now)) {
+        if (alarm.isRepeated) {
+          // Wähle die nächste Wiederholungszeit
+          alarmTime = getNextRepeatingDateTime(alarmTime, alarm.repeatDays);
+        } else {
+          // Setze den Alarm auf den nächsten Tag
+          alarmTime = alarmTime.add(const Duration(days: 1));
+        }
+        alarm = alarm.copyWith(
+          alarmSettings: alarm.alarmSettings.copyWith(dateTime: alarmTime),
+        );
+      }
       await Alarm.set(alarmSettings: alarm.alarmSettings);
     } else {
       await Alarm.stop(alarm.alarmSettings.id);
     }
+
     await saveAlarms();
+  }
+
+  DateTime getNextRepeatingDateTime(DateTime dateTime, List<bool> repeatDays) {
+    final now = DateTime.now();
+    final weekdays = List.generate(7, (index) => index);
+    for (int i = 0; i < 7; i++) {
+      final dayIndex = (dateTime.weekday - 1 + i) % 7;
+      if (repeatDays[dayIndex]) {
+        final nextDate = dateTime.add(Duration(days: i));
+        if (nextDate.isAfter(now)) {
+          return nextDate;
+        }
+      }
+    }
+    return dateTime.add(const Duration(days: 7));
   }
 
   Future<void> deleteAlarm(int id) async {

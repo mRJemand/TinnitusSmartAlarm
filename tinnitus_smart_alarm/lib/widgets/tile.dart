@@ -45,9 +45,23 @@ class _AlarmTileState extends State<AlarmTile> {
     });
 
     final AlarmManager alarmManager = AlarmManager();
-    final updatedAlarm = widget.alarm.copyWith(isActive: isActive);
+    var updatedAlarm = widget.alarm.copyWith(isActive: isActive);
 
     if (isActive) {
+      final now = DateTime.now();
+      var alarmTime = updatedAlarm.alarmSettings.dateTime;
+      if (alarmTime.isBefore(now)) {
+        if (updatedAlarm.isRepeated) {
+          alarmTime = alarmManager.getNextRepeatingDateTime(
+              alarmTime, updatedAlarm.repeatDays);
+        } else {
+          alarmTime = alarmTime.add(const Duration(days: 1));
+        }
+        updatedAlarm = updatedAlarm.copyWith(
+          alarmSettings:
+              updatedAlarm.alarmSettings.copyWith(dateTime: alarmTime),
+        );
+      }
       await alarmManager.saveAlarm(updatedAlarm);
     } else {
       await Alarm.stop(updatedAlarm.alarmSettings.id);
