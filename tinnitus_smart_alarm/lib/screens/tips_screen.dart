@@ -35,7 +35,14 @@ class _TipsScreenState extends State<TipsScreen> {
 
   void _toggleFavorites() {
     setState(() {
-      showFavoritesOnly = !showFavoritesOnly;
+      if (!showFavoritesOnly) {
+        showFavoritesOnly = !showFavoritesOnly;
+        tipsList =
+            tipsList.where((element) => element.isFavorite == true).toList();
+      } else {
+        showFavoritesOnly = !showFavoritesOnly;
+        tipsList = TipsCatalag.tipsList;
+      }
     });
   }
 
