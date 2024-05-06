@@ -4,6 +4,7 @@ import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/edit_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
@@ -125,6 +126,21 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
                     onDismissed: () {
                       Alarm.stop(alarms[index].id).then((_) => loadAlarms());
                     },
+                    alarm: ExtendedAlarm(
+                      alarmSettings: alarms[index],
+                      isActive: true,
+                      isRepeated: false,
+                      name: 'Test',
+                      repeatDays: [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                      ],
+                    ),
                   );
                 },
               )
