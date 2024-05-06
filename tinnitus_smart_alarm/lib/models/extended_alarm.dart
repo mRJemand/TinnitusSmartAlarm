@@ -1,7 +1,7 @@
 import 'package:alarm/model/alarm_settings.dart';
 
 class ExtendedAlarm {
-  final AlarmSettings alarmSettings;
+  AlarmSettings alarmSettings;
   String name;
   bool isActive;
   bool isRepeated;

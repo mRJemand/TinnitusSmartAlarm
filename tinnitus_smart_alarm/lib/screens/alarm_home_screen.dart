@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/edit_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
+import 'package:tinnitus_smart_alarm/services/alarm_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/tile.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,6 +23,7 @@ class AlarmHomeScreen extends StatefulWidget {
 
 class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
   late List<AlarmSettings> alarms;
+  late List<ExtendedAlarm> extendedAlarms;
 
   static StreamSubscription<AlarmSettings>? subscription;
 
@@ -41,7 +44,10 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     FlutterNativeSplash.remove();
   }
 
-  void loadAlarms() {
+  void loadAlarms() async {
+    extendedAlarms = await AlarmManager.loadAlarms();
+    setState(() {});
+    log('LENGTH ${extendedAlarms.length}');
     setState(() {
       alarms = Alarm.getAlarms();
       alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
@@ -111,37 +117,30 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Tinnitus Smart Alarm')),
       body: SafeArea(
-        child: alarms.isNotEmpty
+        child: extendedAlarms.isNotEmpty
             ? ListView.separated(
-                itemCount: alarms.length,
+                itemCount: extendedAlarms.length,
                 separatorBuilder: (context, index) => const Divider(height: 1),
                 itemBuilder: (context, index) {
                   return AlarmTile(
-                    key: Key(alarms[index].id.toString()),
-                    title: TimeOfDay(
-                      hour: alarms[index].dateTime.hour,
-                      minute: alarms[index].dateTime.minute,
-                    ).format(context),
-                    onPressed: () => navigateToAlarmScreen(alarms[index]),
-                    onDismissed: () {
-                      Alarm.stop(alarms[index].id).then((_) => loadAlarms());
-                    },
-                    alarm: ExtendedAlarm(
-                      alarmSettings: alarms[index],
-                      isActive: true,
-                      isRepeated: false,
-                      name: 'Test',
-                      repeatDays: [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                      ],
-                    ),
-                  );
+                      key: Key(
+                          extendedAlarms[index].alarmSettings.id.toString()),
+                      title: TimeOfDay(
+                        hour: extendedAlarms[index].alarmSettings.dateTime.hour,
+                        minute:
+                            extendedAlarms[index].alarmSettings.dateTime.minute,
+                      ).format(context),
+                      onPressed: () => navigateToAlarmScreen(
+                          extendedAlarms[index].alarmSettings),
+                      onDismissed: () {
+                        // Alarm.stop(extendedAlarms[index].alarmSettings.id)
+                        //     .then((_) => loadAlarms());
+                        // AlarmManager.setAlarmInactive(extendedAlarms[index]);
+                        AlarmManager.deleteAlarm(
+                            extendedAlarms[index].alarmSettings.id);
+                        loadAlarms();
+                      },
+                      extendedAlarm: extendedAlarms[index]);
                 },
               )
             : Center(

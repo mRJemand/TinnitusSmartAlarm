@@ -2,17 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
+import 'package:tinnitus_smart_alarm/services/alarm_manager.dart';
 
 class AlarmTile extends StatefulWidget {
   final String title;
-  final ExtendedAlarm alarm;
+  final ExtendedAlarm extendedAlarm;
   final void Function() onPressed;
   final void Function()? onDismissed;
 
   const AlarmTile({
     Key? key,
     required this.title,
-    required this.alarm,
+    required this.extendedAlarm,
     required this.onPressed,
     this.onDismissed,
   }) : super(key: key);
@@ -26,7 +27,7 @@ class _AlarmTileState extends State<AlarmTile> {
     const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
     final selectedDays = List<String>.generate(
       7,
-      (index) => widget.alarm.repeatDays[index] ? days[index] : '',
+      (index) => widget.extendedAlarm.repeatDays[index] ? days[index] : '',
     ).where((day) => day.isNotEmpty).toList();
 
     return selectedDays.isEmpty
@@ -36,14 +37,19 @@ class _AlarmTileState extends State<AlarmTile> {
 
   Future<void> toggleAlarm(bool value) async {
     setState(() {
-      widget.alarm.isActive = value;
+      widget.extendedAlarm.isActive = value;
     });
+    if (value) {
+      AlarmManager.setAlarmActive(widget.extendedAlarm);
+    } else {
+      AlarmManager.setAlarmInactive(widget.extendedAlarm);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(widget.alarm.alarmSettings.id.toString()),
+      key: Key(widget.extendedAlarm.alarmSettings.id.toString()),
       direction: widget.onDismissed != null
           ? DismissDirection.endToStart
           : DismissDirection.none,
@@ -79,18 +85,19 @@ class _AlarmTileState extends State<AlarmTile> {
                 children: [
                   Text(
                     TimeOfDay(
-                      hour: widget.alarm.alarmSettings.dateTime.hour,
-                      minute: widget.alarm.alarmSettings.dateTime.minute,
+                      hour: widget.extendedAlarm.alarmSettings.dateTime.hour,
+                      minute:
+                          widget.extendedAlarm.alarmSettings.dateTime.minute,
                     ).format(context),
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
-                      color: Colors.blueAccent,
+                      // color: Colors.blueAccent,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    widget.alarm.name,
+                    widget.extendedAlarm.name,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -116,7 +123,7 @@ class _AlarmTileState extends State<AlarmTile> {
                   icon: const Icon(
                     Icons.edit_outlined,
                     size: 30,
-                    color: Colors.blueAccent,
+                    // color: Colors.blueAccent,
                   ),
                   onPressed: () {
                     log('open alarm');
@@ -124,9 +131,9 @@ class _AlarmTileState extends State<AlarmTile> {
                   },
                 ),
                 Switch(
-                  value: widget.alarm.isActive,
+                  value: widget.extendedAlarm.isActive,
                   onChanged: toggleAlarm,
-                  activeColor: Colors.blueAccent,
+                  // activeColor: Colors.blueAccent,
                 ),
               ],
             ),

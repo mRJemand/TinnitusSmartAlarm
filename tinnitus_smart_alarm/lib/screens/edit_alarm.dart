@@ -4,8 +4,10 @@ import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
+import 'package:tinnitus_smart_alarm/services/alarm_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
@@ -15,9 +17,11 @@ class AlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
   final void Function() refreshAlarms;
 
-  const AlarmEditScreen(
-      {Key? key, this.alarmSettings, required this.refreshAlarms})
-      : super(key: key);
+  const AlarmEditScreen({
+    Key? key,
+    this.alarmSettings,
+    required this.refreshAlarms,
+  }) : super(key: key);
 
   @override
   State<AlarmEditScreen> createState() => _AlarmEditScreenState();
@@ -42,6 +46,9 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   List<Stimuli> stimuliList = [];
   StimuliManager stimuliManager = StimuliManager();
   late Stimuli selectedStimuli;
+  final TextEditingController _nameController = TextEditingController();
+  late bool isActive;
+  late String alarmName;
 
   @override
   void initState() {
@@ -50,6 +57,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     fadeDuration = fadeDurationLength;
     _settingsFuture = _loadSettings();
     _stimuliFuture = _loadStimuliList();
+    customVolume = true;
+    fadeDurationStatus = true;
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
@@ -66,6 +75,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       assetAudio = widget.alarmSettings!.assetAudioPath;
       fadeDuration = widget.alarmSettings!.fadeDuration;
     }
+    isActive = true;
+    alarmName = _nameController.text;
   }
 
   Future<void> _loadStimuliList() async {
@@ -157,16 +168,33 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     return alarmSettings;
   }
 
-  void saveAlarm() {
+  void saveAlarm() async {
     setState(() {});
     if (loading) return;
     setState(() => loading = true);
 
-    Alarm.set(alarmSettings: buildAlarmSettings(isTestAlarm: false))
-        .then((res) {
-      if (res) Navigator.pop(context, true);
-      setState(() => loading = false);
-    });
+    ExtendedAlarm extendedAlarm = ExtendedAlarm(
+        alarmSettings: buildAlarmSettings(isTestAlarm: false),
+        name: _nameController.text,
+        isActive: isActive,
+        isRepeated: false,
+        repeatDays: [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+        ]);
+    await AlarmManager.saveOrUpdateAlarm(extendedAlarm);
+    // await AlarmManager.setAlarmActive(extendedAlarm);
+    // Alarm.set(alarmSettings: buildAlarmSettings(isTestAlarm: false))
+    //     .then((res) {
+    //   if (res) Navigator.pop(context, true);
+    // });
+    Navigator.pop(context, true);
+    setState(() => loading = false);
   }
 
   void deleteAlarm() {
@@ -193,9 +221,10 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     return FutureBuilder(
       future: Future.wait([_settingsFuture, _stimuliFuture]),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return const Center(child: CircularProgressIndicator());
+        // } else
+        if (snapshot.hasError) {
           return const Center(child: Text('Error loading settings'));
         }
         return Padding(
@@ -254,6 +283,42 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                         .copyWith(color: Colors.blueAccent),
                   ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.isActive,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Switch(
+                    value: isActive,
+                    onChanged: (value) => setState(() => isActive = value),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          alarmName = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
