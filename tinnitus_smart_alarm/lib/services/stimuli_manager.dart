@@ -43,6 +43,13 @@ class StimuliManager {
         .firstWhereOrNull((stimuli) => stimuli.filename == fileName);
   }
 
+  Future<Stimuli?> loadStimuliByFilepath(String filepath) async {
+    final List<Stimuli> stimuliList = await loadAllStimuli();
+    return stimuliList.firstWhereOrNull((stimuli) =>
+        stimuli.filepath == filepath ||
+        'assets/${stimuli.filepath}' == filepath);
+  }
+
   Future<void> addStimuli(Stimuli stimuli) async {
     final SharedPreferences prefs = await _prefs;
     List<Stimuli> stimuliList = await loadAllStimuli();

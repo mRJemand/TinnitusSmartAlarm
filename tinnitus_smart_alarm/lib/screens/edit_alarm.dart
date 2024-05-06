@@ -68,7 +68,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       assetAudio = 'assets/tinnitus_stimuli/marimba.mp3';
       fadeDuration = fadeDuration;
     } else {
-      log('asd');
       selectedDateTime = widget.alarmSettings!.dateTime;
       loopAudio = widget.alarmSettings!.loopAudio;
       vibrate = widget.alarmSettings!.vibrate;
@@ -101,10 +100,12 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       volume = await settingsManager.getVolumeSetting() ?? 0.5;
       customVolume = await settingsManager.getCustomVolumeSetting() ?? true;
     }
-    assetAudio = await settingsManager.getAssetAudioSetting();
-    Stimuli? selectedAssetAudio =
+    assetAudio = await widget.alarmSettings?.assetAudioPath ??
+        await settingsManager.getAssetAudioSetting();
+    Stimuli? selectedAssetAudio;
+    selectedAssetAudio = await stimuliManager.loadStimuliByFilepath(assetAudio);
+    selectedAssetAudio ??=
         await stimuliManager.loadStimuliByFileName(assetAudio);
-
     if (selectedAssetAudio == null) {
       assetAudio = await settingsManager.getAssetAudioSetting();
       selectedAssetAudio = stimuliList.first;
@@ -183,7 +184,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     setState(() {});
     if (loading) return;
     setState(() => loading = true);
-    log(buildAlarmSettings(isTestAlarm: false).toString());
     ExtendedAlarm extendedAlarm = ExtendedAlarm(
         alarmSettings: buildAlarmSettings(isTestAlarm: false),
         name: _nameController.text,
