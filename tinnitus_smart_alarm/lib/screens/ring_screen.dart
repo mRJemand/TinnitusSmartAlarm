@@ -24,7 +24,7 @@ class AlarmRingScreen extends StatelessWidget {
       String notificationTitle, String notificationBody) {
     // todo change duration to 90 min
     Future.delayed(const Duration(seconds: 0), () async {
-      DateTime scheduledTime = DateTime.now().add(const Duration(seconds: 3));
+      DateTime scheduledTime = DateTime.now().add(const Duration(minutes: 30));
       StimuliManager stimuliManager = StimuliManager();
       Stimuli? stimuli = await stimuliManager
           .loadStimuliByFileName(getLastSegment(alarmSettings.assetAudioPath));
