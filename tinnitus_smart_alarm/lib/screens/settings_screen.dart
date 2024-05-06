@@ -301,19 +301,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-      floatingActionButton: Row(
-        children: [
-          FloatingActionButton(
-            heroTag: "a",
-            onPressed: () => printSharedPreferences(),
-          ),
-          FloatingActionButton(
-            heroTag: "b",
-            onPressed: () => clearSharedPreferences(),
-            backgroundColor: Colors.red,
-          ),
-        ],
-      ),
+      // floatingActionButton: Row(
+      //   children: [
+      //     FloatingActionButton(
+      //       heroTag: "a",
+      //       onPressed: () => printSharedPreferences(),
+      //     ),
+      //     FloatingActionButton(
+      //       heroTag: "b",
+      //       onPressed: () => clearSharedPreferences(),
+      //       backgroundColor: Colors.red,
+      //     ),
+      // ],
+      // ),
     );
   }
 
@@ -438,6 +438,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                 await firestoreManager.deleteCurrentUserEntries();
                 await authManager.signOutAndDeleteAccount();
+                await clearSharedPreferences();
                 Navigator.of(context).pop();
               },
               child: Text(AppLocalizations.of(context)!.confirm),
