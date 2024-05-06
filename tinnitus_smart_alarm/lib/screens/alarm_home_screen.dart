@@ -23,7 +23,7 @@ class AlarmHomeScreen extends StatefulWidget {
 
 class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
   late List<AlarmSettings> alarms;
-  late List<ExtendedAlarm> extendedAlarms;
+  List<ExtendedAlarm?> extendedAlarms = [];
 
   static StreamSubscription<AlarmSettings>? subscription;
 
@@ -47,7 +47,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
   void loadAlarms() async {
     extendedAlarms = await AlarmManager.loadAlarms();
     setState(() {});
-    log('LENGTH ${extendedAlarms.length}');
+    // log('LENGTH ${extendedAlarms.length}');
     setState(() {
       alarms = Alarm.getAlarms();
       alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
@@ -64,22 +64,25 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     loadAlarms();
   }
 
-  Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
+  Future<void> navigateToAlarmScreen(ExtendedAlarm? alarm) async {
     final res = await showModalBottomSheet<bool?>(
-        context: context,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        builder: (context) {
-          return FractionallySizedBox(
-            heightFactor: 0.75,
-            child: AlarmEditScreen(
-              alarmSettings: settings,
-              refreshAlarms: loadAlarms,
-            ),
-          );
-        });
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      builder: (context) {
+        log(alarm?.toJson().toString() ?? 'no json');
+        return FractionallySizedBox(
+          heightFactor: 0.75,
+          child: AlarmEditScreen(
+            alarmSettings: alarm?.alarmSettings,
+            extendedAlarm: alarm,
+            refreshAlarms: loadAlarms,
+          ),
+        );
+      },
+    );
 
     if (res != null && res == true) loadAlarms();
   }
@@ -124,23 +127,26 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
                 itemBuilder: (context, index) {
                   return AlarmTile(
                       key: Key(
-                          extendedAlarms[index].alarmSettings.id.toString()),
+                          extendedAlarms[index]!.alarmSettings.id.toString()),
                       title: TimeOfDay(
-                        hour: extendedAlarms[index].alarmSettings.dateTime.hour,
-                        minute:
-                            extendedAlarms[index].alarmSettings.dateTime.minute,
+                        hour:
+                            extendedAlarms[index]!.alarmSettings.dateTime.hour,
+                        minute: extendedAlarms[index]!
+                            .alarmSettings
+                            .dateTime
+                            .minute,
                       ).format(context),
-                      onPressed: () => navigateToAlarmScreen(
-                          extendedAlarms[index].alarmSettings),
+                      onPressed: () =>
+                          navigateToAlarmScreen(extendedAlarms[index]),
                       onDismissed: () {
                         // Alarm.stop(extendedAlarms[index].alarmSettings.id)
                         //     .then((_) => loadAlarms());
                         // AlarmManager.setAlarmInactive(extendedAlarms[index]);
                         AlarmManager.deleteAlarm(
-                            extendedAlarms[index].alarmSettings.id);
+                            extendedAlarms[index]!.alarmSettings.id);
                         loadAlarms();
                       },
-                      extendedAlarm: extendedAlarms[index]);
+                      extendedAlarm: extendedAlarms[index]!);
                 },
               )
             : Center(

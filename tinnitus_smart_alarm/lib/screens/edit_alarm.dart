@@ -15,11 +15,13 @@ import 'package:tinnitus_smart_alarm/widgets/volume_slider.dart';
 
 class AlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
+  final ExtendedAlarm? extendedAlarm;
   final void Function() refreshAlarms;
 
   const AlarmEditScreen({
     Key? key,
     this.alarmSettings,
+    this.extendedAlarm,
     required this.refreshAlarms,
   }) : super(key: key);
 
@@ -55,10 +57,8 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     super.initState();
     creating = widget.alarmSettings == null;
     fadeDuration = fadeDurationLength;
-    _settingsFuture = _loadSettings();
+    _settingsFuture = _loadSettings(creating);
     _stimuliFuture = _loadStimuliList();
-    customVolume = true;
-    fadeDurationStatus = true;
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
@@ -68,6 +68,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       assetAudio = 'assets/tinnitus_stimuli/marimba.mp3';
       fadeDuration = fadeDuration;
     } else {
+      log('asd');
       selectedDateTime = widget.alarmSettings!.dateTime;
       loopAudio = widget.alarmSettings!.loopAudio;
       vibrate = widget.alarmSettings!.vibrate;
@@ -75,7 +76,15 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
       assetAudio = widget.alarmSettings!.assetAudioPath;
       fadeDuration = widget.alarmSettings!.fadeDuration;
     }
-    isActive = true;
+    if (widget.extendedAlarm == null) {
+      isActive = true;
+    }
+    isActive = widget.extendedAlarm?.isActive ?? true;
+
+    customVolume = widget.extendedAlarm?.customVolume ?? true;
+    volume = widget.extendedAlarm?.alarmSettings.volume ?? 0.5;
+    fadeDurationStatus = widget.extendedAlarm?.isActive ?? true;
+
     alarmName = _nameController.text;
   }
 
@@ -84,12 +93,14 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     setState(() {});
   }
 
-  Future<void> _loadSettings() async {
-    loopAudio = await settingsManager.getLoopAudioSetting() ?? true;
-    vibrate = await settingsManager.getVibrateSetting();
-    fadeDurationStatus = await settingsManager.getFadeInSetting() ?? true;
-    volume = await settingsManager.getVolumeSetting() ?? 0.5;
-    customVolume = await settingsManager.getCustomVolumeSetting() ?? true;
+  Future<void> _loadSettings(bool creating) async {
+    if (creating) {
+      loopAudio = await settingsManager.getLoopAudioSetting() ?? true;
+      vibrate = await settingsManager.getVibrateSetting();
+      fadeDurationStatus = await settingsManager.getFadeInSetting() ?? true;
+      volume = await settingsManager.getVolumeSetting() ?? 0.5;
+      customVolume = await settingsManager.getCustomVolumeSetting() ?? true;
+    }
     assetAudio = await settingsManager.getAssetAudioSetting();
     Stimuli? selectedAssetAudio =
         await stimuliManager.loadStimuliByFileName(assetAudio);
@@ -172,12 +183,13 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     setState(() {});
     if (loading) return;
     setState(() => loading = true);
-
+    log(buildAlarmSettings(isTestAlarm: false).toString());
     ExtendedAlarm extendedAlarm = ExtendedAlarm(
         alarmSettings: buildAlarmSettings(isTestAlarm: false),
         name: _nameController.text,
         isActive: isActive,
         isRepeated: false,
+        customVolume: customVolume,
         repeatDays: [
           false,
           false,
@@ -187,7 +199,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
           false,
           false,
         ]);
-    await AlarmManager.saveOrUpdateAlarm(extendedAlarm);
+    await AlarmManager.setAlarmActive(extendedAlarm);
     // await AlarmManager.setAlarmActive(extendedAlarm);
     // Alarm.set(alarmSettings: buildAlarmSettings(isTestAlarm: false))
     //     .then((res) {
@@ -198,9 +210,11 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   }
 
   void deleteAlarm() {
-    Alarm.stop(widget.alarmSettings!.id).then((res) {
-      if (res) Navigator.pop(context, true);
-    });
+    AlarmManager.deleteAlarm(widget.alarmSettings!.id);
+    // Alarm.stop(widget.alarmSettings!.id).then((res) {
+    //   if (res) Navigator.pop(context, true);
+    // });
+    Navigator.pop(context, true);
   }
 
   List<DropdownMenuItem<Stimuli>> _getStimuliDropdownList() {

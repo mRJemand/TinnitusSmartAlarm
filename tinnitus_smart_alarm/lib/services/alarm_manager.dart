@@ -43,12 +43,16 @@ class AlarmManager {
   }
 
   /// Lädt alle ExtendedAlarms aus den Präferenzen.
-  static Future<List<ExtendedAlarm>> loadAlarms() async {
+  static Future<List<ExtendedAlarm?>> loadAlarms() async {
     final prefs = await SharedPreferences.getInstance();
     final alarmsJson = prefs.getString(_alarmsKey);
     if (alarmsJson != null) {
-      final List<dynamic> jsonList = jsonDecode(alarmsJson);
-      return jsonList.map((json) => ExtendedAlarm.fromJson(json)).toList();
+      try {
+        final List<dynamic> jsonList = jsonDecode(alarmsJson);
+        return jsonList.map((json) => ExtendedAlarm.fromJson(json)).toList();
+      } catch (e) {
+        log('Fehler beim Laden der Alarmliste: $e');
+      }
     }
     return [];
   }
