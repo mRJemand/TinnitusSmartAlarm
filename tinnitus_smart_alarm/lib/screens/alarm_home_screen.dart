@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
+import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/edit_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
 import 'package:tinnitus_smart_alarm/services/alarm_manager.dart';
+import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/tile.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,6 +26,8 @@ class AlarmHomeScreen extends StatefulWidget {
 class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
   late List<AlarmSettings> alarms;
   List<ExtendedAlarm?> extendedAlarms = [];
+  late List<Stimuli> stimuliList;
+  late final Future<void> _stimuliFuture;
 
   static StreamSubscription<AlarmSettings>? subscription;
 
@@ -34,6 +38,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
       checkAndroidNotificationPermission();
     }
     loadAlarms();
+    _stimuliFuture = _loadStimuliList();
     subscription ??= Alarm.ringStream.stream.listen(
       (alarmSettings) => navigateToRingScreen(alarmSettings),
     );
@@ -52,6 +57,12 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
       alarms = Alarm.getAlarms();
       alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
     });
+  }
+
+  Future<void> _loadStimuliList() async {
+    StimuliManager stimuliManager = StimuliManager();
+    stimuliList = await stimuliManager.loadAllStimuli();
+    setState(() {});
   }
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
@@ -79,6 +90,7 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
             alarmSettings: alarm?.alarmSettings,
             extendedAlarm: alarm,
             refreshAlarms: loadAlarms,
+            stimuliList: stimuliList,
           ),
         );
       },
@@ -119,42 +131,57 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Tinnitus Smart Alarm')),
-      body: SafeArea(
-        child: extendedAlarms.isNotEmpty
-            ? ListView.separated(
-                itemCount: extendedAlarms.length,
-                separatorBuilder: (context, index) => const Divider(height: 1),
-                itemBuilder: (context, index) {
-                  return AlarmTile(
-                      key: Key(
-                          extendedAlarms[index]!.alarmSettings.id.toString()),
-                      title: TimeOfDay(
-                        hour:
-                            extendedAlarms[index]!.alarmSettings.dateTime.hour,
-                        minute: extendedAlarms[index]!
-                            .alarmSettings
-                            .dateTime
-                            .minute,
-                      ).format(context),
-                      onPressed: () =>
-                          navigateToAlarmScreen(extendedAlarms[index]),
-                      onDismissed: () {
-                        // Alarm.stop(extendedAlarms[index].alarmSettings.id)
-                        //     .then((_) => loadAlarms());
-                        // AlarmManager.setAlarmInactive(extendedAlarms[index]);
-                        AlarmManager.deleteAlarm(
-                            extendedAlarms[index]!.alarmSettings.id);
-                        loadAlarms();
-                      },
-                      extendedAlarm: extendedAlarms[index]!);
-                },
-              )
-            : Center(
-                child: Text(
-                  AppLocalizations.of(context)!.noAlarmsSet,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
+      body: FutureBuilder(
+        future: _stimuliFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Error loading settings'));
+          }
+          return SafeArea(
+            child: extendedAlarms.isNotEmpty
+                ? ListView.separated(
+                    itemCount: extendedAlarms.length,
+                    separatorBuilder: (context, index) =>
+                        const Divider(height: 1),
+                    itemBuilder: (context, index) {
+                      return AlarmTile(
+                          key: Key(extendedAlarms[index]!
+                              .alarmSettings
+                              .id
+                              .toString()),
+                          title: TimeOfDay(
+                            hour: extendedAlarms[index]!
+                                .alarmSettings
+                                .dateTime
+                                .hour,
+                            minute: extendedAlarms[index]!
+                                .alarmSettings
+                                .dateTime
+                                .minute,
+                          ).format(context),
+                          onPressed: () =>
+                              navigateToAlarmScreen(extendedAlarms[index]),
+                          onDismissed: () {
+                            // Alarm.stop(extendedAlarms[index].alarmSettings.id)
+                            //     .then((_) => loadAlarms());
+                            // AlarmManager.setAlarmInactive(extendedAlarms[index]);
+                            AlarmManager.deleteAlarm(
+                                extendedAlarms[index]!.alarmSettings.id);
+                            loadAlarms();
+                          },
+                          extendedAlarm: extendedAlarms[index]!);
+                    },
+                  )
+                : Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.noAlarmsSet,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+          );
+        },
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(10),

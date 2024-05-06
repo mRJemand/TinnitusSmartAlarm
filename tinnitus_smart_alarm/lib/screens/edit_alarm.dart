@@ -17,12 +17,14 @@ class AlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
   final ExtendedAlarm? extendedAlarm;
   final void Function() refreshAlarms;
+  final List<Stimuli> stimuliList;
 
   const AlarmEditScreen({
     Key? key,
     this.alarmSettings,
     this.extendedAlarm,
     required this.refreshAlarms,
+    required this.stimuliList,
   }) : super(key: key);
 
   @override
@@ -45,7 +47,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   final SettingsManager settingsManager = SettingsManager();
   late final Future<void> _settingsFuture;
   late final Future<void> _stimuliFuture;
-  List<Stimuli> stimuliList = [];
   StimuliManager stimuliManager = StimuliManager();
   late Stimuli selectedStimuli;
   final TextEditingController _nameController = TextEditingController();
@@ -58,7 +59,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     creating = widget.alarmSettings == null;
     fadeDuration = fadeDurationLength;
     _settingsFuture = _loadSettings(creating);
-    _stimuliFuture = _loadStimuliList();
+    // _stimuliFuture = _loadStimuliList();
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
@@ -87,10 +88,10 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     alarmName = _nameController.text;
   }
 
-  Future<void> _loadStimuliList() async {
-    stimuliList = await stimuliManager.loadAllStimuli();
-    setState(() {});
-  }
+  // Future<void> _loadStimuliList() async {
+  //   widget.stimuliList = await stimuliManager.loadAllStimuli();
+  //   setState(() {});
+  // }
 
   Future<void> _loadSettings(bool creating) async {
     if (creating) {
@@ -108,7 +109,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
         await stimuliManager.loadStimuliByFileName(assetAudio);
     if (selectedAssetAudio == null) {
       assetAudio = await settingsManager.getAssetAudioSetting();
-      selectedAssetAudio = stimuliList.first;
+      selectedAssetAudio = widget.stimuliList.first;
     } else {
       selectedAssetAudio.isIndividual ?? false
           ? assetAudio = selectedAssetAudio.filename!
@@ -219,13 +220,13 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
 
   List<DropdownMenuItem<Stimuli>> _getStimuliDropdownList() {
     List<DropdownMenuItem<Stimuli>> dropDownList = [];
-    for (Stimuli s in stimuliList) {
+    for (Stimuli s in widget.stimuliList) {
       dropDownList.add(DropdownMenuItem<Stimuli>(
         value: s,
         child: Text('${s.displayName}'),
       ));
     }
-    print(dropDownList.first);
+    // print(dropDownList.first);
     dropDownList.toSet().toList();
     return dropDownList;
   }
@@ -233,7 +234,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait([_settingsFuture, _stimuliFuture]),
+      future: Future.wait([_settingsFuture]),
       builder: (context, snapshot) {
         // if (snapshot.connectionState == ConnectionState.waiting) {
         //   return const Center(child: CircularProgressIndicator());
@@ -388,9 +389,10 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   DropdownButton<Stimuli>(
-                    value: stimuliList.firstWhere(
-                        (s) => s.id == selectedStimuli.id,
-                        orElse: () => stimuliList.first),
+                    value: widget.stimuliList.firstWhere((s) {
+                      log(s.toJson().toString());
+                      return s.id == selectedStimuli.id;
+                    }, orElse: () => widget.stimuliList.first),
                     items: _getStimuliDropdownList(),
                     onChanged: (Stimuli? newValue) {
                       if (newValue != null) {
