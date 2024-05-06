@@ -23,7 +23,8 @@ class AlarmRingScreen extends StatelessWidget {
   void _scheduleNotification(
       String notificationTitle, String notificationBody) {
     // todo change duration to 90 min
-    Future.delayed(const Duration(minutes: 20), () async {
+    Future.delayed(const Duration(seconds: 0), () async {
+      DateTime scheduledTime = DateTime.now().add(const Duration(seconds: 3));
       StimuliManager stimuliManager = StimuliManager();
       Stimuli? stimuli = await stimuliManager
           .loadStimuliByFileName(getLastSegment(alarmSettings.assetAudioPath));
@@ -33,10 +34,10 @@ class AlarmRingScreen extends StatelessWidget {
       } else {
         log(stimuli.toString());
       }
-      AwesomeNotifications().createNotification(
+      await AwesomeNotifications().createNotification(
         content: NotificationContent(
-          id: 10,
-          channelKey: 'basic_channel',
+          id: 1,
+          channelKey: 'scheduled',
           title: notificationTitle,
           body: notificationBody,
           notificationLayout: NotificationLayout.Default,
@@ -45,6 +46,7 @@ class AlarmRingScreen extends StatelessWidget {
             'frequency': stimuli?.frequency ?? '',
           },
         ),
+        schedule: NotificationCalendar.fromDate(date: scheduledTime),
         actionButtons: [
           NotificationActionButton(
             key: 'OPEN_SURVEY',
