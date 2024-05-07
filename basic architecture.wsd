@@ -1,0 +1,43 @@
+@startuml
+!define RECTANGLE class
+
+title Architekturdiagramm - Smarte Wecker-App zur Tinnitustherapie
+
+rectangle "Smarte Wecker-App" {
+    rectangle "Frontend\n(Flutter/Dart)" {
+        RECTANGLE "UI Layer\nWidgets" as ui_layer
+        RECTANGLE "Business Logic" as bl_layer
+        RECTANGLE "Service Layer\nRestClient, Local Notifications" as service_layer
+        RECTANGLE "Data Layer\nRepositories, Models" as data_layer
+    }
+
+    rectangle "Backend\n(Firebase)" {
+        RECTANGLE "Firebase Authentication" as auth
+        RECTANGLE "Firestore Database" as db
+    }
+
+    rectangle "Entwicklungsumgebung" {
+        RECTANGLE "VSCode" as vscode
+        RECTANGLE "MacBook Pro\n(macOS)" as macbook
+        RECTANGLE "Git Integration" as git
+        RECTANGLE "TestFlight\n(iOS Deployment)" as testflight
+        RECTANGLE "Direct APK Distribution\n(Android Deployment)" as apk_dist
+    }
+}
+
+' Beziehungen zwischen den Komponenten
+
+ui_layer --> bl_layer : Interacts with
+bl_layer --> service_layer : Invokes services
+service_layer --> data_layer : Accesses data
+
+data_layer --> auth : Uses for authentication
+data_layer --> db : Stores and retrieves data
+
+auth --> db : Stores authentication data
+
+vscode --> macbook : Runs on
+git --> vscode : Integrated with
+testflight --> macbook : iOS Deployment
+apk_dist --> macbook : Android Deployment
+@enduml
