@@ -68,6 +68,22 @@ class FirestoreManager {
     });
   }
 
+  Future<void> sendFeedbackToFirestore({
+    required String? name,
+    required String? email,
+    required String feedbackType,
+    required String? message,
+  }) async {
+    // Erstellen eines neuen Dokuments in Firestore mit den Feedbackdaten
+    await FirebaseFirestore.instance.collection('user_feedback').add({
+      'name': name,
+      'email': email,
+      'feedback_type': feedbackType,
+      'message': message,
+      'date_time': DateTime.now(),
+    });
+  }
+
   Future<void> deleteCurrentUserEntries() async {
     // Get the current user's ID
     User? currentUser = FirebaseAuth.instance.currentUser;

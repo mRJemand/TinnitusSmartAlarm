@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/chart_screen.dart';
+import 'package:tinnitus_smart_alarm/screens/feedback_form_screen.dart';
 import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
 import 'package:tinnitus_smart_alarm/services/firestore_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
@@ -283,6 +284,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     });
                     settingsManager.setAllowDataCollectionSetting(value);
                   }
+                },
+              ),
+              SettingsTile.navigation(
+                // enabled: allowDataCollecting ?? false,
+                title: Text('feedback'),
+                leading: const Icon(Icons.feedback_outlined),
+                onPressed: (context) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const FeedbackFormPage(),
+                    ),
+                  );
                 },
               ),
               SettingsTile(
