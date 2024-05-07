@@ -32,6 +32,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.feedbacksent)),
       );
+      Navigator.pop(context);
     }
   }
 
