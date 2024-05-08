@@ -14,7 +14,6 @@ class _TinnitusDecisionTreeScreenState
   String? _tinnitusType;
   bool? _isFrequencyKnown;
   String? _specificFrequency;
-  String? _stimuliType;
   String? _finalRecommendation;
 
   void _updateRecommendation() {
@@ -202,13 +201,35 @@ Empfehlung:
     setState(() {});
   }
 
+  void _setTinnitusType(String value) {
+    setState(() {
+      _tinnitusType = value;
+      _isFrequencyKnown = null;
+      _specificFrequency = null;
+      _finalRecommendation = null;
+    });
+  }
+
+  void _setIsFrequencyKnown(bool value) {
+    setState(() {
+      _isFrequencyKnown = value;
+      _specificFrequency = null;
+      _finalRecommendation = null;
+    });
+  }
+
+  void _setSpecificFrequency(String value) {
+    setState(() {
+      _specificFrequency = value;
+      _finalRecommendation = null;
+    });
+  }
+
   void _goBack() {
     if (_finalRecommendation != null) {
       _finalRecommendation = null;
     } else if (_specificFrequency != null) {
       _specificFrequency = null;
-    } else if (_stimuliType != null) {
-      _stimuliType = null;
     } else if (_isFrequencyKnown != null) {
       _isFrequencyKnown = null;
     } else {
@@ -233,44 +254,23 @@ Empfehlung:
                 children: [
                   const Text('Frage 1: Welchen Tinnitus-Typ haben Sie?',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  ListTile(
-                    title:
+                  ElevatedButton(
+                    onPressed: () => _setTinnitusType('Tonaler Tinnitus'),
+                    child:
                         const Text('Tonaler Tinnitus (z.B. Klingeln, Piepen)'),
-                    leading: Radio<String>(
-                      value: 'Tonaler Tinnitus',
-                      groupValue: _tinnitusType,
-                      onChanged: (value) {
-                        setState(() {
-                          _tinnitusType = value;
-                        });
-                      },
-                    ),
                   ),
-                  ListTile(
-                    title: const Text(
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () =>
+                        _setTinnitusType('Rauschähnlicher Tinnitus'),
+                    child: const Text(
                         'Rauschähnlicher Tinnitus (z.B. Rauschen, Zischen)'),
-                    leading: Radio<String>(
-                      value: 'Rauschähnlicher Tinnitus',
-                      groupValue: _tinnitusType,
-                      onChanged: (value) {
-                        setState(() {
-                          _tinnitusType = value;
-                        });
-                      },
-                    ),
                   ),
-                  ListTile(
-                    title: const Text(
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setTinnitusType('Gemischter Tinnitus'),
+                    child: const Text(
                         'Gemischter Tinnitus (Kombination aus beiden Tinnitus-Typen)'),
-                    leading: Radio<String>(
-                      value: 'Gemischter Tinnitus',
-                      groupValue: _tinnitusType,
-                      onChanged: (value) {
-                        setState(() {
-                          _tinnitusType = value;
-                        });
-                      },
-                    ),
                   ),
                 ],
               ),
@@ -280,29 +280,14 @@ Empfehlung:
                 children: [
                   const Text('Frage 2: Ist Ihre Tinnitusfrequenz bekannt?',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  ListTile(
-                    title: const Text('Ja'),
-                    leading: Radio<bool>(
-                      value: true,
-                      groupValue: _isFrequencyKnown,
-                      onChanged: (value) {
-                        setState(() {
-                          _isFrequencyKnown = value;
-                        });
-                      },
-                    ),
+                  ElevatedButton(
+                    onPressed: () => _setIsFrequencyKnown(true),
+                    child: const Text('Ja'),
                   ),
-                  ListTile(
-                    title: const Text('Nein'),
-                    leading: Radio<bool>(
-                      value: false,
-                      groupValue: _isFrequencyKnown,
-                      onChanged: (value) {
-                        setState(() {
-                          _isFrequencyKnown = value;
-                        });
-                      },
-                    ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setIsFrequencyKnown(false),
+                    child: const Text('Nein'),
                   ),
                 ],
               ),
@@ -313,77 +298,34 @@ Empfehlung:
                   const Text(
                       'Frage 3: Welche spezifische Frequenz entspricht Ihrem Tinnitus?',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  ListTile(
-                    title: const Text('250 Hz'),
-                    leading: Radio<String>(
-                      value: '250 Hz',
-                      groupValue: _specificFrequency,
-                      onChanged: (value) {
-                        setState(() {
-                          _specificFrequency = value;
-                        });
-                      },
-                    ),
+                  ElevatedButton(
+                    onPressed: () => _setSpecificFrequency('250 Hz'),
+                    child: const Text('250 Hz'),
                   ),
-                  ListTile(
-                    title: const Text('500 Hz'),
-                    leading: Radio<String>(
-                      value: '500 Hz',
-                      groupValue: _specificFrequency,
-                      onChanged: (value) {
-                        setState(() {
-                          _specificFrequency = value;
-                        });
-                      },
-                    ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setSpecificFrequency('500 Hz'),
+                    child: const Text('500 Hz'),
                   ),
-                  ListTile(
-                    title: const Text('3000 Hz'),
-                    leading: Radio<String>(
-                      value: '3000 Hz',
-                      groupValue: _specificFrequency,
-                      onChanged: (value) {
-                        setState(() {
-                          _specificFrequency = value;
-                        });
-                      },
-                    ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setSpecificFrequency('3000 Hz'),
+                    child: const Text('3000 Hz'),
                   ),
-                  ListTile(
-                    title: const Text('4000 Hz'),
-                    leading: Radio<String>(
-                      value: '4000 Hz',
-                      groupValue: _specificFrequency,
-                      onChanged: (value) {
-                        setState(() {
-                          _specificFrequency = value;
-                        });
-                      },
-                    ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setSpecificFrequency('4000 Hz'),
+                    child: const Text('4000 Hz'),
                   ),
-                  ListTile(
-                    title: const Text('6000 Hz'),
-                    leading: Radio<String>(
-                      value: '6000 Hz',
-                      groupValue: _specificFrequency,
-                      onChanged: (value) {
-                        setState(() {
-                          _specificFrequency = value;
-                        });
-                      },
-                    ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setSpecificFrequency('6000 Hz'),
+                    child: const Text('6000 Hz'),
                   ),
-                  ListTile(
-                    title: const Text('8000 Hz'),
-                    leading: Radio<String>(
-                      value: '8000 Hz',
-                      groupValue: _specificFrequency,
-                      onChanged: (value) {
-                        setState(() {
-                          _specificFrequency = value;
-                        });
-                      },
-                    ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setSpecificFrequency('8000 Hz'),
+                    child: const Text('8000 Hz'),
                   ),
                 ],
               ),
