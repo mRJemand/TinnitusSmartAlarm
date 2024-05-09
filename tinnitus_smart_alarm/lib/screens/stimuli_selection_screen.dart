@@ -207,10 +207,10 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
         actions: [
           IconButton(
               onPressed: () => openDecisionTreeScreen(),
-              icon: const Icon(Icons.directions_outlined)),
+              icon: const Icon(Icons.category_outlined)),
           IconButton(
               onPressed: () => _showInfoSheet(),
-              icon: const Icon(Icons.help_outline))
+              icon: const Icon(Icons.info_outline))
         ],
       ),
       body: FutureBuilder(
