@@ -1,5 +1,6 @@
-// stimuli_decision_tree_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TinnitusDecisionTreeScreen extends StatefulWidget {
   final Function(List<String> categoryNames, String? frequency) onSubmitt;
@@ -19,8 +20,7 @@ class _TinnitusDecisionTreeScreenState
   String? _tinnitusType;
   bool? _isFrequencyKnown;
   String? _specificFrequency;
-  String? _finalRecommendation;
-  List<String> _finalCategoryNames = [];
+  final List<String> _finalCategoryNames = [];
   String? _finalFrequency = '';
 
   void _updateRecommendation() {
@@ -68,8 +68,6 @@ class _TinnitusDecisionTreeScreenState
             _finalCategoryNames.add('unnatural_neg');
             break;
           default:
-            _finalRecommendation =
-                'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
         _finalCategoryNames.add('natural_neg');
@@ -122,8 +120,6 @@ class _TinnitusDecisionTreeScreenState
           default:
             _finalCategoryNames.add('natural_plus');
             _finalCategoryNames.add('natural_neg');
-            _finalRecommendation =
-                'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
         _finalCategoryNames.add('natural_plus');
@@ -193,8 +189,6 @@ class _TinnitusDecisionTreeScreenState
             _finalCategoryNames.add('natural_neg');
             _finalCategoryNames.add('unnatural_pos');
             _finalCategoryNames.add('unnatural_neg');
-            _finalRecommendation =
-                'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
         _finalCategoryNames.add('natural_plus');
@@ -214,7 +208,6 @@ class _TinnitusDecisionTreeScreenState
       _tinnitusType = value;
       _isFrequencyKnown = null;
       _specificFrequency = null;
-      _finalRecommendation = null;
     });
   }
 
@@ -222,20 +215,21 @@ class _TinnitusDecisionTreeScreenState
     setState(() {
       _isFrequencyKnown = value;
       _specificFrequency = null;
-      _finalRecommendation = null;
     });
+    if (!value) {
+      _updateRecommendation();
+    }
   }
 
   void _setSpecificFrequency(String value) {
     setState(() {
       _specificFrequency = value;
-      _finalRecommendation = null;
     });
+    _updateRecommendation();
   }
 
   void _goBack() {
     if (_finalCategoryNames.isNotEmpty) {
-      _finalRecommendation = null;
     } else if (_specificFrequency != null) {
       _specificFrequency = null;
     } else if (_isFrequencyKnown != null) {
@@ -250,7 +244,7 @@ class _TinnitusDecisionTreeScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tinnitus-Entscheidungsbaum'),
+        title: Text(AppLocalizations.of(context)!.stimulationFilterWizard),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -260,25 +254,35 @@ class _TinnitusDecisionTreeScreenState
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Frage 1: Welchen Tinnitus-Typ haben Sie?',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  ElevatedButton(
-                    onPressed: () => _setTinnitusType('Tonaler Tinnitus'),
-                    child:
-                        const Text('Tonaler Tinnitus (z.B. Klingeln, Piepen)'),
+                  Text(
+                      AppLocalizations.of(context)!.whatTypeOfTinnitusDoYouHave,
+                      style: Theme.of(context).textTheme.titleMedium),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setTinnitusType('Tonaler Tinnitus'),
+                      child: Text(
+                          AppLocalizations.of(context)!.tonalTinnitusWithEg),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () =>
-                        _setTinnitusType('Rauschähnlicher Tinnitus'),
-                    child: const Text(
-                        'Rauschähnlicher Tinnitus (z.B. Rauschen, Zischen)'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () =>
+                          _setTinnitusType('Rauschähnlicher Tinnitus'),
+                      child: Text(AppLocalizations.of(context)!
+                          .noiseLikeTinnitusWithEg),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setTinnitusType('Gemischter Tinnitus'),
-                    child: const Text(
-                        'Gemischter Tinnitus (Kombination aus beiden Tinnitus-Typen)'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setTinnitusType('Gemischter Tinnitus'),
+                      child: Text(
+                          AppLocalizations.of(context)!.mixedTinnitusWithEg),
+                    ),
                   ),
                 ],
               ),
@@ -286,16 +290,24 @@ class _TinnitusDecisionTreeScreenState
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Frage 2: Ist Ihre Tinnitusfrequenz bekannt?',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  ElevatedButton(
-                    onPressed: () => _setIsFrequencyKnown(true),
-                    child: const Text('Ja'),
+                  Text(
+                      AppLocalizations.of(context)!
+                          .isYourTinnitusFrequencyKnown,
+                      style: Theme.of(context).textTheme.titleMedium),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setIsFrequencyKnown(true),
+                      child: Text(AppLocalizations.of(context)!.yes),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setIsFrequencyKnown(false),
-                    child: const Text('Nein'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setIsFrequencyKnown(false),
+                      child: Text(AppLocalizations.of(context)!.no),
+                    ),
                   ),
                 ],
               ),
@@ -303,65 +315,75 @@ class _TinnitusDecisionTreeScreenState
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                      'Frage 3: Welche spezifische Frequenz entspricht Ihrem Tinnitus?',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  ElevatedButton(
-                    onPressed: () => _setSpecificFrequency('250 Hz'),
-                    child: const Text('250 Hz'),
+                  Text(
+                      AppLocalizations.of(context)!
+                          .whichSpecificFrequencyCorrespondsToYourTinnitus,
+                      style: Theme.of(context).textTheme.titleMedium),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setSpecificFrequency('250 Hz'),
+                      child: const Text('250 Hz'),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setSpecificFrequency('500 Hz'),
-                    child: const Text('500 Hz'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setSpecificFrequency('500 Hz'),
+                      child: const Text('500 Hz'),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setSpecificFrequency('1000 Hz'),
-                    child: const Text('1000 Hz'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setSpecificFrequency('1000 Hz'),
+                      child: const Text('1000 Hz'),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setSpecificFrequency('2000 Hz'),
-                    child: const Text('2000 Hz'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setSpecificFrequency('2000 Hz'),
+                      child: const Text('2000 Hz'),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setSpecificFrequency('3000 Hz'),
-                    child: const Text('3000 Hz'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setSpecificFrequency('3000 Hz'),
+                      child: const Text('3000 Hz'),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setSpecificFrequency('4000 Hz'),
-                    child: const Text('4000 Hz'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setSpecificFrequency('4000 Hz'),
+                      child: const Text('4000 Hz'),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setSpecificFrequency('6000 Hz'),
-                    child: const Text('6000 Hz'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setSpecificFrequency('6000 Hz'),
+                      child: const Text('6000 Hz'),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => _setSpecificFrequency('8000 Hz'),
-                    child: const Text('8000 Hz'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _setSpecificFrequency('8000 Hz'),
+                      child: const Text('8000 Hz'),
+                    ),
                   ),
                 ],
               ),
-            if (_finalRecommendation == null &&
-                (_isFrequencyKnown == false || _specificFrequency != null))
-              ElevatedButton(
-                onPressed: _updateRecommendation,
-                child: const Text('Empfehlungen anzeigen'),
-              ),
-            if (_finalRecommendation != null)
-              Text(_finalRecommendation!,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.blue)),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _goBack,
-              child: const Text('Zurück'),
-            ),
           ],
         ),
       ),
