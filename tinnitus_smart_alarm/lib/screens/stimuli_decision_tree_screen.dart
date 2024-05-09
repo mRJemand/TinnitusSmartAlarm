@@ -15,186 +15,167 @@ class _TinnitusDecisionTreeScreenState
   bool? _isFrequencyKnown;
   String? _specificFrequency;
   String? _finalRecommendation;
+  List<String> finalCategoryNames = [];
+  String? finalFrequeny = '';
 
   void _updateRecommendation() {
     if (_tinnitusType == 'Tonaler Tinnitus') {
       if (_isFrequencyKnown == true) {
         switch (_specificFrequency) {
           case '250 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_250.mp3`)
-''';
+            finalFrequeny = '250 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '500 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_500.mp3`)
-''';
+            finalFrequeny = '500 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
+            break;
+          case '1000 Hz':
+            finalFrequeny = '1000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
+            break;
+          case '2000 Hz':
+            finalFrequeny = '2000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '3000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_3000.mp3`)
-''';
+            finalFrequeny = '3000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '4000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Natürliche Stimuli: Notched Music (`notched_music_4000.mp3`)
-- Digitale Stimuli:
-  - Notched Noise (`wn_am_10_notch_4000.mp3`)
-  - Amplitudenmodulierte Töne (`wn_am_10_notch_4000.mp3`)
-  - Frequenzmodulierte Töne (`wn_fm_10_notch_4000.mp3`)
-''';
+            finalFrequeny = '4000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '6000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_6000.mp3`)
-''';
+            finalFrequeny = '6000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '8000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_8000.mp3`)
-''';
+            finalFrequeny = '8000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           default:
             _finalRecommendation =
                 'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
-        _finalRecommendation = '''
-Empfehlung:
-- Natürliche Stimuli:
-  - Wasserfallrauschen (`waterfall.mp3`)
-  - Vogelgezwitscher (`birds.mp3`)
-  - Meeresrauschen (`sea_waves.mp3`)
-- Digitale Stimuli:
-  - Weißes Rauschen (`wn.mp3`)
-  - Rosa Rauschen (`pink_noise.mp3`)
-''';
+        finalCategoryNames.add('natural_neg');
+        finalCategoryNames.add('unnatural_neg');
       }
     } else if (_tinnitusType == 'Rauschähnlicher Tinnitus') {
       if (_isFrequencyKnown == true) {
         switch (_specificFrequency) {
           case '250 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_250.mp3`)
-''';
+            finalFrequeny = '250 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '500 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_500.mp3`)
-''';
+            finalFrequeny = '500 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
+            break;
+
+          case '1000 Hz':
+            finalFrequeny = '1000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
+            break;
+          case '2000 Hz':
+            finalFrequeny = '1000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '3000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_3000.mp3`)
-''';
+            finalFrequeny = '3000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '4000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Natürliche Stimuli: Notched Music (`notched_music_4000.mp3`)
-- Digitale Stimuli:
-  - Notched Noise (`wn_am_10_notch_4000.mp3`)
-  - Amplitudenmodulierte Töne (`wn_am_10_notch_4000.mp3`)
-  - Frequenzmodulierte Töne (`wn_fm_10_notch_4000.mp3`)
-''';
+            finalFrequeny = '4000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '6000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_6000.mp3`)
-''';
+            finalFrequeny = '6000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '8000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_8000.mp3`)
-''';
+            finalFrequeny = '8000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           default:
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             _finalRecommendation =
                 'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
-        _finalRecommendation = '''
-Empfehlung:
-- Natürliche Stimuli:
-  - Meeresrauschen (`sea_waves.mp3`)
-  - Wasserfallrauschen (`waterfall.mp3`)
-  - Regenrauschen (`rain.mp3`)
-  - Blätterrauschen (`leaves.mp3`)
-  - Kaminfeuer (`fireplace.mp3`)
-- Digitale Stimuli:
-  - Weißes Rauschen (`wn.mp3`)
-  - Rosa Rauschen (`pink_noise.mp3`)
-''';
+        finalCategoryNames.add('unnatural_pos');
+        finalCategoryNames.add('natural_plus');
       }
     } else if (_tinnitusType == 'Gemischter Tinnitus') {
       if (_isFrequencyKnown == true) {
         switch (_specificFrequency) {
           case '250 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_250.mp3`)
-''';
+            finalFrequeny = '250 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '500 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_500.mp3`)
-''';
+            finalFrequeny = '500 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
+            break;
+          case '1000 Hz':
+            finalFrequeny = '1000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
+            break;
+          case '2000 Hz':
+            finalFrequeny = '2000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '3000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_3000.mp3`)
-''';
+            finalFrequeny = '3000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '4000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Natürliche Stimuli: Notched Music (`notched_music_4000.mp3`)
-- Digitale Stimuli:
-  - Notched Noise (`wn_am_10_notch_4000.mp3`)
-  - Amplitudenmodulierte Töne (`wn_am_10_notch_4000.mp3`)
-  - Frequenzmodulierte Töne (`wn_fm_10_notch_4000.mp3`)
-''';
+            finalFrequeny = '4000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '6000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_6000.mp3`)
-''';
+            finalFrequeny = '6000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           case '8000 Hz':
-            _finalRecommendation = '''
-Empfehlung:
-- Notched Noise (`wn_am_10_notch_8000.mp3`)
-''';
+            finalFrequeny = '8000 Hz';
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             break;
           default:
+            finalCategoryNames.add('unnatural_pos');
+            finalCategoryNames.add('natural_plus');
             _finalRecommendation =
                 'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
-        _finalRecommendation = '''
-Empfehlung:
-- Natürliche Stimuli:
-  - Meeresrauschen (`sea_waves.mp3`)
-  - Wasserfallrauschen (`waterfall.mp3`)
-  - Regenrauschen (`rain.mp3`)
-- Digitale Stimuli:
-  - Weißes Rauschen (`wn.mp3`)
-  - Rosa Rauschen (`pink_noise.mp3`)
-''';
+        finalCategoryNames.add('unnatural_pos');
+        finalCategoryNames.add('natural_plus');
       }
     }
 
@@ -306,6 +287,16 @@ Empfehlung:
                   ElevatedButton(
                     onPressed: () => _setSpecificFrequency('500 Hz'),
                     child: const Text('500 Hz'),
+                  ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setSpecificFrequency('1000 Hz'),
+                    child: const Text('1000 Hz'),
+                  ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _setSpecificFrequency('2000 Hz'),
+                    child: const Text('2000 Hz'),
                   ),
                   const SizedBox(height: 8),
                   ElevatedButton(
