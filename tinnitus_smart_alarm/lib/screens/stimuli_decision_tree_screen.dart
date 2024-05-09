@@ -2,7 +2,12 @@
 import 'package:flutter/material.dart';
 
 class TinnitusDecisionTreeScreen extends StatefulWidget {
-  const TinnitusDecisionTreeScreen({Key? key}) : super(key: key);
+  final Function(List<String> categoryNames, String? frequency) onSubmitt;
+
+  const TinnitusDecisionTreeScreen({
+    Key? key,
+    required this.onSubmitt,
+  }) : super(key: key);
 
   @override
   _TinnitusDecisionTreeScreenState createState() =>
@@ -15,171 +20,193 @@ class _TinnitusDecisionTreeScreenState
   bool? _isFrequencyKnown;
   String? _specificFrequency;
   String? _finalRecommendation;
-  List<String> finalCategoryNames = [];
-  String? finalFrequeny = '';
+  List<String> _finalCategoryNames = [];
+  String? _finalFrequency = '';
 
   void _updateRecommendation() {
     if (_tinnitusType == 'Tonaler Tinnitus') {
       if (_isFrequencyKnown == true) {
         switch (_specificFrequency) {
           case '250 Hz':
-            finalFrequeny = '250 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '250 Hz';
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '500 Hz':
-            finalFrequeny = '500 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '500 Hz';
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '1000 Hz':
-            finalFrequeny = '1000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '1000 Hz';
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '2000 Hz':
-            finalFrequeny = '2000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '2000 Hz';
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '3000 Hz':
-            finalFrequeny = '3000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '3000 Hz';
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '4000 Hz':
-            finalFrequeny = '4000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '4000 Hz';
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '6000 Hz':
-            finalFrequeny = '6000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '6000 Hz';
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '8000 Hz':
-            finalFrequeny = '8000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '8000 Hz';
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           default:
             _finalRecommendation =
                 'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
-        finalCategoryNames.add('natural_neg');
-        finalCategoryNames.add('unnatural_neg');
+        _finalCategoryNames.add('natural_neg');
+        _finalCategoryNames.add('unnatural_neg');
       }
     } else if (_tinnitusType == 'Rauschähnlicher Tinnitus') {
       if (_isFrequencyKnown == true) {
         switch (_specificFrequency) {
           case '250 Hz':
-            finalFrequeny = '250 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '250 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             break;
           case '500 Hz':
-            finalFrequeny = '500 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '500 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             break;
 
           case '1000 Hz':
-            finalFrequeny = '1000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '1000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             break;
           case '2000 Hz':
-            finalFrequeny = '1000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '1000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             break;
           case '3000 Hz':
-            finalFrequeny = '3000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '3000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             break;
           case '4000 Hz':
-            finalFrequeny = '4000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '4000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             break;
           case '6000 Hz':
-            finalFrequeny = '6000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '6000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             break;
           case '8000 Hz':
-            finalFrequeny = '8000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '8000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             break;
           default:
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
             _finalRecommendation =
                 'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
-        finalCategoryNames.add('unnatural_pos');
-        finalCategoryNames.add('natural_plus');
+        _finalCategoryNames.add('natural_plus');
+        _finalCategoryNames.add('natural_neg');
       }
     } else if (_tinnitusType == 'Gemischter Tinnitus') {
       if (_isFrequencyKnown == true) {
         switch (_specificFrequency) {
           case '250 Hz':
-            finalFrequeny = '250 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '250 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '500 Hz':
-            finalFrequeny = '500 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '500 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '1000 Hz':
-            finalFrequeny = '1000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '1000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '2000 Hz':
-            finalFrequeny = '2000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '2000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '3000 Hz':
-            finalFrequeny = '3000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '3000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '4000 Hz':
-            finalFrequeny = '4000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '4000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '6000 Hz':
-            finalFrequeny = '6000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '6000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           case '8000 Hz':
-            finalFrequeny = '8000 Hz';
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalFrequency = '8000 Hz';
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             break;
           default:
-            finalCategoryNames.add('unnatural_pos');
-            finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_plus');
+            _finalCategoryNames.add('natural_neg');
+            _finalCategoryNames.add('unnatural_pos');
+            _finalCategoryNames.add('unnatural_neg');
             _finalRecommendation =
                 'Bitte wählen Sie eine gültige Frequenz aus.';
         }
       } else {
-        finalCategoryNames.add('unnatural_pos');
-        finalCategoryNames.add('natural_plus');
+        _finalCategoryNames.add('natural_plus');
+        _finalCategoryNames.add('natural_neg');
+        _finalCategoryNames.add('unnatural_pos');
+        _finalCategoryNames.add('unnatural_neg');
       }
     }
 
     setState(() {});
+    widget.onSubmitt(_finalCategoryNames, _finalFrequency);
+    Navigator.pop(context);
   }
 
   void _setTinnitusType(String value) {
@@ -207,7 +234,7 @@ class _TinnitusDecisionTreeScreenState
   }
 
   void _goBack() {
-    if (_finalRecommendation != null) {
+    if (_finalCategoryNames.isNotEmpty) {
       _finalRecommendation = null;
     } else if (_specificFrequency != null) {
       _specificFrequency = null;
