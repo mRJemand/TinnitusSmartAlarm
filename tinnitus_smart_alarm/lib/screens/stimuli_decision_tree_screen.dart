@@ -257,12 +257,15 @@ class _TinnitusDecisionTreeScreenState
                   Text(
                       AppLocalizations.of(context)!.whatTypeOfTinnitusDoYouHave,
                       style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 8),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () => _setTinnitusType('Tonaler Tinnitus'),
                       child: Text(
-                          AppLocalizations.of(context)!.tonalTinnitusWithEg),
+                        AppLocalizations.of(context)!.tonalTinnitusWithEg,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -271,17 +274,21 @@ class _TinnitusDecisionTreeScreenState
                     child: ElevatedButton(
                       onPressed: () =>
                           _setTinnitusType('Rauschähnlicher Tinnitus'),
-                      child: Text(AppLocalizations.of(context)!
-                          .noiseLikeTinnitusWithEg),
+                      child: Text(
+                        AppLocalizations.of(context)!.noiseLikeTinnitusWithEg,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       onPressed: () => _setTinnitusType('Gemischter Tinnitus'),
                       child: Text(
-                          AppLocalizations.of(context)!.mixedTinnitusWithEg),
+                        AppLocalizations.of(context)!.mixedTinnitusWithEg,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ],
@@ -294,6 +301,7 @@ class _TinnitusDecisionTreeScreenState
                       AppLocalizations.of(context)!
                           .isYourTinnitusFrequencyKnown,
                       style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 8),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -319,6 +327,7 @@ class _TinnitusDecisionTreeScreenState
                       AppLocalizations.of(context)!
                           .whichSpecificFrequencyCorrespondsToYourTinnitus,
                       style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 8),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
