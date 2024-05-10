@@ -242,225 +242,228 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
         if (snapshot.hasError) {
           return const Center(child: Text('Error loading settings'));
         }
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, false),
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text(
+                        AppLocalizations.of(context)!.cancel,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(color: Colors.blueAccent),
+                      ),
+                    ),
+                    AlarmHomeShortcutButton(
+                      refreshAlarms: widget.refreshAlarms,
+                      alarmSettings: buildAlarmSettings(isTestAlarm: true),
+                    ),
+                    TextButton(
+                      onPressed: saveAlarm,
+                      child: loading
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              AppLocalizations.of(context)!.save,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(color: Colors.blueAccent),
+                            ),
+                    ),
+                  ],
+                ),
+                Text(
+                  getDay(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Colors.blueAccent.withOpacity(0.8)),
+                ),
+                RawMaterialButton(
+                  onPressed: pickTime,
+                  // fillColor: Colors.grey[200],
+                  child: Container(
+                    margin: const EdgeInsets.all(20),
                     child: Text(
-                      AppLocalizations.of(context)!.cancel,
+                      TimeOfDay.fromDateTime(selectedDateTime).format(context),
                       style: Theme.of(context)
                           .textTheme
-                          .titleLarge!
+                          .displayMedium!
                           .copyWith(color: Colors.blueAccent),
                     ),
                   ),
-                  AlarmHomeShortcutButton(
-                    refreshAlarms: widget.refreshAlarms,
-                    alarmSettings: buildAlarmSettings(isTestAlarm: true),
-                  ),
-                  TextButton(
-                    onPressed: saveAlarm,
-                    child: loading
-                        ? const CircularProgressIndicator()
-                        : Text(
-                            AppLocalizations.of(context)!.save,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(color: Colors.blueAccent),
-                          ),
-                  ),
-                ],
-              ),
-              Text(
-                getDay(),
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(color: Colors.blueAccent.withOpacity(0.8)),
-              ),
-              RawMaterialButton(
-                onPressed: pickTime,
-                fillColor: Colors.grey[200],
-                child: Container(
-                  margin: const EdgeInsets.all(20),
-                  child: Text(
-                    TimeOfDay.fromDateTime(selectedDateTime).format(context),
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium!
-                        .copyWith(color: Colors.blueAccent),
-                  ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.isActive,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Switch(
-                    value: isActive,
-                    onChanged: (value) => setState(() => isActive = value),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.isActive,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Switch(
+                      value: isActive,
+                      onChanged: (value) => setState(() => isActive = value),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.name,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: _nameController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            alarmName = value;
+                          });
+                        },
                       ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.loopAlarmAudio,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Switch(
+                      value: loopAudio,
+                      onChanged: (value) => setState(() => loopAudio = value),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.vibrate,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Switch(
+                      value: vibrate,
+                      onChanged: (value) => setState(() => vibrate = value),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.fadeIn,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Switch(
+                      value: fadeDurationStatus,
                       onChanged: (value) {
+                        setState(() => fadeDurationStatus = value);
                         setState(() {
-                          alarmName = value;
+                          fadeDurationStatus
+                              ? fadeDuration = fadeDurationLength
+                              : fadeDuration = 0;
                         });
                       },
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.loopAlarmAudio,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Switch(
-                    value: loopAudio,
-                    onChanged: (value) => setState(() => loopAudio = value),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.vibrate,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Switch(
-                    value: vibrate,
-                    onChanged: (value) => setState(() => vibrate = value),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.fadeIn,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Switch(
-                    value: fadeDurationStatus,
-                    onChanged: (value) {
-                      setState(() => fadeDurationStatus = value);
-                      setState(() {
-                        fadeDurationStatus
-                            ? fadeDuration = fadeDurationLength
-                            : fadeDuration = 0;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.sound,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  DropdownButton<Stimuli>(
-                    value: widget.stimuliList.firstWhere((s) {
-                      log(s.toJson().toString());
-                      return s.id == selectedStimuli.id;
-                    }, orElse: () => widget.stimuliList.first),
-                    items: _getStimuliDropdownList(),
-                    onChanged: (Stimuli? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          selectedStimuli = newValue;
-                          newValue.isIndividual ?? true
-                              ? assetAudio = newValue.filename!
-                              : assetAudio =
-                                  'assets/tinnitus_stimuli/${newValue.filename!}';
-                        });
-                      }
-                    },
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.customVolume,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Switch(
-                    value: customVolume,
-                    onChanged: (value) => setState(() => customVolume = value),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-                child: customVolume
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(
-                            volume! > 0.7
-                                ? Icons.volume_up_rounded
-                                : volume! > 0.1
-                                    ? Icons.volume_down_rounded
-                                    : Icons.volume_mute_rounded,
-                          ),
-                          Expanded(
-                            child: VolumeSlider(
-                              initialVolume: volume ?? 0.5,
-                              onChanged: (newVolume) {
-                                if (volume != newVolume) {
-                                  volume = newVolume;
-                                }
-                              },
-                            ),
-                          ),
-                        ],
-                      )
-                    : const SizedBox(),
-              ),
-              if (!creating)
-                TextButton(
-                  onPressed: deleteAlarm,
-                  child: Text(
-                    AppLocalizations.of(context)!.deleteAlarm,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(color: Colors.red),
-                  ),
+                  ],
                 ),
-              const SizedBox(),
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.sound,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    DropdownButton<Stimuli>(
+                      value: widget.stimuliList.firstWhere((s) {
+                        log(s.toJson().toString());
+                        return s.id == selectedStimuli.id;
+                      }, orElse: () => widget.stimuliList.first),
+                      items: _getStimuliDropdownList(),
+                      onChanged: (Stimuli? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selectedStimuli = newValue;
+                            newValue.isIndividual ?? true
+                                ? assetAudio = newValue.filename!
+                                : assetAudio =
+                                    'assets/tinnitus_stimuli/${newValue.filename!}';
+                          });
+                        }
+                      },
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.customVolume,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Switch(
+                      value: customVolume,
+                      onChanged: (value) =>
+                          setState(() => customVolume = value),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                  child: customVolume
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              volume! > 0.7
+                                  ? Icons.volume_up_rounded
+                                  : volume! > 0.1
+                                      ? Icons.volume_down_rounded
+                                      : Icons.volume_mute_rounded,
+                            ),
+                            Expanded(
+                              child: VolumeSlider(
+                                initialVolume: volume ?? 0.5,
+                                onChanged: (newVolume) {
+                                  if (volume != newVolume) {
+                                    volume = newVolume;
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
+                ),
+                if (!creating)
+                  TextButton(
+                    onPressed: deleteAlarm,
+                    child: Text(
+                      AppLocalizations.of(context)!.deleteAlarm,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(color: Colors.red),
+                    ),
+                  ),
+                const SizedBox(),
+              ],
+            ),
           ),
         );
       },
