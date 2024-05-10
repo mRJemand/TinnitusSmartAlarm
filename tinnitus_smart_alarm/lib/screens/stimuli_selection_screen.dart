@@ -187,6 +187,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
         MaterialPageRoute(
           builder: (context) => TinnitusDecisionTreeScreen(
             onSubmitt: (List<String> categoryNames, String? frequency) {
+              resetFilters();
               setState(() {
                 _suggestedCategoryNames = categoryNames;
                 if (frequency != null && frequency.isNotEmpty) {
