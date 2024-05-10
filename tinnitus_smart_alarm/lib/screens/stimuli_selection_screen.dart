@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
+import 'package:tinnitus_smart_alarm/screens/stimuli_decision_tree_screen.dart';
 import 'package:tinnitus_smart_alarm/services/dialogs.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
@@ -35,6 +36,8 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   late final Future<void> _stimuliFuture;
   ValueNotifier<String?> defaultAudioNotifier = ValueNotifier<String?>(null);
   ValueNotifier<String?> playingStimuliNotifier = ValueNotifier<String?>(null);
+  List<String>? _suggestedCategoryNames = [];
+  String? _suggestedFrequency = '';
 
   @override
   void initState() {
@@ -93,15 +96,20 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     log('filter list');
     final allCategory = AppLocalizations.of(context)!.all;
     final allFrequency = AppLocalizations.of(context)!.all;
-    // todo
-    log(selectedCategory ?? 'keine kategorie');
     setState(() {
       filteredList = stimuliList.where((stimuli) {
-        final bool matchesCategory = selectedCategory == null ||
-            selectedCategory == allCategory ||
-            stimuli.categoryName ==
-                stimuliManager.getCategoryKeyByLocalizedName(
-                    context, selectedCategory!);
+        final bool matchesCategory;
+        if (selectedCategory == AppLocalizations.of(context)!.custom) {
+          matchesCategory =
+              _suggestedCategoryNames?.contains(stimuli.categoryName) ?? false;
+        } else {
+          matchesCategory = selectedCategory == null ||
+              selectedCategory == allCategory ||
+              stimuli.categoryName ==
+                  stimuliManager.getCategoryKeyByLocalizedName(
+                      context, selectedCategory!);
+        }
+
         final bool matchesFrequency = selectedFrequency == null ||
             selectedFrequency == allFrequency ||
             stimuli.frequency == selectedFrequency!;
@@ -114,6 +122,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
     setState(() {
       selectedCategory = null;
       selectedFrequency = null;
+      _suggestedCategoryNames = [];
       filteredList =
           List.from(stimuliList); // Setzt die gefilterte Liste zurück
     });
@@ -158,7 +167,8 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       stimuliManager.getCategoryLocalizedName(context, 'natural_neg'),
       stimuliManager.getCategoryLocalizedName(context, 'unnatural_pos'),
       stimuliManager.getCategoryLocalizedName(context, 'unnatural_neg'),
-      stimuliManager.getCategoryLocalizedName(context, 'individual')
+      stimuliManager.getCategoryLocalizedName(context, 'individual'),
+      stimuliManager.getCategoryLocalizedName(context, 'custom')
     ];
     final List<String> frequencies = [
       '250 Hz',
@@ -171,13 +181,37 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       '8000 Hz'
     ];
 
+    void openDecisionTreeScreen() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TinnitusDecisionTreeScreen(
+            onSubmitt: (List<String> categoryNames, String? frequency) {
+              resetFilters();
+              setState(() {
+                _suggestedCategoryNames = categoryNames;
+                if (frequency != null && frequency.isNotEmpty) {
+                  selectedFrequency = frequency;
+                }
+                selectedCategory = AppLocalizations.of(context)!.custom;
+              });
+              filterList();
+            },
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.stimuli),
         actions: [
           IconButton(
+              onPressed: () => openDecisionTreeScreen(),
+              icon: const Icon(Icons.category_outlined)),
+          IconButton(
               onPressed: () => _showInfoSheet(),
-              icon: const Icon(Icons.help_outline))
+              icon: const Icon(Icons.info_outline))
         ],
       ),
       body: FutureBuilder(

@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/chart_screen.dart';
+import 'package:tinnitus_smart_alarm/screens/feedback_form_screen.dart';
 import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
 import 'package:tinnitus_smart_alarm/services/firestore_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
@@ -285,6 +286,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }
                 },
               ),
+              SettingsTile.navigation(
+                // enabled: allowDataCollecting ?? false,
+                title: Text('feedback'),
+                leading: const Icon(Icons.feedback_outlined),
+                onPressed: (context) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const FeedbackFormPage(),
+                    ),
+                  );
+                },
+              ),
               SettingsTile(
                 title: Text(AppLocalizations.of(context)!.deleteData),
                 leading: const Icon(Icons.delete_outlined),
@@ -301,19 +314,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-      floatingActionButton: Row(
-        children: [
-          FloatingActionButton(
-            heroTag: "a",
-            onPressed: () => printSharedPreferences(),
-          ),
-          FloatingActionButton(
-            heroTag: "b",
-            onPressed: () => clearSharedPreferences(),
-            backgroundColor: Colors.red,
-          ),
-        ],
-      ),
+      // floatingActionButton: Row(
+      //   children: [
+      //     FloatingActionButton(
+      //       heroTag: "a",
+      //       onPressed: () => printSharedPreferences(),
+      //     ),
+      //     FloatingActionButton(
+      //       heroTag: "b",
+      //       onPressed: () => clearSharedPreferences(),
+      //       backgroundColor: Colors.red,
+      //     ),
+      // ],
+      // ),
     );
   }
 
@@ -438,6 +451,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                 await firestoreManager.deleteCurrentUserEntries();
                 await authManager.signOutAndDeleteAccount();
+                await clearSharedPreferences();
                 Navigator.of(context).pop();
               },
               child: Text(AppLocalizations.of(context)!.confirm),

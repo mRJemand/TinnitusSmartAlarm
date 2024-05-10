@@ -37,6 +37,14 @@ Future<void> main() async {
         ledColor: Colors.white,
         importance: NotificationImportance.High,
       ),
+      NotificationChannel(
+        channelKey: 'scheduled',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: const Color(0xFF9D50DD),
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+      ),
     ],
   );
 

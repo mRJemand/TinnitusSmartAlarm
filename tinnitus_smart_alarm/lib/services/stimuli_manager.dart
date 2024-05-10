@@ -90,8 +90,10 @@ class StimuliManager {
         return loc!.unnaturalPos;
       case 'individual':
         return loc!.individual;
+      case 'custom':
+        return loc!.custom;
       default:
-        return 'Unbekannte Kategorie'; // Sicherstellen, dass Sie auch diese Übersetzung in Ihrer Lokalisierung haben
+        return loc!.unknownCategory;
     }
   }
 
@@ -110,6 +112,8 @@ class StimuliManager {
       return 'unnatural_pos';
     } else if (localizedName == loc.individual) {
       return 'individual';
+    } else if (localizedName == loc.custom) {
+      return 'custom';
     } else {
       return 'unknown'; // Eine generische Rückgabe für unbekannte Kategorien
     }

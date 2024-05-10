@@ -21,6 +21,7 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
 
   @override
   Widget build(BuildContext context) {
+    log('my widget data: ${widget.surveyResults.length}');
     return Column(
       children: [
         SizedBox(
@@ -30,7 +31,7 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
             child: LineChart(
               LineChartData(
                 minX: 0,
-                maxX: widget.surveyResults.length.toDouble(),
+                maxX: (widget.surveyResults.length - 1).toDouble(),
                 minY: 0,
                 maxY: 10,
                 titlesData: FlTitlesData(
@@ -41,10 +42,9 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                       showTitles: true,
                       getTitlesWidget: (double value, TitleMeta meta) {
                         final index = value.toInt();
-                        if (index < widget.surveyResults.length) {
+                        if (index >= 0 && index < widget.surveyResults.length) {
                           return Text(
-                            DateFormat('dd.MM')
-                                .format(widget.surveyResults[index].dateTime),
+                            (index + 1).toString(),
                             style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -79,7 +79,6 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     barWidth: 5,
                     isStrokeCapRound: true,
                     dotData: FlDotData(show: true),
-                    // belowBarData: BarAreaData(show: true),
                   ),
                   LineChartBarData(
                     spots: widget.surveyResults
@@ -93,7 +92,6 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     barWidth: 5,
                     isStrokeCapRound: true,
                     dotData: FlDotData(show: true),
-                    // belowBarData: BarAreaData(show: true),
                   ),
                   LineChartBarData(
                     spots: widget.surveyResults
@@ -107,7 +105,6 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     barWidth: 5,
                     isStrokeCapRound: true,
                     dotData: FlDotData(show: true),
-                    // belowBarData: BarAreaData(show: true),
                   ),
                 ],
                 lineTouchData: LineTouchData(
@@ -141,7 +138,7 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                         }
                         return LineTooltipItem(
                           tooltipText,
-                          TextStyle(color: Colors.white),
+                          const TextStyle(color: Colors.white),
                         );
                       }).toList();
                     },
@@ -162,12 +159,12 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                 children: [
                   Text(
                     '${AppLocalizations.of(context)!.time}: ${DateFormat('dd.MM.yyyy HH:mm').format(selectedResult!.dateTime)}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     '${AppLocalizations.of(context)!.intense}:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Slider(
                     value: selectedResult!.intenseResult,
@@ -176,10 +173,10 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     divisions: 10,
                     onChanged: null, // Disable slider interaction
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     '${AppLocalizations.of(context)!.ignorable}:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Slider(
                     value: selectedResult!.ignorable,
@@ -188,10 +185,10 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     divisions: 10,
                     onChanged: null, // Disable slider interaction
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     '${AppLocalizations.of(context)!.uncomfortable}:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Slider(
                     value: selectedResult!.uncomfortable,
@@ -200,15 +197,15 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     divisions: 10,
                     onChanged: null, // Disable slider interaction
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     '${AppLocalizations.of(context)!.stimuli}: ${selectedResult!.stimuli}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     '${AppLocalizations.of(context)!.frequency}: ${selectedResult!.frequency}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

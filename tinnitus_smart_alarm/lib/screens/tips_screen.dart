@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 import 'package:tinnitus_smart_alarm/data/tips_catalog.dart';
@@ -23,7 +24,7 @@ class _TipsScreenState extends State<TipsScreen> {
   @override
   void initState() {
     super.initState();
-    tipsList = TipsCatalag.tipsList;
+    tipsList = TipsCatalag.tipsList.sortedBy((element) => element.title);
     _loadSettings();
   }
 
@@ -39,17 +40,21 @@ class _TipsScreenState extends State<TipsScreen> {
   }
 
   List<Tip> _getFilteredTips(String searchText) {
-    return TipsCatalag.tipsList.where((tip) {
-      final matchesLanguage = tip.language == language;
-      final matchesText =
-          tip.objective.toLowerCase().contains(searchText.toLowerCase()) ||
+    return TipsCatalag.tipsList
+        .where((tip) {
+          final matchesLanguage = tip.language == language;
+          final matchesText = tip.objective
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
               tip.title.toLowerCase().contains(searchText.toLowerCase()) ||
               tip.explanation.toLowerCase().contains(searchText.toLowerCase());
-      final matchesFavorites = !showFavoritesOnly ||
-          (tip.isFavorite == null ? false : tip.isFavorite!);
+          final matchesFavorites = !showFavoritesOnly ||
+              (tip.isFavorite == null ? false : tip.isFavorite!);
 
-      return matchesLanguage && matchesText && matchesFavorites;
-    }).toList();
+          return matchesLanguage && matchesText && matchesFavorites;
+        })
+        .toList()
+        .sortedBy((element) => element.title);
   }
 
   @override

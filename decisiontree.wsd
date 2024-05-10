@@ -1,0 +1,115 @@
+@startmindmap
+* Entscheidungsbaum für die Auswahl der Stimuli-Kategorien
+** Frage 1: Welchen Tinnitus-Typ haben Sie?
+*** Tonaler Tinnitus (z.B. Klingeln, Piepen)
+**** Frage 2: Ist Ihre Tinnitusfrequenz bekannt?
+***** Ja
+****** Spezifische Frequenz wählen
+******* 250 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_250.mp3`)
+******* 500 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_500.mp3`)
+******* 3000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_3000.mp3`)
+******* 4000 Hz
+******** Natürliche Stimuli
+********* Notched Music (`notched_music_4000.mp3`)
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_4000.mp3`)
+********* Amplitudenmodulierte Töne (`wn_am_10_notch_4000.mp3`)
+********* Frequenzmodulierte Töne (`wn_fm_10_notch_4000.mp3`)
+******* 6000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_6000.mp3`)
+******* 8000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_8000.mp3`)
+***** Nein
+****** Natürliche Stimuli
+******* Nicht-tinnitusspezifisch
+******** Naturgeräusche
+********* Wasserfallrauschen (`waterfall.mp3`)
+********* Vogelgezwitscher (`birds.mp3`)
+********* Meeresrauschen (`sea_waves.mp3`)
+****** Digitale Stimuli
+******* Nicht-tinnitusspezifisch
+******** Weißes Rauschen (`wn.mp3`)
+******** Rosa Rauschen (`pink_noise.mp3`)
+*** Rauschähnlicher Tinnitus (z.B. Rauschen, Zischen)
+**** Frage 2: Ist Ihre Tinnitusfrequenz bekannt?
+***** Ja
+****** Spezifische Frequenz wählen
+******* 250 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_250.mp3`)
+******* 500 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_500.mp3`)
+******* 3000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_3000.mp3`)
+******* 4000 Hz
+******** Natürliche Stimuli
+********* Notched Music (`notched_music_4000.mp3`)
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_4000.mp3`)
+********* Amplitudenmodulierte Töne (`wn_am_10_notch_4000.mp3`)
+********* Frequenzmodulierte Töne (`wn_fm_10_notch_4000.mp3`)
+******* 6000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_6000.mp3`)
+******* 8000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_8000.mp3`)
+***** Nein
+****** Natürliche Stimuli
+******* Nicht-tinnitusspezifisch
+******** Meeresrauschen (`sea_waves.mp3`)
+******** Wasserfallrauschen (`waterfall.mp3`)
+******** Regenrauschen (`rain.mp3`)
+******** Blätterrauschen (`leaves.mp3`)
+******** Kaminfeuer (`fireplace.mp3`)
+****** Digitale Stimuli
+******* Nicht-tinnitusspezifisch
+******** Weißes Rauschen (`wn.mp3`)
+******** Rosa Rauschen (`pink_noise.mp3`)
+*** Gemischter Tinnitus (Kombination aus beiden Tinnitus-Typen)
+**** Frage 2: Ist Ihre Tinnitusfrequenz bekannt?
+***** Ja
+****** Spezifische Frequenz wählen
+******* 250 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_250.mp3`)
+******* 500 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_500.mp3`)
+******* 3000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_3000.mp3`)
+******* 4000 Hz
+******** Natürliche Stimuli
+********* Notched Music (`notched_music_4000.mp3`)
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_4000.mp3`)
+********* Amplitudenmodulierte Töne (`wn_am_10_notch_4000.mp3`)
+********* Frequenzmodulierte Töne (`wn_fm_10_notch_4000.mp3`)
+******* 6000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_6000.mp3`)
+******* 8000 Hz
+******** Digitale Stimuli
+********* Notched Noise (`wn_am_10_notch_8000.mp3`)
+***** Nein
+****** Natürliche Stimuli
+******* Nicht-tinnitusspezifisch
+******** Meeresrauschen (`sea_waves.mp3`)
+******** Wasserfallrauschen (`waterfall.mp3`)
+******** Regenrauschen (`rain.mp3`)
+****** Digitale Stimuli
+******* Nicht-tinnitusspezifisch
+******** Weißes Rauschen (`wn.mp3`)
+******** Rosa Rauschen (`pink_noise.mp3`)
+@endmindmap
