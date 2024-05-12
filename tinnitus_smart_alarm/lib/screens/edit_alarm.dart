@@ -117,6 +117,7 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
               'assets/tinnitus_stimuli/${selectedAssetAudio.filename!}';
     }
     selectedStimuli = selectedAssetAudio;
+    _nameController.text = widget.extendedAlarm?.name ?? '';
     setState(() {});
   }
 
