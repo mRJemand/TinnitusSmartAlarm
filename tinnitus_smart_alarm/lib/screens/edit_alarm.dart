@@ -187,26 +187,12 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     if (loading) return;
     setState(() => loading = true);
     ExtendedAlarm extendedAlarm = ExtendedAlarm(
-        alarmSettings: buildAlarmSettings(isTestAlarm: false),
-        name: _nameController.text,
-        isActive: isActive,
-        isRepeated: false,
-        customVolume: customVolume,
-        repeatDays: [
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-        ]);
+      alarmSettings: buildAlarmSettings(isTestAlarm: false),
+      name: _nameController.text,
+      isActive: isActive,
+      customVolume: customVolume,
+    );
     await AlarmManager.setAlarmActive(extendedAlarm);
-    // await AlarmManager.setAlarmActive(extendedAlarm);
-    // Alarm.set(alarmSettings: buildAlarmSettings(isTestAlarm: false))
-    //     .then((res) {
-    //   if (res) Navigator.pop(context, true);
-    // });
     Navigator.pop(context, true);
     setState(() => loading = false);
   }
@@ -468,6 +454,28 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildSwitchTile({
+    required String title,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return SwitchListTile(
+      title: Text(title, style: Theme.of(context).textTheme.titleMedium),
+      value: value,
+      onChanged: onChanged,
+    );
+  }
+
+  Widget _buildSection({
+    required String title,
+    required List<Widget> children,
+  }) {
+    return ExpansionTile(
+      title: Text(title, style: Theme.of(context).textTheme.titleLarge),
+      children: children,
     );
   }
 }

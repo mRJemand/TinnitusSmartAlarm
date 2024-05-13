@@ -5,15 +5,24 @@ import 'package:alarm/model/alarm_settings.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
+import 'package:tinnitus_smart_alarm/services/alarm_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 
-class AlarmRingScreen extends StatelessWidget {
+class AlarmRingScreen extends StatefulWidget {
   final AlarmSettings alarmSettings;
 
   const AlarmRingScreen({Key? key, required this.alarmSettings})
       : super(key: key);
+
+  @override
+  State<AlarmRingScreen> createState() => _AlarmRingScreenState();
+}
+
+class _AlarmRingScreenState extends State<AlarmRingScreen> {
+  String? alarmName = '';
 
   String getLastSegment(String path) {
     int index = path.lastIndexOf('/');
@@ -26,11 +35,11 @@ class AlarmRingScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 0), () async {
       DateTime scheduledTime = DateTime.now().add(const Duration(minutes: 30));
       StimuliManager stimuliManager = StimuliManager();
-      Stimuli? stimuli = await stimuliManager
-          .loadStimuliByFileName(getLastSegment(alarmSettings.assetAudioPath));
+      Stimuli? stimuli = await stimuliManager.loadStimuliByFileName(
+          getLastSegment(widget.alarmSettings.assetAudioPath));
       if (stimuli == null) {
         log('no Stimuli found by name');
-        log(alarmSettings.assetAudioPath);
+        log(widget.alarmSettings.assetAudioPath);
       } else {
         log(stimuli.toString());
       }
@@ -58,7 +67,25 @@ class AlarmRingScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    log('MY ALARM NAME INIT');
+    loadAlarmName();
+    log('MY ALARM NAME 123');
+  }
+
+  Future<void> loadAlarmName() async {
+    ExtendedAlarm? extendedAlarm =
+        await AlarmManager.getAlarmById(widget.alarmSettings.id);
+
+    log('MY ALARM NAME: ${extendedAlarm?.name ?? ''}');
+    alarmName = extendedAlarm?.name ?? '';
+  }
+
+  @override
   Widget build(BuildContext context) {
+    log('Im ringing!!!');
+
     final SettingsManager settingsManager = SettingsManager();
 
     return Scaffold(
@@ -85,8 +112,16 @@ class AlarmRingScreen extends StatelessWidget {
                   AppLocalizations.of(context)!.yourAlarmIsRinging,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
+                Text(
+                  alarmName ?? '',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 // const Text("🔔", style: TextStyle(fontSize: 50)),
-                Text('${DateTime.now().hour}:${DateTime.now().minute}',
+                Text(
+                    TimeOfDay(
+                      hour: widget.alarmSettings.dateTime.hour,
+                      minute: widget.alarmSettings.dateTime.minute,
+                    ).format(context),
                     style: Theme.of(context).textTheme.titleLarge),
                 Center(
                   child:
@@ -105,7 +140,7 @@ class AlarmRingScreen extends StatelessWidget {
                       onPressed: () {
                         final now = DateTime.now();
                         Alarm.set(
-                          alarmSettings: alarmSettings.copyWith(
+                          alarmSettings: widget.alarmSettings.copyWith(
                             dateTime: DateTime(
                               now.year,
                               now.month,
@@ -134,7 +169,7 @@ class AlarmRingScreen extends StatelessWidget {
                               AppLocalizations.of(context)!.survey,
                               AppLocalizations.of(context)!.recordYourTinnitus);
                         }
-                        Alarm.stop(alarmSettings.id)
+                        Alarm.stop(widget.alarmSettings.id)
                             .then((_) => Navigator.pop(context));
                       },
                       style: ElevatedButton.styleFrom(

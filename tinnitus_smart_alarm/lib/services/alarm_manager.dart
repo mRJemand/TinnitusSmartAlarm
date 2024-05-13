@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:alarm/alarm.dart';
+import 'package:collection/collection.dart';
 import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -40,6 +41,27 @@ class AlarmManager {
 
     await prefs.setString(
         _alarmsKey, jsonEncode(alarms.map((e) => e.toJson()).toList()));
+  }
+
+  static Future<ExtendedAlarm?> getAlarmById(int alarmId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final alarmsJson = prefs.getString(_alarmsKey);
+    if (alarmsJson != null) {
+      final List<dynamic> jsonList = jsonDecode(alarmsJson);
+      final List<ExtendedAlarm?> alarms =
+          jsonList.map((json) => ExtendedAlarm.fromJson(json)).toList();
+
+      // Search for the alarm with the given ID
+      final alarm = alarms.firstWhereOrNull(
+        (alarm) {
+          log(alarm!.alarmSettings.id.toString());
+          return alarm!.alarmSettings.id == alarmId;
+        },
+      );
+
+      return alarm;
+    }
+    return null; // Return null if the alarm with the specified ID is not found
   }
 
   /// Lädt alle ExtendedAlarms aus den Präferenzen.

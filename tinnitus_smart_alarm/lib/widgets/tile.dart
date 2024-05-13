@@ -23,18 +23,6 @@ class AlarmTile extends StatefulWidget {
 }
 
 class _AlarmTileState extends State<AlarmTile> {
-  String getRepeatDaysString() {
-    const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-    final selectedDays = List<String>.generate(
-      7,
-      (index) => widget.extendedAlarm.repeatDays[index] ? days[index] : '',
-    ).where((day) => day.isNotEmpty).toList();
-
-    return selectedDays.isEmpty
-        ? 'Keine Wiederholung'
-        : selectedDays.join(', ');
-  }
-
   Future<void> toggleAlarm(bool value) async {
     setState(() {
       widget.extendedAlarm.isActive = value;
@@ -60,84 +48,69 @@ class _AlarmTileState extends State<AlarmTile> {
         child: const Icon(
           Icons.delete,
           size: 30,
-          color: Colors.white,
+          // color: Colors.white,
         ),
       ),
       onDismissed: (_) => widget.onDismissed?.call(),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 8,
-              offset: Offset(0, 4),
-            ),
-          ],
-          color: Colors.white,
-        ),
-        padding: const EdgeInsets.all(15),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: widget.onPressed,
+          child: Card(
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(12),
+            //   boxShadow: const [
+            //     BoxShadow(
+            //       // color: Colors.black12,
+            //       blurRadius: 8,
+            //       offset: Offset(0, 4),
+            //     ),
+            //   ],
+            // color: Colors.white,
+            // ),
+            // padding: const EdgeInsets.all(15),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
                 children: [
-                  Text(
-                    TimeOfDay(
-                      hour: widget.extendedAlarm.alarmSettings.dateTime.hour,
-                      minute:
-                          widget.extendedAlarm.alarmSettings.dateTime.minute,
-                    ).format(context),
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      // color: Colors.blueAccent,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          TimeOfDay(
+                            hour: widget
+                                .extendedAlarm.alarmSettings.dateTime.hour,
+                            minute: widget
+                                .extendedAlarm.alarmSettings.dateTime.minute,
+                          ).format(context),
+                          style: Theme.of(context).textTheme.headlineLarge,
+                          //     const TextStyle(
+                          //   fontSize: 24,
+                          //   fontWeight: FontWeight.w500,
+                          //   color: Colors.black,
+                          // ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          widget.extendedAlarm.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            // color: Colors.black87,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.extendedAlarm.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    getRepeatDaysString(),
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey[600],
-                    ),
+                  Switch(
+                    value: widget.extendedAlarm.isActive,
+                    onChanged: toggleAlarm,
                   ),
                 ],
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.edit_outlined,
-                    size: 30,
-                    // color: Colors.blueAccent,
-                  ),
-                  onPressed: () {
-                    log('open alarm');
-                    widget.onPressed();
-                  },
-                ),
-                Switch(
-                  value: widget.extendedAlarm.isActive,
-                  onChanged: toggleAlarm,
-                  // activeColor: Colors.blueAccent,
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );

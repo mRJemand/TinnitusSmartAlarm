@@ -4,16 +4,12 @@ class ExtendedAlarm {
   AlarmSettings alarmSettings;
   String name;
   bool isActive;
-  bool isRepeated;
-  List<bool> repeatDays;
   bool? customVolume;
 
   ExtendedAlarm(
       {required this.alarmSettings,
       required this.name,
       required this.isActive,
-      required this.isRepeated,
-      required this.repeatDays,
       required this.customVolume});
 
   ExtendedAlarm copyWith({
@@ -27,8 +23,6 @@ class ExtendedAlarm {
       alarmSettings: alarmSettings ?? this.alarmSettings,
       name: name ?? this.name,
       isActive: isActive ?? this.isActive,
-      isRepeated: isRepeated ?? this.isRepeated,
-      repeatDays: repeatDays ?? this.repeatDays,
       customVolume: customVolume ?? customVolume,
     );
   }
@@ -48,9 +42,7 @@ class ExtendedAlarm {
       ),
       name: json['name'],
       isActive: json['isActive'],
-      isRepeated: json['isRepeated'],
       customVolume: json['customVolume'],
-      repeatDays: List<bool>.from(json['repeatDays']),
     );
   }
 
@@ -67,9 +59,7 @@ class ExtendedAlarm {
       'notificationBody': alarmSettings.notificationBody,
       'name': name,
       'isActive': isActive,
-      'isRepeated': isRepeated,
       'customVolume': customVolume,
-      'repeatDays': repeatDays,
     };
   }
 }
