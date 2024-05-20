@@ -426,13 +426,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       AppLocalizations.of(context)!.dataProtectionNotice,
                       style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.left,
                     ),
                     const SizedBox(height: 8.0),
-                    Text(AppLocalizations.of(context)!.dataPrivacyText),
+                    Text(AppLocalizations.of(context)!.dataPrivacyText,
+                        textAlign: TextAlign.left),
                   ],
                 ),
               ),
