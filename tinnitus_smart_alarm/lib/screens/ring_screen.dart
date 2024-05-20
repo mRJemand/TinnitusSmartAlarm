@@ -34,7 +34,10 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
       String notificationTitle, String notificationBody) {
     // todo change duration to 90 min
     Future.delayed(const Duration(seconds: 0), () async {
-      DateTime scheduledTime = DateTime.now().add(const Duration(minutes: 30));
+      SettingsManager settingsManager = SettingsManager();
+      int settingTime = await settingsManager.getFeedbackTimeSetting();
+      DateTime scheduledTime =
+          DateTime.now().add(Duration(minutes: settingTime));
       StimuliManager stimuliManager = StimuliManager();
       Stimuli? stimuli = await stimuliManager.loadStimuliByFileName(
           getLastSegment(widget.alarmSettings.assetAudioPath));

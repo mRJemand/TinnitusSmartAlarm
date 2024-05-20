@@ -34,6 +34,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String assetAudio = "";
   int snoozeTime = 1;
   bool allowDataCollecting = false;
+  int feedbackTime = 30;
 
   final SettingsManager settingsManager = SettingsManager();
 
@@ -54,6 +55,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     snoozeTime = await settingsManager.getSnoozeTimeSetting();
     allowDataCollecting =
         await settingsManager.getAllowDataCollectionSetting() ?? false;
+
+    feedbackTime = await settingsManager.getFeedbackTimeSetting();
     setState(() {});
   }
 
@@ -120,6 +123,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 int value = int.tryParse(_textFieldController.text) ??
                     1; // Standardwert oder Validierung erforderlich
                 settingsManager.setSnoozeTimeSetting(value);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _setFeedbackTime() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final TextEditingController _textFieldController =
+            TextEditingController();
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.setFeedbackTime),
+          content: TextField(
+            controller: _textFieldController,
+            decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.enterFeedbackTime),
+            keyboardType: TextInputType.number,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.ok),
+              onPressed: () {
+                int value = int.tryParse(_textFieldController.text) ??
+                    1; // Standardwert oder Validierung erforderlich
+                settingsManager.setFeedbackTimeSetting(value);
                 Navigator.of(context).pop();
               },
             ),
@@ -286,9 +325,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }
                 },
               ),
+              SettingsTile(
+                title: Text(AppLocalizations.of(context)!.survey),
+                leading: const Icon(Icons.share_arrival_time_outlined),
+                trailing: Text(
+                    '${feedbackTime.toString()} ${AppLocalizations.of(context)!.minutes}'),
+                onPressed: (BuildContext context) {
+                  _setFeedbackTime();
+                },
+              ),
               SettingsTile.navigation(
                 // enabled: allowDataCollecting ?? false,
-                title: Text('feedback'),
+                title: Text(AppLocalizations.of(context)!.feedback),
                 leading: const Icon(Icons.feedback_outlined),
                 onPressed: (context) {
                   Navigator.of(context).push(

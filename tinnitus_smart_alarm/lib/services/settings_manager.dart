@@ -113,4 +113,14 @@ class SettingsManager {
     final SharedPreferences prefs = await _prefs;
     prefs.setBool('hasSeenOnboarding', value);
   }
+
+  Future<int> getFeedbackTimeSetting() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getInt('feedbackTime') ?? 30;
+  }
+
+  Future<void> setFeedbackTimeSetting(int value) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setInt('feedbackTime', value);
+  }
 }
