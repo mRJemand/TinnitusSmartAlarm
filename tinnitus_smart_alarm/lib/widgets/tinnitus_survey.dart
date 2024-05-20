@@ -36,16 +36,10 @@ class _TinnitusSurveyState extends State<TinnitusSurvey> {
               AppLocalizations.of(context)!.survey,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.question1,
               style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              AppLocalizations.of(context)!.question1Scala,
-              style: Theme.of(context).textTheme.bodySmall,
             ),
             Slider(
               value: _lautstaerke,
@@ -59,13 +53,28 @@ class _TinnitusSurveyState extends State<TinnitusSurvey> {
                 });
               },
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.question1ScalaMin,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.question1ScalaMax,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context)!.question2,
               style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              AppLocalizations.of(context)!.question2Scala,
-              style: Theme.of(context).textTheme.bodySmall,
             ),
             Slider(
               value: _unangenehmheit,
@@ -79,13 +88,28 @@ class _TinnitusSurveyState extends State<TinnitusSurvey> {
                 });
               },
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.question2ScalaMin,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.question2ScalaMax,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context)!.question3,
               style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              AppLocalizations.of(context)!.question3Scala,
-              style: Theme.of(context).textTheme.bodySmall,
             ),
             Slider(
               value: _ignorierbarkeit,
@@ -99,6 +123,25 @@ class _TinnitusSurveyState extends State<TinnitusSurvey> {
                 });
               },
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.question3ScalaMin,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.question3ScalaMax,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -134,7 +177,7 @@ class _TinnitusSurveyState extends State<TinnitusSurvey> {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
