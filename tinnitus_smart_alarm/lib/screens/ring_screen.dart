@@ -23,6 +23,7 @@ class AlarmRingScreen extends StatefulWidget {
 
 class _AlarmRingScreenState extends State<AlarmRingScreen> {
   String? alarmName = '';
+  ExtendedAlarm? extendedAlarm;
 
   String getLastSegment(String path) {
     int index = path.lastIndexOf('/');
@@ -75,8 +76,7 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
   }
 
   Future<void> loadAlarmName() async {
-    ExtendedAlarm? extendedAlarm =
-        await AlarmManager.getAlarmById(widget.alarmSettings.id);
+    extendedAlarm = await AlarmManager.getAlarmById(widget.alarmSettings.id);
 
     log('MY ALARM NAME: ${extendedAlarm?.name ?? ''}');
     alarmName = extendedAlarm?.name ?? '';
@@ -169,8 +169,14 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
                               AppLocalizations.of(context)!.survey,
                               AppLocalizations.of(context)!.recordYourTinnitus);
                         }
-                        Alarm.stop(widget.alarmSettings.id)
-                            .then((_) => Navigator.pop(context));
+                        if (extendedAlarm != null) {
+                          extendedAlarm!.isActive = false;
+                          await AlarmManager.setAlarmInactive(extendedAlarm!);
+                          Navigator.pop(context);
+                        } else {
+                          Alarm.stop(widget.alarmSettings.id)
+                              .then((_) => Navigator.pop(context));
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.error,

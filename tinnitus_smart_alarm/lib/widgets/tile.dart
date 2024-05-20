@@ -24,13 +24,23 @@ class AlarmTile extends StatefulWidget {
 
 class _AlarmTileState extends State<AlarmTile> {
   Future<void> toggleAlarm(bool value) async {
+    if (value &&
+        widget.extendedAlarm.alarmSettings.dateTime.isBefore(DateTime.now())) {
+      // Set the alarm to the same time on the next day
+      DateTime newDateTime =
+          widget.extendedAlarm.alarmSettings.dateTime.add(Duration(days: 1));
+      widget.extendedAlarm.alarmSettings =
+          widget.extendedAlarm.alarmSettings.copyWith(dateTime: newDateTime);
+    }
+
     setState(() {
       widget.extendedAlarm.isActive = value;
     });
+
     if (value) {
-      AlarmManager.setAlarmActive(widget.extendedAlarm);
+      await AlarmManager.setAlarmActive(widget.extendedAlarm);
     } else {
-      AlarmManager.setAlarmInactive(widget.extendedAlarm);
+      await AlarmManager.setAlarmInactive(widget.extendedAlarm);
     }
   }
 
@@ -48,7 +58,6 @@ class _AlarmTileState extends State<AlarmTile> {
         child: const Icon(
           Icons.delete,
           size: 30,
-          // color: Colors.white,
         ),
       ),
       onDismissed: (_) => widget.onDismissed?.call(),

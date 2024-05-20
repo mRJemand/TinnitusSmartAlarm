@@ -7,10 +7,32 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class AlarmManager {
-  static Future<void> setAlarmActive(ExtendedAlarm extendedAlarm) async {
-    Alarm.set(alarmSettings: extendedAlarm.alarmSettings);
-    saveOrUpdateAlarm(extendedAlarm);
-    log('alarm set');
+  // static Future<void> setAlarmActive(ExtendedAlarm extendedAlarm) async {
+  //   Alarm.set(alarmSettings: extendedAlarm.alarmSettings);
+  //   saveOrUpdateAlarm(extendedAlarm);
+  //   log('alarm set');
+  // }
+
+  static Future<void> setAlarmActive(ExtendedAlarm alarm) async {
+    var alarmSettings = alarm.alarmSettings;
+
+    if (alarmSettings.dateTime.isBefore(DateTime.now())) {
+      // Set the alarm to the same time on the next day
+      DateTime newDateTime = alarmSettings.dateTime.add(Duration(days: 1));
+      alarmSettings = alarmSettings.copyWith(dateTime: newDateTime);
+      alarm.alarmSettings = alarmSettings;
+      log('Alarm set for the same time tomorrow: ${alarmSettings.id}');
+    }
+
+    await Alarm.set(
+      alarmSettings: alarmSettings,
+      // onRing: () {
+      //   log('Alarm ringing: ${alarmSettings.id}');
+      //   // Alarm trigger logic
+      // },
+    );
+    alarm.isActive = true; // Ensure the alarm is marked as active
+    await saveOrUpdateAlarm(alarm);
   }
 
   static Future<void> setAlarmInactive(ExtendedAlarm extendedAlarm) async {

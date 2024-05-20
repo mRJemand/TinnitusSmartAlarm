@@ -40,7 +40,11 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     loadAlarms();
     _stimuliFuture = _loadStimuliList();
     subscription ??= Alarm.ringStream.stream.listen(
-      (alarmSettings) => navigateToRingScreen(alarmSettings),
+      (alarmSettings) async {
+        await Future.delayed(Duration(seconds: 1));
+
+        navigateToRingScreen(alarmSettings);
+      },
     );
     initialization();
   }
@@ -49,13 +53,24 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     FlutterNativeSplash.remove();
   }
 
+  // void loadAlarms() async {
+  //   extendedAlarms = await AlarmManager.loadAlarms();
+  //   setState(() {});
+  //   // log('LENGTH ${extendedAlarms.length}');
+  //   setState(() {
+  //     alarms = Alarm.getAlarms();
+  //     alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
+  //   });
+  // }
   void loadAlarms() async {
     extendedAlarms = await AlarmManager.loadAlarms();
-    setState(() {});
-    // log('LENGTH ${extendedAlarms.length}');
+    DateTime now = DateTime.now();
     setState(() {
       alarms = Alarm.getAlarms();
-      alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
+      // Filter out alarms that are set in the past
+      alarms = alarms.where((alarm) => alarm.dateTime.isAfter(now)).toList();
+      // Sort alarms by date and time
+      alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
     });
   }
 

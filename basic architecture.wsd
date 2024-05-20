@@ -6,7 +6,7 @@ title Architekturdiagramm - Smarte Wecker-App zur Tinnitustherapie
 rectangle "Smarte Wecker-App" {
     rectangle "Frontend\n(Flutter/Dart)" {
         RECTANGLE "UI Layer\nWidgets" as ui_layer
-        RECTANGLE "Business Logic" as bl_layer
+        RECTANGLE "Business Logic Layer\nProvider, Bloc" as bl_layer
         RECTANGLE "Service Layer\nRestClient, Local Notifications" as service_layer
         RECTANGLE "Data Layer\nRepositories, Models" as data_layer
     }
@@ -16,6 +16,8 @@ rectangle "Smarte Wecker-App" {
         RECTANGLE "Firestore Database" as db
     }
 
+}
+
     rectangle "Entwicklungsumgebung" {
         RECTANGLE "VSCode" as vscode
         RECTANGLE "MacBook Pro\n(macOS)" as macbook
@@ -23,7 +25,6 @@ rectangle "Smarte Wecker-App" {
         RECTANGLE "TestFlight\n(iOS Deployment)" as testflight
         RECTANGLE "Direct APK Distribution\n(Android Deployment)" as apk_dist
     }
-}
 
 ' Beziehungen zwischen den Komponenten
 
