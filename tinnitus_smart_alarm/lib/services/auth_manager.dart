@@ -16,7 +16,6 @@ class AuthManager {
     }
   }
 
-  // Funktion, um sich abzumelden und das Konto zu löschen
   Future<void> signOutAndDeleteAccount() async {
     User? user = _auth.currentUser;
 

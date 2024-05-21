@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final tip = tipFromJson(jsonString);
-
 import 'dart:convert';
 
 List<Tip> tipFromJson(String str) =>

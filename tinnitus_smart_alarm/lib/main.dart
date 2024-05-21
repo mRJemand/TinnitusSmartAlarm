@@ -27,7 +27,7 @@ Future<void> main() async {
   );
 
   AwesomeNotifications().initialize(
-    null, // Icon für Benachrichtigungen, kann angepasst werden
+    null,
     [
       NotificationChannel(
         channelKey: 'basic_channel',

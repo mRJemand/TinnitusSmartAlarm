@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,7 +9,6 @@ import 'package:tinnitus_smart_alarm/screens/settings_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/screens/stimuli_selection_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/tips_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:tinnitus_smart_alarm/widgets/tinnitus_survey.dart';
@@ -41,11 +39,6 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _loadPreferences();
     _requestNotificationsPermissions();
-
-    // // Benachrichtigungsaktionen registrieren
-    // AwesomeNotifications().setListeners(
-    //   onActionReceivedMethod: _onActionReceived,
-    // );
 
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: NotificationHandler.onNotificationReceived,
@@ -78,43 +71,28 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _scheduleNotification() {
-    Future.delayed(const Duration(seconds: 4), () {
-      AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: 10,
-          channelKey: 'basic_channel',
-          title: 'Alarm Notification',
-          body: 'This is a notification from the Floating Action Button',
-          notificationLayout: NotificationLayout.Default,
-          payload: {'stimuli': 'marimba.mp3', 'frequency': '250 Hz'},
-        ),
-        actionButtons: [
-          NotificationActionButton(
-            key: 'OPEN_SURVEY',
-            label: 'Open Survey',
+    Future.delayed(
+      const Duration(seconds: 4),
+      () {
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+            id: 10,
+            channelKey: 'basic_channel',
+            title: 'Alarm Notification',
+            body: 'This is a notification from the Floating Action Button',
+            notificationLayout: NotificationLayout.Default,
+            payload: {'stimuli': 'marimba.mp3', 'frequency': '250 Hz'},
           ),
-        ],
-      );
-    });
+          actionButtons: [
+            NotificationActionButton(
+              key: 'OPEN_SURVEY',
+              label: 'Open Survey',
+            ),
+          ],
+        );
+      },
+    );
   }
-
-  // Future<void> _showSurvey(Map<String, String?>? payload) async {
-  //   log('Notification Payload: $payload');
-  //   await showDialog<void>(
-  //     context: GlobalNavigator.navigatorKey.currentState!.context,
-  //     builder: (BuildContext context) {
-  //       return Dialog(
-  //         child: TinnitusSurvey(),
-  //       );
-  //     },
-  //   );
-  // }
-
-  // Future<void> _onActionReceived(ReceivedAction receivedAction) async {
-  //   // if (receivedAction.buttonKeyPressed == 'OPEN_SURVEY') {
-  //   await _showSurvey(receivedAction.payload);
-  //   // }
-  // }
 
   Widget _buildApp(Widget homeScreen) {
     return MaterialApp(
@@ -183,10 +161,6 @@ class _MainScreenState extends State<MainScreen> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: _scheduleNotification,
-        //   child: const Icon(Icons.notifications),
-        // ),
       );
     }
   }
@@ -197,9 +171,6 @@ class NotificationHandler {
       ReceivedAction receivedAction) async {
     log('Notification Payload: ${receivedAction.payload}');
     await _showSurvey(receivedAction.payload);
-    // GlobalNavigator.navigatorKey.currentState?.push(
-    //   MaterialPageRoute(builder: (context) => TinnitusSurvey()),
-    // );
   }
 
   static Future<void> _showSurvey(Map<String, String?>? payload) async {

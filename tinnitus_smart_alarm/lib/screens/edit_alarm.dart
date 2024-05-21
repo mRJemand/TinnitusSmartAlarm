@@ -1,8 +1,6 @@
 import 'dart:developer';
 
-import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
@@ -59,7 +57,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     creating = widget.alarmSettings == null;
     fadeDuration = fadeDurationLength;
     _settingsFuture = _loadSettings(creating);
-    // _stimuliFuture = _loadStimuliList();
     if (creating) {
       selectedDateTime = DateTime.now().add(const Duration(minutes: 1));
       selectedDateTime = selectedDateTime.copyWith(second: 0, millisecond: 0);
@@ -87,11 +84,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
 
     alarmName = _nameController.text;
   }
-
-  // Future<void> _loadStimuliList() async {
-  //   widget.stimuliList = await stimuliManager.loadAllStimuli();
-  //   setState(() {});
-  // }
 
   Future<void> _loadSettings(bool creating) async {
     if (creating) {
@@ -199,9 +191,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
 
   void deleteAlarm() {
     AlarmManager.deleteAlarm(widget.alarmSettings!.id);
-    // Alarm.stop(widget.alarmSettings!.id).then((res) {
-    //   if (res) Navigator.pop(context, true);
-    // });
     Navigator.pop(context, true);
   }
 
@@ -213,7 +202,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
         child: Text('${s.displayName}'),
       ));
     }
-    // print(dropDownList.first);
     dropDownList.toSet().toList();
     return dropDownList;
   }
@@ -223,9 +211,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
     return FutureBuilder(
       future: Future.wait([_settingsFuture]),
       builder: (context, snapshot) {
-        // if (snapshot.connectionState == ConnectionState.waiting) {
-        //   return const Center(child: CircularProgressIndicator());
-        // } else
         if (snapshot.hasError) {
           return const Center(child: Text('Error loading settings'));
         }
@@ -275,7 +260,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                 ),
                 RawMaterialButton(
                   onPressed: pickTime,
-                  // fillColor: Colors.grey[200],
                   child: Container(
                     margin: const EdgeInsets.all(20),
                     child: Text(
@@ -378,7 +362,6 @@ class _AlarmEditScreenState extends State<AlarmEditScreen> {
                     ),
                     DropdownButton<Stimuli>(
                       value: widget.stimuliList.firstWhere((s) {
-                        log(s.toJson().toString());
                         return s.id == selectedStimuli.id;
                       }, orElse: () => widget.stimuliList.first),
                       items: _getStimuliDropdownList(),

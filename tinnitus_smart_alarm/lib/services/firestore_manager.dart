@@ -52,11 +52,9 @@ class FirestoreManager {
       required double uncomfortable,
       required double easyToIgnore,
       required String? frequency}) async {
-    // Erhalten der aktuellen Benutzer-ID vom anonymen Firebase-Benutzer
     User? user = FirebaseAuth.instance.currentUser;
     String userId = user?.uid ?? 'unknown';
 
-    // Erstellen eines neuen Dokuments in Firestore mit den Antwortdaten
     await FirebaseFirestore.instance.collection('survey_answers').add({
       'user_id': userId,
       'intense_result': volume,
@@ -74,7 +72,6 @@ class FirestoreManager {
     required String feedbackType,
     required String? message,
   }) async {
-    // Erstellen eines neuen Dokuments in Firestore mit den Feedbackdaten
     await FirebaseFirestore.instance.collection('user_feedback').add({
       'name': name,
       'email': email,
@@ -85,19 +82,15 @@ class FirestoreManager {
   }
 
   Future<void> deleteCurrentUserEntries() async {
-    // Get the current user's ID
     User? currentUser = FirebaseAuth.instance.currentUser;
     String userId = currentUser?.uid ?? '';
 
-    // Reference to the Firestore collection
     CollectionReference surveyAnswers =
         FirebaseFirestore.instance.collection('survey_answers');
 
-    // Query the collection for documents with the current user's ID
     QuerySnapshot querySnapshot =
         await surveyAnswers.where('user_id', isEqualTo: userId).get();
 
-    // Iterate over the documents and delete each one
     for (QueryDocumentSnapshot doc in querySnapshot.docs) {
       await surveyAnswers.doc(doc.id).delete();
     }

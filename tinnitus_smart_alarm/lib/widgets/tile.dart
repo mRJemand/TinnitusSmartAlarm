@@ -26,7 +26,6 @@ class _AlarmTileState extends State<AlarmTile> {
   Future<void> toggleAlarm(bool value) async {
     if (value &&
         widget.extendedAlarm.alarmSettings.dateTime.isBefore(DateTime.now())) {
-      // Set the alarm to the same time on the next day
       DateTime newDateTime =
           widget.extendedAlarm.alarmSettings.dateTime.add(Duration(days: 1));
       widget.extendedAlarm.alarmSettings =
@@ -66,18 +65,6 @@ class _AlarmTileState extends State<AlarmTile> {
         child: InkWell(
           onTap: widget.onPressed,
           child: Card(
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.circular(12),
-            //   boxShadow: const [
-            //     BoxShadow(
-            //       // color: Colors.black12,
-            //       blurRadius: 8,
-            //       offset: Offset(0, 4),
-            //     ),
-            //   ],
-            // color: Colors.white,
-            // ),
-            // padding: const EdgeInsets.all(15),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Row(
@@ -94,11 +81,6 @@ class _AlarmTileState extends State<AlarmTile> {
                                 .extendedAlarm.alarmSettings.dateTime.minute,
                           ).format(context),
                           style: Theme.of(context).textTheme.headlineLarge,
-                          //     const TextStyle(
-                          //   fontSize: 24,
-                          //   fontWeight: FontWeight.w500,
-                          //   color: Colors.black,
-                          // ),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -106,7 +88,6 @@ class _AlarmTileState extends State<AlarmTile> {
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
-                            // color: Colors.black87,
                           ),
                         ),
                       ],

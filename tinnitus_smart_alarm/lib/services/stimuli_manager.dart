@@ -55,7 +55,6 @@ class StimuliManager {
     List<Stimuli> stimuliList = await loadAllStimuli();
     List<Stimuli> individualStimuliList = await loadIndividualStimuli();
 
-    // Check whether the stimuli already exists to avoid duplicates
     int index = stimuliList.indexWhere((s) => s.id == stimuli.id);
     if (index == -1) {
       individualStimuliList.add(stimuli);
@@ -115,7 +114,7 @@ class StimuliManager {
     } else if (localizedName == loc.custom) {
       return 'custom';
     } else {
-      return 'unknown'; // Eine generische Rückgabe für unbekannte Kategorien
+      return 'unknown';
     }
   }
 }

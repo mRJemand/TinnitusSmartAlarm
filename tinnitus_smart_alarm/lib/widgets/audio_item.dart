@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
-import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 
 class AudioItem extends StatelessWidget {

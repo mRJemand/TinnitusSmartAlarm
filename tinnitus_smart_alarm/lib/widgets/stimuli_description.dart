@@ -12,7 +12,7 @@ class StimuliDescriptionWidget extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.stimuliDescriptionTitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -47,11 +47,11 @@ class StimuliDescriptionWidget extends StatelessWidget {
                   .stimuliDescriptionPartDigitalNotSpec,
               imagePath: 'assets/images/digital_nicht_spezifisch.png',
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context)!
                   .stimuliDescriptionAdditionalConsiderationsTitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -66,21 +66,21 @@ class StimuliDescriptionWidget extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!
                   .stimuliDescriptionPersonalizationTitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!
                   .stimuliDescriptionPersonalizationText,
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                icon: Icon(Icons.close_outlined),
+                icon: const Icon(Icons.close_outlined),
                 label: Text(AppLocalizations.of(context)!.close),
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
@@ -103,23 +103,23 @@ class StimuliDescriptionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Image.asset(
           imagePath,
           fit: BoxFit.contain,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           content,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
       ],
     );

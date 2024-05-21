@@ -69,7 +69,6 @@ class _TipItemState extends State<TipItem> {
             ),
             color: widget.tip.isFavorite == true ? Colors.yellow[700] : null,
             onPressed: () async {
-              // TipsManager tipsManager = TipsManager();
               List<int> tipFavorites = await TipsManager.loadFavoriteTips();
               if (widget.tip.isFavorite == null ||
                   widget.tip.isFavorite == false) {

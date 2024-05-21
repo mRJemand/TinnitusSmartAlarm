@@ -1,4 +1,3 @@
-// main.dart
 import 'package:flutter/material.dart';
 import 'package:tinnitus_smart_alarm/widgets/feedback_form.dart';
 

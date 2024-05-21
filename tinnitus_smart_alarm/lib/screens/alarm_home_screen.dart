@@ -9,7 +9,6 @@ import 'package:tinnitus_smart_alarm/models/extended_alarm.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/edit_alarm.dart';
 import 'package:tinnitus_smart_alarm/screens/ring_screen.dart';
-import 'package:tinnitus_smart_alarm/screens/shortcut_button.dart';
 import 'package:tinnitus_smart_alarm/services/alarm_manager.dart';
 import 'package:tinnitus_smart_alarm/services/stimuli_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/tile.dart';
@@ -53,15 +52,6 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
     FlutterNativeSplash.remove();
   }
 
-  // void loadAlarms() async {
-  //   extendedAlarms = await AlarmManager.loadAlarms();
-  //   setState(() {});
-  //   // log('LENGTH ${extendedAlarms.length}');
-  //   setState(() {
-  //     alarms = Alarm.getAlarms();
-  //     alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
-  //   });
-  // }
   void loadAlarms() async {
     extendedAlarms = await AlarmManager.loadAlarms();
     DateTime now = DateTime.now();
@@ -179,9 +169,6 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
                           onPressed: () =>
                               navigateToAlarmScreen(extendedAlarms[index]),
                           onDismissed: () {
-                            // Alarm.stop(extendedAlarms[index].alarmSettings.id)
-                            //     .then((_) => loadAlarms());
-                            // AlarmManager.setAlarmInactive(extendedAlarms[index]);
                             AlarmManager.deleteAlarm(
                                 extendedAlarms[index]!.alarmSettings.id);
                             loadAlarms();
@@ -203,7 +190,6 @@ class _AlarmHomeScreenState extends State<AlarmHomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // AlarmHomeShortcutButton(refreshAlarms: loadAlarms),
             FloatingActionButton(
               heroTag: UniqueKey(),
               onPressed: () => navigateToAlarmScreen(null),

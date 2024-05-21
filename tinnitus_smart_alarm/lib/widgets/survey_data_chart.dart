@@ -171,7 +171,7 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     min: 0,
                     max: 10,
                     divisions: 10,
-                    onChanged: null, // Disable slider interaction
+                    onChanged: null,
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -183,7 +183,7 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     min: 0,
                     max: 10,
                     divisions: 10,
-                    onChanged: null, // Disable slider interaction
+                    onChanged: null,
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -195,7 +195,7 @@ class _SurveyDataChartState extends State<SurveyDataChart> {
                     min: 0,
                     max: 10,
                     divisions: 10,
-                    onChanged: null, // Disable slider interaction
+                    onChanged: null,
                   ),
                   const SizedBox(height: 8),
                   Text(

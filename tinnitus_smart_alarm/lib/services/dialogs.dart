@@ -6,7 +6,7 @@ class Dialogs {
       BuildContext context, String errorMessage) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // Benutzer muss auf die Taste drücken!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(AppLocalizations.of(context)!.error),
@@ -21,7 +21,7 @@ class Dialogs {
             TextButton(
               child: Text(AppLocalizations.of(context)!.cancel),
               onPressed: () {
-                Navigator.of(context).pop(); // Schließt den Dialog
+                Navigator.of(context).pop();
               },
             ),
           ],

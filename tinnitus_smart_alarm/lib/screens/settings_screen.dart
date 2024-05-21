@@ -5,15 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
-import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/chart_screen.dart';
 import 'package:tinnitus_smart_alarm/screens/feedback_form_screen.dart';
 import 'package:tinnitus_smart_alarm/services/auth_manager.dart';
 import 'package:tinnitus_smart_alarm/services/firestore_manager.dart';
 import 'package:tinnitus_smart_alarm/services/settings_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tinnitus_smart_alarm/widgets/survey_data_chart.dart';
 import 'package:tinnitus_smart_alarm/widgets/tinnitus_survey.dart';
 import 'package:tinnitus_smart_alarm/widgets/volume_slider.dart';
 
@@ -351,36 +348,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 leading: const Icon(Icons.delete_outlined),
                 onPressed: (context) async {
                   _showDataDeletionConfirmationDialog(context);
-                  // FirestoreManager firestoreManager = FirestoreManager();
-                  // AuthManager authManager = AuthManager();
-
-                  // await firestoreManager.deleteCurrentUserEntries();
-                  // await authManager.signOutAndDeleteAccount();
                 },
               ),
             ],
           ),
         ],
       ),
-      // floatingActionButton: Row(
-      //   children: [
-      //     FloatingActionButton(
-      //       heroTag: "a",
-      //       onPressed: () => printSharedPreferences(),
-      //     ),
-      //     FloatingActionButton(
-      //       heroTag: "b",
-      //       onPressed: () => clearSharedPreferences(),
-      //       backgroundColor: Colors.red,
-      //     ),
-      // ],
-      // ),
     );
   }
 
   Future<void> printSharedPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // Druckt alle Schlüssel-Werte-Paare
     log('Shared Preferences:');
     prefs.getKeys().forEach((key) {
       log('$key: ${prefs.get(key)}');

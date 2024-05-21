@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tinnitus_smart_alarm/models/survey_result.dart';
 import 'package:tinnitus_smart_alarm/services/firestore_manager.dart';
 import 'package:tinnitus_smart_alarm/widgets/survey_data_chart.dart';

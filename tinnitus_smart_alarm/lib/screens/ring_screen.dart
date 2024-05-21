@@ -32,7 +32,6 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
 
   void _scheduleNotification(
       String notificationTitle, String notificationBody) {
-    // todo change duration to 90 min
     Future.delayed(const Duration(seconds: 0), () async {
       SettingsManager settingsManager = SettingsManager();
       int settingTime = await settingsManager.getFeedbackTimeSetting();
@@ -44,8 +43,6 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
       if (stimuli == null) {
         log('no Stimuli found by name');
         log(widget.alarmSettings.assetAudioPath);
-      } else {
-        log(stimuli.toString());
       }
       await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -73,22 +70,16 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
   @override
   void initState() {
     super.initState();
-    log('MY ALARM NAME INIT');
     loadAlarmName();
-    log('MY ALARM NAME 123');
   }
 
   Future<void> loadAlarmName() async {
     extendedAlarm = await AlarmManager.getAlarmById(widget.alarmSettings.id);
-
-    log('MY ALARM NAME: ${extendedAlarm?.name ?? ''}');
     alarmName = extendedAlarm?.name ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
-    log('Im ringing!!!');
-
     final SettingsManager settingsManager = SettingsManager();
 
     return Scaffold(
@@ -97,17 +88,14 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
           future: settingsManager.getSnoozeTimeSetting(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // Ladezustand
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              // Fehlerzustand
               return Center(
                   child:
                       Text(AppLocalizations.of(context)!.errorLoadingSettings));
             }
-            // Erfolgreicher Zustand
-            final int snoozeTime =
-                snapshot.data ?? 1; // Standardwert falls null
+
+            final int snoozeTime = snapshot.data ?? 1;
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -119,7 +107,6 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
                   alarmName ?? '',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                // const Text("🔔", style: TextStyle(fontSize: 50)),
                 Text(
                     TimeOfDay(
                       hour: widget.alarmSettings.dateTime.hour,
@@ -134,7 +121,6 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
-                      // icon: const Icon(Icons.snooze),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         padding: const EdgeInsets.symmetric(

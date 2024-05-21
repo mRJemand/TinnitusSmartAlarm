@@ -1,13 +1,9 @@
 import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:tinnitus_smart_alarm/data/stimuli_catalog.dart';
 import 'package:tinnitus_smart_alarm/models/stimuli.dart';
 import 'package:tinnitus_smart_alarm/screens/stimuli_decision_tree_screen.dart';
 import 'package:tinnitus_smart_alarm/services/dialogs.dart';
@@ -61,14 +57,11 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
   }
 
   void playStimuli(Stimuli stimuli) async {
-    // int index = filteredList.indexOf(stimuli);
     if (playingStimuliNotifier.value == stimuli.id) {
       await audioPlayer.stop();
       playingStimuliNotifier.value = null;
     } else {
       try {
-        log(stimuli.filepath!);
-        log(stimuli.filename!);
         await audioPlayer.play(stimuli.isIndividual!
             ? DeviceFileSource(stimuli.filepath!)
             : AssetSource(stimuli.filepath!));
@@ -87,13 +80,11 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
           content:
               Text(AppLocalizations.of(context)!.defaultAudioSaved(filename))));
     }).catchError((error) {
-      // todo Handle errors here, maybe log them or show a different snackbar
       log(error);
     });
   }
 
   void filterList() {
-    log('filter list');
     final allCategory = AppLocalizations.of(context)!.all;
     final allFrequency = AppLocalizations.of(context)!.all;
     setState(() {
@@ -123,8 +114,7 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
       selectedCategory = null;
       selectedFrequency = null;
       _suggestedCategoryNames = [];
-      filteredList =
-          List.from(stimuliList); // Setzt die gefilterte Liste zurück
+      filteredList = List.from(stimuliList);
     });
   }
 
@@ -238,7 +228,6 @@ class _StimuliSelectionScreenState extends State<StimuliSelectionScreen> {
                       getLabel: (category) => category,
                       onChanged: (category) {
                         selectedCategory = category;
-                        log(selectedCategory!);
                         filterList();
                       },
                     ),

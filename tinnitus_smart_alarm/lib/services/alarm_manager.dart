@@ -7,17 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class AlarmManager {
-  // static Future<void> setAlarmActive(ExtendedAlarm extendedAlarm) async {
-  //   Alarm.set(alarmSettings: extendedAlarm.alarmSettings);
-  //   saveOrUpdateAlarm(extendedAlarm);
-  //   log('alarm set');
-  // }
-
   static Future<void> setAlarmActive(ExtendedAlarm alarm) async {
     var alarmSettings = alarm.alarmSettings;
 
     if (alarmSettings.dateTime.isBefore(DateTime.now())) {
-      // Set the alarm to the same time on the next day
       DateTime newDateTime = alarmSettings.dateTime.add(Duration(days: 1));
       alarmSettings = alarmSettings.copyWith(dateTime: newDateTime);
       alarm.alarmSettings = alarmSettings;
@@ -26,12 +19,8 @@ class AlarmManager {
 
     await Alarm.set(
       alarmSettings: alarmSettings,
-      // onRing: () {
-      //   log('Alarm ringing: ${alarmSettings.id}');
-      //   // Alarm trigger logic
-      // },
     );
-    alarm.isActive = true; // Ensure the alarm is marked as active
+    alarm.isActive = true;
     await saveOrUpdateAlarm(alarm);
   }
 
@@ -43,7 +32,6 @@ class AlarmManager {
 
   static const String _alarmsKey = 'extended_alarms';
 
-  /// Speichert oder aktualisiert den Alarm in den Präferenzen.
   static Future<void> saveOrUpdateAlarm(ExtendedAlarm alarm) async {
     final prefs = await SharedPreferences.getInstance();
     final alarmsJson = prefs.getString(_alarmsKey);
@@ -56,9 +44,9 @@ class AlarmManager {
     final index =
         alarms.indexWhere((a) => a.alarmSettings.id == alarm.alarmSettings.id);
     if (index != -1) {
-      alarms[index] = alarm; // Aktualisiere den bestehenden Alarm
+      alarms[index] = alarm;
     } else {
-      alarms.add(alarm); // Füge einen neuen Alarm hinzu
+      alarms.add(alarm);
     }
 
     await prefs.setString(
@@ -73,7 +61,6 @@ class AlarmManager {
       final List<ExtendedAlarm?> alarms =
           jsonList.map((json) => ExtendedAlarm.fromJson(json)).toList();
 
-      // Search for the alarm with the given ID
       final alarm = alarms.firstWhereOrNull(
         (alarm) {
           log(alarm!.alarmSettings.id.toString());
@@ -83,10 +70,9 @@ class AlarmManager {
 
       return alarm;
     }
-    return null; // Return null if the alarm with the specified ID is not found
+    return null;
   }
 
-  /// Lädt alle ExtendedAlarms aus den Präferenzen.
   static Future<List<ExtendedAlarm?>> loadAlarms() async {
     final prefs = await SharedPreferences.getInstance();
     final alarmsJson = prefs.getString(_alarmsKey);
@@ -101,7 +87,6 @@ class AlarmManager {
     return [];
   }
 
-  /// Löscht einen Alarm aus den Präferenzen.
   static Future<void> deleteAlarm(int alarmId) async {
     final prefs = await SharedPreferences.getInstance();
     final alarmsJson = prefs.getString(_alarmsKey);
