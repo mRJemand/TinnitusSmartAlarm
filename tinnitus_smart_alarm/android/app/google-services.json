@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "890708582022",
+    "project_id": "tinnitus-smart-alarm",
+    "storage_bucket": "tinnitus-smart-alarm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890708582022:android:6efd4046b8898d4f68bb07",
+        "android_client_info": {
+          "package_name": "com.radovale.tinnitus_smart_alarm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3q3xT56GKph7Fdle_6Ids0kJGhm7fKGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

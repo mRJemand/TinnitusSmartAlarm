@@ -1,0 +1,15 @@
+@startuml
+participant Benutzer
+participant App
+participant API
+participant Firestore
+participant KIAlgorithmus
+
+Benutzer -> App: Daten eingeben
+App -> API: Anfrage (POST /tinnitus)
+API -> Firestore: Speichern der Daten
+Firestore -> KIAlgorithmus: Tinnitusdaten bereitstellen
+KIAlgorithmus --> Firestore: Optimierte Stimuli
+Firestore --> API: Stimuli-Daten zurückgeben
+API --> App: Antwort (GET /tinnitus)
+@enduml

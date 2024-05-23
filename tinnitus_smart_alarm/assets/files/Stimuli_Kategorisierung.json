@@ -1,0 +1,1521 @@
+﻿[
+    {
+        "id": 1,
+        "filename": "applause.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 2,
+        "filename": "beachwaves.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 3,
+        "filename": "bees.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 4,
+        "filename": "birdwings.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 5,
+        "filename": "bonfire.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 6,
+        "filename": "bubbling.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 7,
+        "filename": "churchbells.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 8,
+        "filename": "cicada.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 9,
+        "filename": "creakingdoor.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 10,
+        "filename": "crowdbabble2.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 11,
+        "filename": "deep_am_10.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 12,
+        "filename": "deep_am_4.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 13,
+        "filename": "deep_am_40.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 14,
+        "filename": "deep_pure.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 15,
+        "filename": "desertwind.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 16,
+        "filename": "didgeridoo.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 17,
+        "filename": "flappingflag.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 18,
+        "filename": "fm_am_10_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 19,
+        "filename": "fm_am_10_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 20,
+        "filename": "fm_am_10_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 21,
+        "filename": "fm_am_10_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 22,
+        "filename": "fm_am_10_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 23,
+        "filename": "fm_am_10_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 24,
+        "filename": "fm_am_10_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 25,
+        "filename": "fm_am_10_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 26,
+        "filename": "fm_am_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 27,
+        "filename": "fm_am_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 28,
+        "filename": "fm_am_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 29,
+        "filename": "fm_am_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 30,
+        "filename": "fm_am_4_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 31,
+        "filename": "fm_am_4_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 32,
+        "filename": "fm_am_4_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 33,
+        "filename": "fm_am_4_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 34,
+        "filename": "fm_am_4_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 35,
+        "filename": "fm_am_4_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 36,
+        "filename": "fm_am_4_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 37,
+        "filename": "fm_am_4_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 38,
+        "filename": "fm_am_40_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 39,
+        "filename": "fm_am_40_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 40,
+        "filename": "fm_am_40_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 41,
+        "filename": "fm_am_40_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 42,
+        "filename": "fm_am_40_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 43,
+        "filename": "fm_am_40_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 44,
+        "filename": "fm_am_40_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 45,
+        "filename": "fm_am_40_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 46,
+        "filename": "fm_am_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 47,
+        "filename": "fm_am_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 48,
+        "filename": "fm_am_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 49,
+        "filename": "fm_am_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 50,
+        "filename": "frogs.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 51,
+        "filename": "gong.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 52,
+        "filename": "kettle.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 53,
+        "filename": "laughingkids.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 54,
+        "filename": "mice.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 55,
+        "filename": "notchedmeditation_1000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 56,
+        "filename": "notchedmeditation_2000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 57,
+        "filename": "notchedmeditation_250.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 58,
+        "filename": "notchedmeditation_3000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 59,
+        "filename": "notchedmeditation_4000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 60,
+        "filename": "notchedmeditation_500.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 61,
+        "filename": "notchedmeditation_6000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 62,
+        "filename": "notchedmeditation_8000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 63,
+        "filename": "notchedmusic_1000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 64,
+        "filename": "notchedmusic_2000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 65,
+        "filename": "notchedmusic_250.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 66,
+        "filename": "notchedmusic_3000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 67,
+        "filename": "notchedmusic_4000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 68,
+        "filename": "notchedmusic_500.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 69,
+        "filename": "notchedmusic_6000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 70,
+        "filename": "notchedmusic_8000.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 71,
+        "filename": "pink_10.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 72,
+        "filename": "pink_4.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 73,
+        "filename": "pink_40.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 74,
+        "filename": "pink.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 75,
+        "filename": "purple_10.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 76,
+        "filename": "purple_4.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 77,
+        "filename": "purple_40.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 78,
+        "filename": "purple.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 79,
+        "filename": "purringcat.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 80,
+        "filename": "rain.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 81,
+        "filename": "rustlingleaves.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 82,
+        "filename": "screamingkids.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 83,
+        "filename": "seagulls.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 84,
+        "filename": "shower.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 85,
+        "filename": "sparrows.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 86,
+        "filename": "teethbrushing.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 87,
+        "filename": "tin_am_10_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 88,
+        "filename": "tin_am_10_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 89,
+        "filename": "tin_am_10_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 90,
+        "filename": "tin_am_10_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 91,
+        "filename": "tin_am_10_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 92,
+        "filename": "tin_am_10_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 93,
+        "filename": "tin_am_10_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 94,
+        "filename": "tin_am_10_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 95,
+        "filename": "tin_am_4_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 96,
+        "filename": "tin_am_4_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 97,
+        "filename": "tin_am_4_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 98,
+        "filename": "tin_am_4_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 99,
+        "filename": "tin_am_4_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 100,
+        "filename": "tin_am_4_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 101,
+        "filename": "tin_am_4_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 102,
+        "filename": "tin_am_4_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 103,
+        "filename": "tin_am_40_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 104,
+        "filename": "tin_am_40_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 105,
+        "filename": "tin_am_40_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 106,
+        "filename": "tin_am_40_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 107,
+        "filename": "tin_am_40_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 108,
+        "filename": "tin_am_40_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 109,
+        "filename": "tin_am_40_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 110,
+        "filename": "tin_am_40_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 111,
+        "filename": "tin_pure_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 112,
+        "filename": "tin_pure_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 113,
+        "filename": "tin_pure_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 114,
+        "filename": "tin_pure_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 115,
+        "filename": "tin_pure_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 116,
+        "filename": "tin_pure_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 117,
+        "filename": "tin_pure_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 118,
+        "filename": "tin_pure_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 119,
+        "filename": "tumblingrocks.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 120,
+        "filename": "waterfall.mp3",
+        "category_id": 2,
+        "category_name": "natural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 121,
+        "filename": "whales.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 122,
+        "filename": "wn_am_10_bp_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 123,
+        "filename": "wn_am_10_bp_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 124,
+        "filename": "wn_am_10_bp_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 125,
+        "filename": "wn_am_10_bp_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 126,
+        "filename": "wn_am_10_bp_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 127,
+        "filename": "wn_am_10_bp_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 128,
+        "filename": "wn_am_10_bp_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 129,
+        "filename": "wn_am_10_bp_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 130,
+        "filename": "wn_am_10_notch_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 131,
+        "filename": "wn_am_10_notch_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 132,
+        "filename": "wn_am_10_notch_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 133,
+        "filename": "wn_am_10_notch_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 134,
+        "filename": "wn_am_10_notch_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 135,
+        "filename": "wn_am_10_notch_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 136,
+        "filename": "wn_am_10_notch_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 137,
+        "filename": "wn_am_10_notch_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 138,
+        "filename": "wn_am_10.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 139,
+        "filename": "wn_am_4_bp_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 140,
+        "filename": "wn_am_4_bp_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 141,
+        "filename": "wn_am_4_bp_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 142,
+        "filename": "wn_am_4_bp_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 143,
+        "filename": "wn_am_4_bp_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 144,
+        "filename": "wn_am_4_bp_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 145,
+        "filename": "wn_am_4_bp_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 146,
+        "filename": "wn_am_4_bp_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 147,
+        "filename": "wn_am_4_notch_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 148,
+        "filename": "wn_am_4_notch_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 149,
+        "filename": "wn_am_4_notch_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 150,
+        "filename": "wn_am_4_notch_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 151,
+        "filename": "wn_am_4_notch_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 152,
+        "filename": "wn_am_4_notch_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 153,
+        "filename": "wn_am_4_notch_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 154,
+        "filename": "wn_am_4_notch_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 155,
+        "filename": "wn_am_4.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 156,
+        "filename": "wn_am_40_bp_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 157,
+        "filename": "wn_am_40_bp_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 158,
+        "filename": "wn_am_40_bp_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 159,
+        "filename": "wn_am_40_bp_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 160,
+        "filename": "wn_am_40_bp_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 161,
+        "filename": "wn_am_40_bp_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 162,
+        "filename": "wn_am_40_bp_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 163,
+        "filename": "wn_am_40_bp_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 164,
+        "filename": "wn_am_40_notch_1000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 165,
+        "filename": "wn_am_40_notch_2000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 166,
+        "filename": "wn_am_40_notch_250.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 167,
+        "filename": "wn_am_40_notch_3000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 168,
+        "filename": "wn_am_40_notch_4000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 169,
+        "filename": "wn_am_40_notch_500.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 170,
+        "filename": "wn_am_40_notch_6000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 171,
+        "filename": "wn_am_40_notch_8000.mp3",
+        "category_id": 3,
+        "category_name": "unnatural_pos",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 172,
+        "filename": "wn_am_40.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 173,
+        "filename": "wn_bp_1000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 174,
+        "filename": "wn_bp_2000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 175,
+        "filename": "wn_bp_250.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 176,
+        "filename": "wn_bp_3000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 177,
+        "filename": "wn_bp_4000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 178,
+        "filename": "wn_bp_500.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 179,
+        "filename": "wn_bp_6000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 180,
+        "filename": "wn_bp_8000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 181,
+        "filename": "wn_notch_1000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 1000
+    },
+    {
+        "id": 182,
+        "filename": "wn_notch_2000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 2000
+    },
+    {
+        "id": 183,
+        "filename": "wn_notch_250.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 250
+    },
+    {
+        "id": 184,
+        "filename": "wn_notch_3000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 3000
+    },
+    {
+        "id": 185,
+        "filename": "wn_notch_4000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 4000
+    },
+    {
+        "id": 186,
+        "filename": "wn_notch_500.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 500
+    },
+    {
+        "id": 187,
+        "filename": "wn_notch_6000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 6000
+    },
+    {
+        "id": 188,
+        "filename": "wn_notch_8000.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "True",
+        "has_frequency": 8000
+    },
+    {
+        "id": 189,
+        "filename": "wn.mp3",
+        "category_id": 4,
+        "category_name": "unnatural_neg",
+        "has_special_frequency": "False",
+        "has_frequency": ""
+    },
+    {
+        "id": 190,
+        "filename": "writing.mp3",
+        "category_id": 1,
+        "category_name": "natural_plus",
+        "has_special_frequency": "False"
+    }
+]

@@ -1,0 +1,562 @@
+@startuml
+set namespaceSeparator ::
+
+class "tinnitus_smart_alarm::l10n::l10n.dart::L10n" {
+  {static} +List<Locale> all
+  {static} +bool contains()
+}
+
+class "tinnitus_smart_alarm::firebase_options.dart::DefaultFirebaseOptions" {
+  {static} +FirebaseOptions android
+  {static} +FirebaseOptions ios
+  {static} +FirebaseOptions currentPlatform
+}
+
+"tinnitus_smart_alarm::firebase_options.dart::DefaultFirebaseOptions" o-- "firebase_core_platform_interface::firebase_core_platform_interface.dart::FirebaseOptions"
+
+class "tinnitus_smart_alarm::models::survey_result.dart::SurveyResult" {
+  +DateTime dateTime
+  +String frequency
+  +double ignorable
+  +double intenseResult
+  +String stimuli
+  +double uncomfortable
+  +String userId
+}
+
+class "tinnitus_smart_alarm::models::tip.dart::Tip" {
+  +int id
+  +dynamic key
+  +String title
+  +String objective
+  +String tip
+  +String explanation
+  +String language
+  +bool? isFavorite
+  +Map<String, dynamic> toJson()
+}
+
+class "tinnitus_smart_alarm::models::tip.dart::EnumValues" {
+  +Map<String, T> map
+  +Map<T, String> reverseMap
+  +Map<T, String> reverse
+}
+
+class "tinnitus_smart_alarm::models::tip.dart::Language" {
+  +int index
+  {static} +List<Language> values
+  {static} +Language DE
+  {static} +Language ENG
+}
+
+"tinnitus_smart_alarm::models::tip.dart::Language" o-- "tinnitus_smart_alarm::models::tip.dart::Language"
+"dart::core::Enum" <|-- "tinnitus_smart_alarm::models::tip.dart::Language"
+
+class "tinnitus_smart_alarm::models::stimuli.dart::Stimuli" {
+  +String? id
+  +String? displayName
+  +String? filename
+  +int? categoryId
+  +String? categoryName
+  +bool? hasSpecialFrequency
+  +String? frequency
+  +String? filepath
+  +bool? isIndividual
+  +Map<String, dynamic> toJson()
+}
+
+class "tinnitus_smart_alarm::screens::tip_detail_screen.dart::TipDetailScreen" {
+  +Tip tip
+  +_TipDetailScreenState createState()
+}
+
+"tinnitus_smart_alarm::screens::tip_detail_screen.dart::TipDetailScreen" o-- "tinnitus_smart_alarm::models::tip.dart::Tip"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::tip_detail_screen.dart::TipDetailScreen"
+
+class "tinnitus_smart_alarm::screens::tip_detail_screen.dart::_TipDetailScreenState" {
+  +Widget build()
+  -Widget _buildPanel()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::tip_detail_screen.dart::_TipDetailScreenState"
+
+class "tinnitus_smart_alarm::screens::tips_screen.dart::TipsScreen" {
+  +State<TipsScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::tips_screen.dart::TipsScreen"
+
+class "tinnitus_smart_alarm::screens::tips_screen.dart::_TipsScreenState" {
+  +List<Tip> tipsList
+  +TextEditingController searchTextController
+  +SettingsManager settingsManager
+  +bool showFavoritesOnly
+  +String language
+  +void initState()
+  -dynamic _loadSettings()
+  -void _toggleFavorites()
+  -List<Tip> _getFilteredTips()
+  +Widget build()
+  +Widget renderSimpleSearchableList()
+}
+
+"tinnitus_smart_alarm::screens::tips_screen.dart::_TipsScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"tinnitus_smart_alarm::screens::tips_screen.dart::_TipsScreenState" o-- "tinnitus_smart_alarm::services::settings_manager.dart::SettingsManager"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::tips_screen.dart::_TipsScreenState"
+
+class "tinnitus_smart_alarm::screens::settings_screen.dart::SettingsScreen" {
+  +State<SettingsScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::settings_screen.dart::SettingsScreen"
+
+class "tinnitus_smart_alarm::screens::settings_screen.dart::_SettingsScreenState" {
+  +bool darkMode
+  +bool loopAlarmAudio
+  +bool vibrate
+  +bool fadeIn
+  +double? volume
+  +bool customVolume
+  +String assetAudio
+  +int snoozeTime
+  +bool allowDataCollecting
+  +SettingsManager settingsManager
+  +void initState()
+  -dynamic _loadSettings()
+  -void _changeLanguage()
+  -void _reloadApp()
+  -void _setSnoozeTime()
+  +Widget build()
+  +dynamic printSharedPreferences()
+  +dynamic clearSharedPreferences()
+  -dynamic _showSurvey()
+  -dynamic _showDataCollectInfo()
+  -void _showConfirmationDialog()
+  -void _showDataDeletionConfirmationDialog()
+}
+
+"tinnitus_smart_alarm::screens::settings_screen.dart::_SettingsScreenState" o-- "tinnitus_smart_alarm::services::settings_manager.dart::SettingsManager"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::settings_screen.dart::_SettingsScreenState"
+
+class "tinnitus_smart_alarm::screens::shortcut_button.dart::AlarmHomeShortcutButton" {
+  +void Function() refreshAlarms
+  +AlarmSettings alarmSettings
+  +State<AlarmHomeShortcutButton> createState()
+}
+
+"tinnitus_smart_alarm::screens::shortcut_button.dart::AlarmHomeShortcutButton" o-- "null::void Function()"
+"tinnitus_smart_alarm::screens::shortcut_button.dart::AlarmHomeShortcutButton" o-- "alarm::model::alarm_settings.dart::AlarmSettings"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::shortcut_button.dart::AlarmHomeShortcutButton"
+
+class "tinnitus_smart_alarm::screens::shortcut_button.dart::_AlarmHomeShortcutButtonState" {
+  +bool showMenu
+  +dynamic onPressButton()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::shortcut_button.dart::_AlarmHomeShortcutButtonState"
+
+class "tinnitus_smart_alarm::screens::onboarding_screen.dart::OnboardingScreen" {
+  +void Function() onComplete
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::screens::onboarding_screen.dart::OnboardingScreen" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "tinnitus_smart_alarm::screens::onboarding_screen.dart::OnboardingScreen"
+
+class "tinnitus_smart_alarm::screens::alarm_home_screen.dart::AlarmHomeScreen" {
+  +State<AlarmHomeScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::alarm_home_screen.dart::AlarmHomeScreen"
+
+class "tinnitus_smart_alarm::screens::alarm_home_screen.dart::_AlarmHomeScreenState" {
+  +List<AlarmSettings> alarms
+  {static} +StreamSubscription<AlarmSettings>? subscription
+  +void initState()
+  +void initialization()
+  +void loadAlarms()
+  +dynamic navigateToRingScreen()
+  +dynamic navigateToAlarmScreen()
+  +dynamic checkAndroidNotificationPermission()
+  +dynamic checkAndroidExternalStoragePermission()
+  +void dispose()
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::screens::alarm_home_screen.dart::_AlarmHomeScreenState" o-- "dart::async::StreamSubscription<AlarmSettings>"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::alarm_home_screen.dart::_AlarmHomeScreenState"
+
+class "tinnitus_smart_alarm::screens::stimuli_selection_screen.dart::StimuliSelectionScreen" {
+  +State<StimuliSelectionScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::stimuli_selection_screen.dart::StimuliSelectionScreen"
+
+class "tinnitus_smart_alarm::screens::stimuli_selection_screen.dart::_StimuliSelectionScreenState" {
+  +SettingsManager settingsManager
+  +StimuliManager stimuliManager
+  +List<Stimuli> stimuliList
+  +List<Stimuli> filteredList
+  +String? selectedCategory
+  +String? selectedFrequency
+  +AudioPlayer audioPlayer
+  -dynamic _settingsFuture
+  -dynamic _stimuliFuture
+  +ValueNotifier<String?> defaultAudioNotifier
+  +ValueNotifier<String?> playingStimuliNotifier
+  +void initState()
+  -dynamic _loadStimuliList()
+  +void dispose()
+  +void playStimuli()
+  +void setDefaultAudio()
+  +void filterList()
+  +void resetFilters()
+  -dynamic _loadSettings()
+  +Widget buildDropdownMenu()
+  +Widget build()
+  +void deleteStimuli()
+  -dynamic _showInfoSheet()
+  -dynamic _showUploadSheet()
+}
+
+"tinnitus_smart_alarm::screens::stimuli_selection_screen.dart::_StimuliSelectionScreenState" o-- "tinnitus_smart_alarm::services::settings_manager.dart::SettingsManager"
+"tinnitus_smart_alarm::screens::stimuli_selection_screen.dart::_StimuliSelectionScreenState" o-- "tinnitus_smart_alarm::services::stimuli_manager.dart::StimuliManager"
+"tinnitus_smart_alarm::screens::stimuli_selection_screen.dart::_StimuliSelectionScreenState" o-- "audioplayers::src::audioplayer.dart::AudioPlayer"
+"tinnitus_smart_alarm::screens::stimuli_selection_screen.dart::_StimuliSelectionScreenState" o-- "flutter::src::foundation::change_notifier.dart::ValueNotifier<String>"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::stimuli_selection_screen.dart::_StimuliSelectionScreenState"
+
+class "tinnitus_smart_alarm::screens::privacy_consent_screen.dart::PrivacyConsentScreen" {
+  +dynamic Function(bool) onConsent
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::screens::privacy_consent_screen.dart::PrivacyConsentScreen" o-- "null::dynamic Function(bool)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "tinnitus_smart_alarm::screens::privacy_consent_screen.dart::PrivacyConsentScreen"
+
+class "tinnitus_smart_alarm::screens::chart_screen.dart::ChartScreen" {
+  +State<ChartScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::chart_screen.dart::ChartScreen"
+
+class "tinnitus_smart_alarm::screens::chart_screen.dart::_ChartScreenState" {
+  +List<SurveyResult> surveyResults
+  +FirestoreManager firestoreManager
+  +void initState()
+  -dynamic _loadData()
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::screens::chart_screen.dart::_ChartScreenState" o-- "tinnitus_smart_alarm::services::firestore_manager.dart::FirestoreManager"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::chart_screen.dart::_ChartScreenState"
+
+class "tinnitus_smart_alarm::screens::main_screen.dart::MainScreen" {
+  +_MainScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::main_screen.dart::MainScreen"
+
+class "tinnitus_smart_alarm::screens::main_screen.dart::_MainScreenState" {
+  -int _selectedIndex
+  -bool _hasSeenOnboarding
+  -bool? _hasConsented
+  +SettingsManager settingsManager
+  -List<Widget> _screens
+  +void initState()
+  -void _onItemTapped()
+  -dynamic _loadPreferences()
+  -void _removeSplashScreen()
+  -dynamic _requestNotificationsPermissions()
+  -void _scheduleNotification()
+  -Widget _buildApp()
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::screens::main_screen.dart::_MainScreenState" o-- "tinnitus_smart_alarm::services::settings_manager.dart::SettingsManager"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::main_screen.dart::_MainScreenState"
+
+class "tinnitus_smart_alarm::screens::main_screen.dart::NotificationHandler" {
+  {static} +dynamic onNotificationReceived()
+  {static} -dynamic _showSurvey()
+}
+
+class "tinnitus_smart_alarm::screens::ring_screen.dart::AlarmRingScreen" {
+  +AlarmSettings alarmSettings
+  +String getLastSegment()
+  -void _scheduleNotification()
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::screens::ring_screen.dart::AlarmRingScreen" o-- "alarm::model::alarm_settings.dart::AlarmSettings"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "tinnitus_smart_alarm::screens::ring_screen.dart::AlarmRingScreen"
+
+class "tinnitus_smart_alarm::screens::edit_alarm.dart::AlarmEditScreen" {
+  +AlarmSettings? alarmSettings
+  +void Function() refreshAlarms
+  +State<AlarmEditScreen> createState()
+}
+
+"tinnitus_smart_alarm::screens::edit_alarm.dart::AlarmEditScreen" o-- "alarm::model::alarm_settings.dart::AlarmSettings"
+"tinnitus_smart_alarm::screens::edit_alarm.dart::AlarmEditScreen" o-- "null::void Function()"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::screens::edit_alarm.dart::AlarmEditScreen"
+
+class "tinnitus_smart_alarm::screens::edit_alarm.dart::_AlarmEditScreenState" {
+  +bool loading
+  +bool creating
+  +DateTime selectedDateTime
+  +bool loopAudio
+  +bool vibrate
+  +double? volume
+  +bool customVolume
+  +String assetAudio
+  +double fadeDuration
+  +bool fadeDurationStatus
+  +double fadeDurationLength
+  +SettingsManager settingsManager
+  -dynamic _settingsFuture
+  -dynamic _stimuliFuture
+  +List<Stimuli> stimuliList
+  +StimuliManager stimuliManager
+  +Stimuli selectedStimuli
+  +void initState()
+  -dynamic _loadStimuliList()
+  -dynamic _loadSettings()
+  +String getDay()
+  +dynamic pickTime()
+  +AlarmSettings buildAlarmSettings()
+  +void saveAlarm()
+  +void deleteAlarm()
+  -List<DropdownMenuItem<Stimuli>> _getStimuliDropdownList()
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::screens::edit_alarm.dart::_AlarmEditScreenState" o-- "tinnitus_smart_alarm::services::settings_manager.dart::SettingsManager"
+"tinnitus_smart_alarm::screens::edit_alarm.dart::_AlarmEditScreenState" o-- "tinnitus_smart_alarm::services::stimuli_manager.dart::StimuliManager"
+"tinnitus_smart_alarm::screens::edit_alarm.dart::_AlarmEditScreenState" o-- "tinnitus_smart_alarm::models::stimuli.dart::Stimuli"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::screens::edit_alarm.dart::_AlarmEditScreenState"
+
+class "tinnitus_smart_alarm::main.dart::MyApp" {
+  +Locale locale
+  +AdaptiveThemeMode initialThemeMode
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::main.dart::MyApp" o-- "dart::ui::Locale"
+"tinnitus_smart_alarm::main.dart::MyApp" o-- "adaptive_theme::src::adaptive_theme_mode.dart::AdaptiveThemeMode"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "tinnitus_smart_alarm::main.dart::MyApp"
+
+class "tinnitus_smart_alarm::main.dart::GlobalNavigator" {
+  {static} +GlobalKey<NavigatorState> navigatorKey
+  {static} +NavigatorState? currentState
+}
+
+"tinnitus_smart_alarm::main.dart::GlobalNavigator" o-- "flutter::src::widgets::framework.dart::GlobalKey<NavigatorState>"
+"tinnitus_smart_alarm::main.dart::GlobalNavigator" o-- "flutter::src::widgets::navigator.dart::NavigatorState"
+
+class "tinnitus_smart_alarm::data::stimuli_catalog.dart::StimuliCatalog" {
+  {static} +List<Stimuli> stimuliList
+}
+
+class "tinnitus_smart_alarm::data::tips_catalog.dart::TipsCatalag" {
+  {static} +List<Tip> tipsList
+}
+
+class "tinnitus_smart_alarm::services::stimuli_manager.dart::StimuliManager" {
+  -dynamic _prefs
+  +dynamic loadAllStimuli()
+  +dynamic loadIndividualStimuli()
+  +dynamic loadStimuliById()
+  +dynamic loadStimuliByFileName()
+  +dynamic addStimuli()
+  +dynamic deleteStimuli()
+  +String getCategoryLocalizedName()
+  +String getCategoryKeyByLocalizedName()
+}
+
+class "tinnitus_smart_alarm::services::dialogs.dart::Dialogs" {
+  {static} +dynamic showErrorDialog()
+}
+
+class "tinnitus_smart_alarm::services::settings_manager.dart::SettingsManager" {
+  -dynamic _prefs
+  +dynamic getDarkModeSetting()
+  +dynamic setDarkModeSetting()
+  +dynamic getLoopAudioSetting()
+  +dynamic setLoopAudioSetting()
+  +dynamic getVibrateSetting()
+  +dynamic setVibrateSetting()
+  +dynamic getFadeInSetting()
+  +dynamic setFadeInSetting()
+  +dynamic getCustomVolumeSetting()
+  +dynamic setCustomVolumeSetting()
+  +dynamic getVolumeSetting()
+  +dynamic setVolumeSetting()
+  +dynamic getLocaleSetting()
+  +dynamic setLocaleSetting()
+  +dynamic getAssetAudioSetting()
+  +dynamic setAssetAudioSetting()
+  +dynamic getSnoozeTimeSetting()
+  +dynamic setSnoozeTimeSetting()
+  +dynamic getAllowDataCollectionSetting()
+  +dynamic setAllowDataCollectionSetting()
+  +dynamic getHasSeenOnboardingSetting()
+  +dynamic setHasSeenOnboardingSetting()
+}
+
+class "tinnitus_smart_alarm::services::firestore_manager.dart::FirestoreManager" {
+  +dynamic fetchDataFromFirestore()
+  +dynamic sendAnswersToFirestore()
+  +dynamic deleteCurrentUserEntries()
+}
+
+class "tinnitus_smart_alarm::services::tips_manager.dart::TipsManager" {
+  -dynamic _prefs
+  {static} -String _keyFavorites
+  {static} +dynamic saveFavoriteTips()
+  {static} +dynamic loadFavoriteTips()
+}
+
+class "tinnitus_smart_alarm::services::auth_manager.dart::AuthManager" {
+  -FirebaseAuth _auth
+  +dynamic checkAndSignInAnonymously()
+  +dynamic signOutAndDeleteAccount()
+}
+
+"tinnitus_smart_alarm::services::auth_manager.dart::AuthManager" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+
+class "tinnitus_smart_alarm::widgets::tile.dart::AlarmTile" {
+  +String title
+  +void Function() onPressed
+  +void Function()? onDismissed
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::widgets::tile.dart::AlarmTile" o-- "null::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "tinnitus_smart_alarm::widgets::tile.dart::AlarmTile"
+
+class "tinnitus_smart_alarm::widgets::tip_item.dart::TipItem" {
+  +Tip tip
+  +State<TipItem> createState()
+}
+
+"tinnitus_smart_alarm::widgets::tip_item.dart::TipItem" o-- "tinnitus_smart_alarm::models::tip.dart::Tip"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::widgets::tip_item.dart::TipItem"
+
+class "tinnitus_smart_alarm::widgets::tip_item.dart::_TipItemState" {
+  +List<int> favorites
+  +void initState()
+  -dynamic _loadFavorites()
+  +dynamic persistFavorites()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::widgets::tip_item.dart::_TipItemState"
+
+class "tinnitus_smart_alarm::widgets::stimuli_description.dart::StimuliDescriptionWidget" {
+  +Widget build()
+  -Widget _buildSection()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "tinnitus_smart_alarm::widgets::stimuli_description.dart::StimuliDescriptionWidget"
+
+class "tinnitus_smart_alarm::widgets::stimuli_description.dart::BulletList" {
+  +List<String> items
+  +Widget build()
+  -Widget _buildBulletItem()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "tinnitus_smart_alarm::widgets::stimuli_description.dart::BulletList"
+
+class "tinnitus_smart_alarm::widgets::tinnitus_survey.dart::TinnitusSurvey" {
+  +String? stimuliName
+  +String? frequency
+  +_TinnitusSurveyState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::widgets::tinnitus_survey.dart::TinnitusSurvey"
+
+class "tinnitus_smart_alarm::widgets::tinnitus_survey.dart::_TinnitusSurveyState" {
+  -double _lautstaerke
+  -double _unangenehmheit
+  -double _ignorierbarkeit
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::widgets::tinnitus_survey.dart::_TinnitusSurveyState"
+
+class "tinnitus_smart_alarm::widgets::volume_slider.dart::VolumeSlider" {
+  +double initialVolume
+  +void Function(double) onChanged
+  +State<VolumeSlider> createState()
+}
+
+"tinnitus_smart_alarm::widgets::volume_slider.dart::VolumeSlider" o-- "flutter::src::foundation::basic_types.dart::void Function(double)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::widgets::volume_slider.dart::VolumeSlider"
+
+class "tinnitus_smart_alarm::widgets::volume_slider.dart::_VolumeSliderState" {
+  +double currentVolume
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::widgets::volume_slider.dart::_VolumeSliderState"
+
+class "tinnitus_smart_alarm::widgets::upload_individual_stimuli.dart::UploadIndividualStimuli" {
+  +State<UploadIndividualStimuli> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::widgets::upload_individual_stimuli.dart::UploadIndividualStimuli"
+
+class "tinnitus_smart_alarm::widgets::upload_individual_stimuli.dart::_UploadIndividualStimuliState" {
+  +TextEditingController displaynameController
+  +bool hasSpecialFrequency
+  +String? selectedFrequency
+  +String? filepath
+  -GlobalKey<FormState> _formKey
+  +List<String> frequencies
+  +Widget build()
+  -dynamic _pickFile()
+  -dynamic _saveForm()
+  +void dispose()
+}
+
+"tinnitus_smart_alarm::widgets::upload_individual_stimuli.dart::_UploadIndividualStimuliState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"tinnitus_smart_alarm::widgets::upload_individual_stimuli.dart::_UploadIndividualStimuliState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::widgets::upload_individual_stimuli.dart::_UploadIndividualStimuliState"
+
+class "tinnitus_smart_alarm::widgets::survey_data_chart.dart::SurveyDataChart" {
+  +List<SurveyResult> surveyResults
+  +_SurveyDataChartState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "tinnitus_smart_alarm::widgets::survey_data_chart.dart::SurveyDataChart"
+
+class "tinnitus_smart_alarm::widgets::survey_data_chart.dart::_SurveyDataChartState" {
+  +SurveyResult? selectedResult
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::widgets::survey_data_chart.dart::_SurveyDataChartState" o-- "tinnitus_smart_alarm::models::survey_result.dart::SurveyResult"
+"flutter::src::widgets::framework.dart::State" <|-- "tinnitus_smart_alarm::widgets::survey_data_chart.dart::_SurveyDataChartState"
+
+class "tinnitus_smart_alarm::widgets::audio_item.dart::AudioItem" {
+  +Stimuli stimuli
+  +void Function() onPlayPressed
+  +void Function() onSetDefaultAudio
+  +void Function() onDeleteStimuli
+  +ValueNotifier<String?> defaultAudioNotifier
+  +ValueNotifier<String?> playingStimuliNotifier
+  +StimuliManager stimuliManager
+  +Widget build()
+}
+
+"tinnitus_smart_alarm::widgets::audio_item.dart::AudioItem" o-- "tinnitus_smart_alarm::models::stimuli.dart::Stimuli"
+"tinnitus_smart_alarm::widgets::audio_item.dart::AudioItem" o-- "dart::ui::void Function()"
+"tinnitus_smart_alarm::widgets::audio_item.dart::AudioItem" o-- "flutter::src::foundation::change_notifier.dart::ValueNotifier<String>"
+"tinnitus_smart_alarm::widgets::audio_item.dart::AudioItem" o-- "tinnitus_smart_alarm::services::stimuli_manager.dart::StimuliManager"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "tinnitus_smart_alarm::widgets::audio_item.dart::AudioItem"
+
+
+@enduml
+aleksandarradovic@hn600709 tinnitus_smart_alarm % 
